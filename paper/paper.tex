@@ -1,0 +1,109 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2019
+
+% ready for submission
+% \usepackage{neurips_2019}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2019}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%\usepackage[]{neurips_2019}
+\usepackage{arxiv}
+
+% to avoid loading the natbib package, add option nonatbib:
+%     \usepackage[nonatbib]{neurips_2019}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage[hidelinks]{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subfig}
+
+
+\newcommand{\etal}{\textit{et al}.}
+\newcommand{\ie}{\textit{i}.\textit{e}.}
+\newcommand{\eg}{\textit{e}.\textit{g}.}
+
+\newcommand{\MW}[1]{{\color{blue} {\bf (MW: #1)}}}
+\newcommand{\AY}[1]{{\color{magenta} {\bf (AY: #1)}}}
+
+\newcommand{\newl}{\newline}
+\newcommand{\bm}{\mathbf}
+
+\newcommand{\bW}{\bm{W}}
+\newcommand{\bw}{\bm{w}}
+\newcommand{\bV}{\bm{V}}
+\newcommand{\bD}{\bm{D}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\bX}{\bm{X}}
+\newcommand{\bh}{\bm{h}}
+\newcommand{\bz}{\bm{z}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bY}{\bm{Y}}
+\newcommand{\bb}{\bm{b}}
+\newcommand{\bs}{\bm{s}}
+
+\usepackage[format=plain,
+            font=small,
+            labelfont=it,
+            textfont=it]{caption}
+
+
+\title{Frequency dilation learning for temporal convolutional neural networks}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{Moritz Wolter\\
+ Institute for Computer Science\\
+ University of Bonn\\
+ {\tt\small wolter@cs.uni-bonn.de}
+ \And
+ Angela Yao\\
+ School of Computing\\
+ National University of Singapore\\
+ {\tt\small ayao@comp.nus.edu.sg}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Convolutional neural networks (CNNs) make up the bedrock in modern machine learning. With ever increasing data sets and increasing efforts to port these foundational systems to mobile and robotics applications there is an ever strong desire to reduce the computational and memory footprint of CNNs. In this paper we introduce frequency dilation, a novel technique to increase efficiency at minimal cost in terms of network accuracy.
+\end{abstract}
+
+\section{Introduction}
+Integral transforms lie at the core of computational efficiency trough sparsity \cite{Mallat}\cite{TruongNguyenGilbertStrang}. Previous works have reduced the parameter count of fully connected layers trough the fast hadamard transforms \cite{yang2015deep}. Fully connected layers are re-parametrized trough a fixed basis. Using a fixed bases \cite{Arjovsky2016} proposes a unitary RNN, later \cite{Wisdom2016} finds that in the RNN case using a fixed basis is detrimental to network performance. 
+As we believe that the fixed basis in \cite{yang2015deep} is equally restricted, and therefore detrimental to performance. Instead we proposed a learn-able representation based on the dual tree wavelet transform \cite{Selesnick}, which we apply to both input data and network weights. 
+
+\section{Related work}
+\cite{Recoskie2018}
+
+\section{Theory}
+Sparsity of a representation is basis dependent~\cite{TruongNguyenGilbertStrang}\cite{Strang1994}, fewer coefficients are are required in order to represent a signal, only a limited number of basis functions components are able to do the job.
+
+\newpage
+{\small
+\bibliographystyle{plain}
+\bibliography{bib}
+}
+
+\end{document}
