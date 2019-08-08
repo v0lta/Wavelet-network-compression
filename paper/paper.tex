@@ -91,14 +91,73 @@ Convolutional neural networks (CNNs) make up the bedrock in modern machine learn
 \end{abstract}
 
 \section{Introduction}
-Integral transforms lie at the core of computational efficiency trough sparsity \cite{Mallat}\cite{TruongNguyenGilbertStrang}. Previous works have reduced the parameter count of fully connected layers trough the fast hadamard transforms \cite{yang2015deep}. Fully connected layers are re-parametrized trough a fixed basis. Using a fixed bases \cite{Arjovsky2016} proposes a unitary RNN, later \cite{Wisdom2016} finds that in the RNN case using a fixed basis is detrimental to network performance. 
-As we believe that the fixed basis in \cite{yang2015deep} is equally restricted, and therefore detrimental to performance. Instead we proposed a learn-able representation based on the dual tree wavelet transform \cite{Selesnick}, which we apply to both input data and network weights. 
+Integral transforms lie at the core of computational efficiency trough sparsity \cite{Mallat}\cite{Strang1997}. Previous works have reduced the parameter count of fully connected layers trough the fast Hadamard transforms \cite{yang2015deep}. Fully connected layers are re-parametrized trough a fixed basis. Using a fixed bases \cite{Arjovsky2016} proposes a unitary RNN, later \cite{Wisdom2016} finds that in the RNN case using a fixed basis is detrimental to network performance. 
+As we believe that the fixed basis in \cite{yang2015deep} is equally restricted, and therefore detrimental to performance. Instead we proposed a learn-able representation based on the dual tree wavelet transform \cite{Selesnick2005}, which we apply to both input data and network weights. 
 
 \section{Related work}
-\cite{Recoskie2018}
+Learnable filters \cite{Recoskie2018}
+
+Dimensionality reduction in inputs (FourierRNN)
+
+Dimensionality reduction in weights \cite{yang2015deep}
 
 \section{Theory}
-Sparsity of a representation is basis dependent~\cite{TruongNguyenGilbertStrang}\cite{Strang1994}, fewer coefficients are are required in order to represent a signal, only a limited number of basis functions components are able to do the job.
+Sparsity of a representation is basis dependent~\cite{Strang1997}\cite{Strang1994}, fewer coefficients are are required in order to represent a signal, only a limited number of basis functions components are able to do the job.
+
+\subsection{Single tree filter design}
+Wavelet filter design 
+
+Perfect reconstruction (PR) \cite{Selesnick2005}\cite[page 107]{Strang1997} requires, no distortion:
+\begin{equation}
+H_0(z) F_{0}(z) + H_1(z) F_1(z) = 2
+\end{equation}
+and alias cancellation:
+\begin{equation}
+H_0(-z) F_{0}(z) + H_1(-z) F_1(z) = 0
+\end{equation}
+For alias cancellation $F_0(z) = H_1(-z)$, $F_1(z) = -H_0(-z)$ is typically chosen \cite{Strang1994}. A product filter approach is chosen to deal with the reconstruction condition.
+\begin{equation}
+P_0(z) = F_0(z)H_0(z); P_1(z) = F_1(z)H_1(z) 
+\end{equation}
+Alias cancellation leads to $P_1(z) = -P_0(-z)$ and turns the no distortion condition into:
+\begin{equation}
+P(z) + P(-z) = 2
+\end{equation}
+Even powers have to cancel, odd powers are design variables.
+
+\subsection{Dual vs. single Tree approach}
+
+\subsection{The dual tree wavelet approach}
+
+Dual tree wavelet filters should satisfy \cite{Selesnick2005}:
+\begin{itemize}
+\item approximate half sample delay property (?).
+\item Perfect reconstruction (orthogonal or bi-orthogonal)
+\item finite support (FIR filters)
+\item vanishing moments good stopband
+\item linear phase filters (desired, but not required)
+\end{itemize}
+
+Where and how does the phase shift condition fit into this?
+
+The wavelet literature tells us $\int_{-\infty}^{\infty} \Psi(t) dt = 0$
+and $\int_{-\infty}^{\infty} \| \Psi(t) \| dt = 1$.
+
+\subsection{Biorthogonal filters}
+
+
+
+
+\subsubsection{Learning biorthogonal filters}
+Which constraints are required?
+
+\subsection{Multi-resolution analysis}
+Top-down vs bottom up in image processing, relations?
+
+
+\section{Experiments}
+Compare, compression using Fourier, Harr, and learned wavelets on mackey glass and a bumpy
+rectangularly time series for example a staircase mackey glass or lorenz.
 
 \newpage
 {\small
