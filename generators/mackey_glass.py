@@ -71,12 +71,13 @@ class MackeyGenerator(object):
     '''
 
     def __init__(self, batch_size, tmax, delta_t, block_size=None,
-                 restore_and_plot=False):
+                 restore_and_plot=False, cuda=True):
         self.batch_size = batch_size
         self.tmax = tmax
         self.delta_t = delta_t
         self.block_size = block_size
         self.restore_and_plot = restore_and_plot
+        self.cuda = cuda
 
     def __call__(self):
         data_nd = generate_mackey(tmax=self.tmax, delta_t=self.delta_t,
@@ -85,5 +86,8 @@ class MackeyGenerator(object):
         data_nd = torch.unsqueeze(data_nd, -1)
         if self.block_size:
             data_nd = blockify(data_nd, self.block_size)
-        print('data_nd_shape', data_nd.shape)
-        return data_nd
+        # print('data_nd_shape', data_nd.shape)
+        if self.cuda:
+            return data_nd.cuda()
+        else:
+            return data_nd
