@@ -9,6 +9,7 @@ sys.path.append("../../")
 from TCN.copy_memory.utils import data_generator
 from TCN.copy_memory.model import TCN
 import time
+import ipdb
 
 
 parser = argparse.ArgumentParser(description='Sequence Modeling - Copying Memory Task')
@@ -132,7 +133,7 @@ def train(ep):
             total_loss = 0
             correct = 0
             counter = 0
-
+            ipdb.set_trace()
 
 for ep in range(1, epochs + 1):
     train(ep)

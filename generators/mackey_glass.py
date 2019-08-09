@@ -24,7 +24,7 @@ def generate_mackey(batch_size=100, tmax=200, delta_t=1, rnd=True):
     x0 = torch.ones([tau])
     x0 = torch.stack(batch_size*[x0], dim=0)
     if rnd:
-        print('Mackey initial state is random.')
+        # print('Mackey initial state is random.')
         x0 += torch.empty(x0.shape).uniform_(-0.1, 0.1)
     else:
         x0 += [-0.01, 0.02]

@@ -1,6 +1,11 @@
+import time
+import numpy as np
+import copy
 import torch
 import torch.nn as nn
+import matplotlib.pyplot as plt
 from torch.nn.utils import weight_norm
+from torch.utils.tensorboard import SummaryWriter
 from generators.mackey_glass import MackeyGenerator
 import ipdb
 
@@ -87,33 +92,80 @@ class TemporalConvNet(nn.Module):
         return self.network(x)
 
 
-generator = MackeyGenerator(batch_size=100,
+generator = MackeyGenerator(batch_size=10,
                             tmax=1200,
-                            delta_t=0.5)
+                            delta_t=1.0)
+bpd = {}
+bpd['iterations'] = 25000
+bpd['pred_samples'] = 200
+bpd['window_size'] = 1
+bpd['lr'] = 0.001
 
+pd_lst = [bpd]
+for window_size in [1, 10, 25, 50, 75, 100]:
+    for lr in [0.01, 0.001, 0.0001, 0.00001]:
+        new_pd = copy.deepcopy(bpd)
+        new_pd['lr'] = lr
+        new_pd['window_size'] = window_size
+        pd_lst.append(new_pd)
 
-iterations = 1000
-pred_samples = 400
+for pd in pd_lst:
+    tcn = TemporalConvNet(num_inputs=1, num_channels=[125, 100, pd['window_size']]).cuda()
+    model_parameters = filter(lambda p: p.requires_grad, tcn.parameters())
+    params = sum([np.prod(p.size()) for p in model_parameters])
+    print('model parameters', params)
+    pd['params'] = params
 
-tcn = TemporalConvNet(num_inputs=1, num_channels=[200, 300, pred_samples]).cuda()
-optimizer = torch.optim.Adam(tcn.parameters())
-critereon = torch.nn.MSELoss()
-loss_lst = []
+    pd_str = ''
+    for key in pd.keys():
+        pd_str += '_' + key + '_' + str(pd[key])
+    summary = SummaryWriter(comment=pd_str)
+    # summary.add_graph(tcn)
 
-for i in range(iterations):
-    tcn.train()
-    mackey_data = torch.squeeze(generator())
-    total_time = mackey_data.shape[-1]
-    x, y = torch.split(mackey_data, [total_time - pred_samples, pred_samples], dim=-1)
-    optimizer.zero_grad()
-    output = tcn(x.unsqueeze(1)).squeeze(0)
-    prediction = output[:, :, -1]
-    # loss = -torch.trace(torch.matmul(y, torch.log(prediction).float().t()) +
-    #                     torch.matmul((1 - y), torch.log(1 - prediction).float().t()))
-    loss = critereon(y, prediction)
-    loss.backward()
-    optimizer.step()
+    optimizer = torch.optim.Adam(tcn.parameters(), lr=pd['lr'])
+    critereon = torch.nn.MSELoss()
+    loss_lst = []
 
-    rec_loss = loss.detach().cpu().numpy()
-    loss_lst.append(rec_loss)
-    print('iteration', i, 'loss', loss_lst[-1])
+    for i in range(pd['iterations']):
+        steps = int(pd['pred_samples']//pd['window_size'])
+        tcn.train()
+        mackey_data = torch.squeeze(generator())
+        total_time = mackey_data.shape[-1]
+        x, y = torch.split(mackey_data, [total_time - pd['pred_samples'],
+                                         pd['pred_samples']], dim=-1)
+        optimizer.zero_grad()
+
+        x_in = x
+        net_out = []
+        for j in range(steps):
+            y_pred = tcn(x_in.unsqueeze(1)).squeeze(0)
+            y_pred = y_pred[:, :, -1]
+            net_out.append(y_pred)
+            x_in = torch.cat([x_in, y_pred], -1)
+
+        prediction = torch.cat(net_out, -1)
+        # loss = -torch.trace(torch.matmul(y, torch.log(prediction).float().t()) +
+        #                     torch.matmul((1 - y), torch.log(1 - prediction).float().t()))
+        loss = critereon(y, prediction)
+        loss.backward()
+        optimizer.step()
+
+        rec_loss = loss.detach().cpu().numpy()
+        loss_lst.append(rec_loss)
+        print('iteration', i, 'loss', loss_lst[-1])
+        summary.add_scalar('mse', loss_lst[-1], global_step=i)
+
+        if i % 100 == 0:
+            fig = plt.figure()
+            plt.plot(prediction.detach().cpu().numpy()[0, :])
+            plt.plot(y.detach().cpu().numpy()[0, :])
+            summary.add_figure('predictions', fig, global_step=i)
+            plt.clf()
+            plt.close()
+
+    fig = plt.figure()
+    plt.plot(prediction.detach().cpu().numpy()[0, :])
+    plt.plot(y.detach().cpu().numpy()[0, :])
+    summary.add_figure('predictions', fig, global_step=i)
+    plt.clf()
+    plt.close()

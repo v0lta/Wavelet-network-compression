@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01cc3016-e4a0-4cd9-b6e4-f6b265628041" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/esn/MackeyGlass_t17.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/esn/minimalESN.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/mackey_glass.py" beforeDir="false" afterPath="$PROJECT_DIR$/generators/mackey_glass.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tcn_mackey.py" beforeDir="false" afterPath="$PROJECT_DIR$/tcn_mackey.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -59,7 +63,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.copymem_test">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -74,6 +78,25 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ikeda.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="copymem_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="wavelet_learning" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TCN-master/TCN/copy_memory/copymem_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -101,8 +124,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.copymem_test" />
+      <item itemvalue="Python.ikeda" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.copymem_test" />
         <item itemvalue="Python.ikeda" />
       </list>
     </recent_temporary>
@@ -118,6 +146,7 @@
       <option name="presentableId" value="Default" />
       <updated>1564416255196</updated>
       <workItem from="1564416257994" duration="2082000" />
+      <workItem from="1565354157237" duration="852000" />
     </task>
     <servers />
   </component>
@@ -129,7 +158,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
