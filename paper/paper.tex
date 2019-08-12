@@ -71,16 +71,16 @@
 % authors names on the first line, and the last on the second line, try using
 % \AND instead of \And before the third author name.
 
-\author{Moritz Wolter\\
- Institute for Computer Science\\
- University of Bonn\\
- {\tt\small wolter@cs.uni-bonn.de}
- \And
- Angela Yao\\
- School of Computing\\
- National University of Singapore\\
- {\tt\small ayao@comp.nus.edu.sg}
-}
+% \author{Moritz Wolter\\
+%  Institute for Computer Science\\
+%  University of Bonn\\
+%  {\tt\small wolter@cs.uni-bonn.de}
+%  \And
+%  Angela Yao\\
+%  School of Computing\\
+%  National University of Singapore\\
+%  {\tt\small ayao@comp.nus.edu.sg}
+% }
 
 \begin{document}
 
@@ -102,11 +102,16 @@ Dimensionality reduction in inputs (FourierRNN)
 Dimensionality reduction in weights \cite{yang2015deep}
 
 \section{Theory}
-Sparsity of a representation is basis dependent~\cite{Strang1997}\cite{Strang1994}, fewer coefficients are are required in order to represent a signal, only a limited number of basis functions components are able to do the job.
+Dilation in modern convolutional neural networks is equivalent to low-pass filtering in the frequency domain. This connection becomes apparent if one looks at the dilated CNN output as a downsampled version of the original CNN. Down-sampling is a form of low-pass filtering, because high frequency information present above frequencies not covered by the new Nyquist rate vanishes.
+When using dilated CNNs one broadens the receptive field by ignoring high frequency information. But depending on the data this may not be the best approach. In this work we explore an alternative dilation method. Instead of hard coding a low pass filter we explore broadening the receptive field trough compressive wavelet basis learning. 
+The data is represented in terms of a learned wavelet basis and only a small number of coefficients is kept. In order to minmize the loss the optimizer will be forced to move the wavelet-filters into frequency bands where most of the relevant information is present. 
+Sparsity and thereby the effectiveness of a representation is basis dependent~\cite{Strang1997}\cite{Strang1994}, when a suitable basis is chosen few coefficients are are required in order to represent a signal, only a limited number of basis functions components are able to do the job.
 
-\subsection{Single tree filter design}
-Wavelet filter design 
 
+
+\subsection{Single tree wavelet basis-optimization}
+Wavelets and filter banks are closely related. This section explores how methods from the field of digital filter design can be used to optimize wavlet basis representations.
+\subsubsection{Filter coefficient optimization}
 Perfect reconstruction (PR) \cite{Selesnick2005}\cite[page 107]{Strang1997} requires, no distortion:
 \begin{equation}
 H_0(z) F_{0}(z) + H_1(z) F_1(z) = 2
@@ -123,12 +128,22 @@ Alias cancellation leads to $P_1(z) = -P_0(-z)$ and turns the no distortion cond
 \begin{equation}
 P(z) + P(-z) = 2
 \end{equation}
-Even powers have to cancel, odd powers are design variables.
+Even powers have to be zero, odd powers are design variables\cite[page 107]{Strang1997}. In theory it should be possible to optimize the odd power coefficients by gradient descent. 
+One way designers choose the coeffecients is to picke the coefficients for the zeroth phase and generate subsequent phase filters by alternating the signs or flip-inversion~\cite[page 109]{Strang1997}. After hard coding the alternation or inversion conditions, this process should lend itself to optimization by gradient descent.
+
+\subsubsection{Orthogonal polyphase matrix optimization}
+The filter design problem can be expressed in terms of choosing the analysis and reconstruction polyphase matrices. A polyphase system requires $\mathbf{F}_p \mathbf{H}_p = \mathbf{I}$, to work~\cite[page 116]{Strang1997}. In the orthogonal case we have $\mathbf{H}_p = \mathbf{F}_p^{-1}$. Given an initial orthogonal wavelet basis it should be possible to use Stiefel manifold optimization as outlined in \cite{Wisdom2016}\cite{wolter-2018-neurips}, to solve the wavelet optimization problem by using:
+\begin{align}
+\mathbf{H}_{p, k+1} = (\mathbf{I} + \frac{\lambda}{2}\mathbf{A}_k)^{-1}(\mathbf{I} - \frac{\lambda}{2}\mathbf{A}_k)\mathbf{H}_{p, k}
+\end{align}
+Where $\mathbf{A}_k = \mathbf{H}_{p,k}\overline{\bigtriangledown_{w}F}^T - \overline{\mathbf{H}_{p, k}}^T\bigtriangledown_{w}F$, with the cost function F and $\mathbf{H}_{p,k}$ the orthogonal polyphase matrix at time k. Ideally the pros and cons of orthogonal wavelets will become apparent in comparison to the biorthogonal case described before.
+
 
 \subsection{Dual vs. single Tree approach}
+\MW{TODO: Write}
 
-\subsection{The dual tree wavelet approach}
-
+\subsection{The dual tree wavelet basis optimization}
+\MW{I think dual tree wavelet basis optimization is based on using single tree methods plus the phase constraint, which connects the two trees. Dual tree wavelets are always complex valued, so I am hoping to connect this to \cite{wolter-2018-neurips}. I am going to finish this section later: \\
 Dual tree wavelet filters should satisfy \cite{Selesnick2005}:
 \begin{itemize}
 \item approximate half sample delay property (?).
@@ -140,26 +155,27 @@ Dual tree wavelet filters should satisfy \cite{Selesnick2005}:
 
 Where and how does the phase shift condition fit into this?
 
-The wavelet literature tells us $\int_{-\infty}^{\infty} \Psi(t) dt = 0$
-and $\int_{-\infty}^{\infty} \| \Psi(t) \| dt = 1$.
+The wavelet literature [mallat] tells us $\int_{-\infty}^{\infty} \Psi(t) dt = 0$
+and $\int_{-\infty}^{\infty} \| \Psi(t) \| dt = 1$.}
 
-\subsection{Biorthogonal filters}
-
-
-
-
-\subsubsection{Learning biorthogonal filters}
-Which constraints are required?
 
 \subsection{Multi-resolution analysis}
 Top-down vs bottom up in image processing, relations?
 
 
 \section{Experiments}
-Compare, compression using Fourier, Harr, and learned wavelets on mackey glass and a bumpy
-rectangularly time series for example a staircase mackey glass or lorenz.
+\subsection{Time series compression, is the wavelet basis code ok?}
+Compare a highly compressed example using Fourier, Harr, and learned wavelets on mackey glass and a bumpy rectangularly time series for example a staircase mackey glass or lorenz. \\
 
-\newpage
+\MW{TODO: Choose a good real data source. To test this too.}
+
+\subsection{CNN compression, or can we use wavelets to replace the Welsh-Hadamard transform?}
+Revisit \cite{yang2015deep} deploy an optimized basis and see if we can do better.
+
+
+\subsection{Frequency dilation, or can wavelets help us broaden CNN receptive fields?}
+I am not yet sure how to best explore this idea.
+
 {\small
 \bibliographystyle{plain}
 \bibliography{bib}
