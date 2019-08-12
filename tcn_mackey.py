@@ -92,25 +92,34 @@ class TemporalConvNet(nn.Module):
         return self.network(x)
 
 
-generator = MackeyGenerator(batch_size=10,
-                            tmax=600,
-                            delta_t=1.0)
 bpd = {}
-bpd['iterations'] = 25000
-bpd['pred_samples'] = 100
-bpd['window_size'] = 1
-bpd['lr'] = 0.001
+bpd['iterations'] = 20000
+bpd['tmax'] = 600
+bpd['delta_t'] = 1.0
+bpd['pred_samples'] = 300
+bpd['window_size'] = 10
+bpd['lr'] = 0.004
+bpd['batch_size'] = 32
+bpd['dropout'] = 0.0
+bpd['channels'] = [30, 30, 30, 30, 30, 30]
+
+generator = MackeyGenerator(batch_size=bpd['batch_size'],
+                            tmax=bpd['tmax'],
+                            delta_t=bpd['delta_t'])
+
 
 pd_lst = [bpd]
-for window_size in [1, 10, 25, 50, 75, 100]:
-    for lr in [0.01, 0.001, 0.0001, 0.00001]:
+for lr in [0.004, 0.001, 0.01, 0.0001, 0.00001]:
+    for window_size in [10, 25, 50, 100]:
         new_pd = copy.deepcopy(bpd)
         new_pd['lr'] = lr
         new_pd['window_size'] = window_size
         pd_lst.append(new_pd)
 
 for pd in pd_lst:
-    tcn = TemporalConvNet(num_inputs=1, num_channels=[125, 100, pd['window_size']]).cuda()
+    tcn = TemporalConvNet(num_inputs=1,
+                          num_channels=bpd['channels'] + [pd['window_size']],
+                          dropout=bpd['dropout']).cuda()
     model_parameters = filter(lambda p: p.requires_grad, tcn.parameters())
     params = sum([np.prod(p.size()) for p in model_parameters])
     print('model parameters', params)
