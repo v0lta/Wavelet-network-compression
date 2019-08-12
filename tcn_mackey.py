@@ -93,11 +93,11 @@ class TemporalConvNet(nn.Module):
 
 
 generator = MackeyGenerator(batch_size=10,
-                            tmax=1200,
+                            tmax=600,
                             delta_t=1.0)
 bpd = {}
 bpd['iterations'] = 25000
-bpd['pred_samples'] = 200
+bpd['pred_samples'] = 100
 bpd['window_size'] = 1
 bpd['lr'] = 0.001
 
@@ -119,6 +119,7 @@ for pd in pd_lst:
     pd_str = ''
     for key in pd.keys():
         pd_str += '_' + key + '_' + str(pd[key])
+    print('experiemnt params:', pd_str)
     summary = SummaryWriter(comment=pd_str)
     # summary.add_graph(tcn)
 
@@ -129,6 +130,7 @@ for pd in pd_lst:
     for i in range(pd['iterations']):
         steps = int(pd['pred_samples']//pd['window_size'])
         tcn.train()
+        start = time.time()
         mackey_data = torch.squeeze(generator())
         total_time = mackey_data.shape[-1]
         x, y = torch.split(mackey_data, [total_time - pd['pred_samples'],
@@ -152,7 +154,8 @@ for pd in pd_lst:
 
         rec_loss = loss.detach().cpu().numpy()
         loss_lst.append(rec_loss)
-        print('iteration', i, 'loss', loss_lst[-1])
+        runtime = time.time() - start
+        print('iteration', i, 'loss', loss_lst[-1], 'runtime', runtime)
         summary.add_scalar('mse', loss_lst[-1], global_step=i)
 
         if i % 100 == 0:
