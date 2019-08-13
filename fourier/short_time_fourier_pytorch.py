@@ -3,6 +3,7 @@ import torch
 import numpy as np
 import scipy.signal as scisig
 import warnings
+# import ipdb
 
 
 def stft_from_torch(input_tensor, nperseg, nstep=None, win_length=None,
@@ -48,6 +49,9 @@ def stft(x, window, nperseg=None, noverlap=None,
          boundary=None, padded=True):
     '''
     Imlement what's happening in scipy's stft implementation.
+
+    Returns:
+        freq_x: [batch_size, freqs, time, 2]
     '''
     assert type(window) == torch.Tensor
     assert len(window.shape) == 1
@@ -155,8 +159,9 @@ def istft(Zxx, window, nperseg=None, noverlap=None,
 
     # Initialize output and normalization arrays
     outputlength = nperseg + (nseg-1)*nstep
-    x = torch.zeros(list(Zxx.shape[:-3]) + [outputlength], dtype=xsubs.dtype)
-    norm = torch.zeros(outputlength, dtype=xsubs.dtype)
+    x = torch.zeros(list(Zxx.shape[:-3]) + [outputlength], dtype=xsubs.dtype,
+                    device=xsubs.device)
+    norm = torch.zeros(outputlength, dtype=xsubs.dtype, device=xsubs.device)
 
     # Construct the output from the ifft segments
     # This loop could perhaps be vectorized/strided somehow...
