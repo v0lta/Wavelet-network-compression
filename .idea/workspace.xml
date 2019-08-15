@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01cc3016-e4a0-4cd9-b6e4-f6b265628041" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/esn/MackeyGlass_t17.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/esn/minimalESN.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wave/learn_wave.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/wavelet_learning.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/wavelet_learning.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/mackey_glass.py" beforeDir="false" afterPath="$PROJECT_DIR$/generators/mackey_glass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tcn_mackey.py" beforeDir="false" afterPath="$PROJECT_DIR$/tcn_mackey.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wavelet_tcn_mackey.py" beforeDir="false" afterPath="$PROJECT_DIR$/wavelet_tcn_mackey.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,6 +51,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -63,7 +65,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.copymem_test">
+  <component name="RunManager" selected="Python.wavelet_tcn_mackey">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -90,6 +92,9 @@
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -109,6 +114,9 @@
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -124,12 +132,33 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="wavelet_tcn_mackey" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="wavelet_learning" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wavelet_tcn_mackey.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.copymem_test" />
       <item itemvalue="Python.ikeda" />
+      <item itemvalue="Python.wavelet_tcn_mackey" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.wavelet_tcn_mackey" />
         <item itemvalue="Python.copymem_test" />
         <item itemvalue="Python.ikeda" />
       </list>
@@ -147,6 +176,7 @@
       <updated>1564416255196</updated>
       <workItem from="1564416257994" duration="2082000" />
       <workItem from="1565354157237" duration="852000" />
+      <workItem from="1565866994066" duration="12528000" />
     </task>
     <servers />
   </component>
@@ -166,7 +196,26 @@
       </map>
     </option>
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/wavelet_tcn_mackey.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/wavelet_learning$ikeda.coverage" NAME="ikeda Coverage Results" MODIFIED="1564416760656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$wavelet_tcn_mackey.coverage" NAME="wavelet_tcn_mackey Coverage Results" MODIFIED="1565880321890" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from generators.mackey_glass import MackeyGenerator
 from temporal_conv_net import TemporalConvNet
 from wave.transform2d import DWTForward, DWTInverse
+from wave.learn_wave import Wave1D
 import ipdb
 
 bpd = {}
@@ -41,6 +42,7 @@ cA, cD = pywt.dwt(mackey_data_numpy[0, :], wavelet=wavelet)
 plt.plot(mackey_data_numpy[0, :])
 plt.show()
 plt.plot(cA, cD)
+plt.title('pywt')
 plt.show()
 
 # compare to pytorch implementation.
@@ -55,6 +57,23 @@ diff_A = np.linalg.norm(cA - cA_pyt_numpy)
 diff_D = np.linalg.norm(cD - cD_pyt_numpy)
 print(diff_A, diff_D)
 plt.plot(cA_pyt_numpy, cD_pyt_numpy)
+plt.title('torchwave')
 plt.show()
 
 reconstruction = pywave_inverse((cA_pyt, cD_pyt))
+
+# test my own code
+wave1d = Wave1D(wavelet.dec_lo, wavelet.dec_hi, wavelet.rec_lo, wavelet.rec_hi,
+                scales=1)
+
+low, high = wave1d.analysis(mackey_data.unsqueeze(1).unsqueeze(1).cpu())
+high = high[0]
+plt.plot(low[0, 0, 0, :].detach().cpu().numpy(),
+         high[0, 0, 0, :].detach().cpu().numpy())
+plt.title('my wave')
+plt.show()
+
+print(np.linalg.norm(cA - low[0, 0, 0, :].detach().cpu().numpy()))
+print(np.linalg.norm(cD - high[0, 0, 0, :].detach().cpu().numpy()))
+
+print('done')
