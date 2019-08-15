@@ -37,6 +37,7 @@ for pd in pd_lst:
     tcn = TemporalConvNet(num_inputs=1,
                           num_channels=bpd['channels'] + [pd['window_size']],
                           dropout=bpd['dropout']).cuda()
+    ipdb.set_trace()
     model_parameters = filter(lambda p: p.requires_grad, tcn.parameters())
     params = sum([np.prod(p.size()) for p in model_parameters])
     print('model parameters', params)
