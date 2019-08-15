@@ -20,7 +20,7 @@ bpd['delta_t'] = 0.1
 bpd['pred_samples'] = 256
 bpd['window_size'] = 512
 bpd['lr'] = 0.004
-bpd['batch_size'] = 32
+bpd['batch_size'] = 4
 bpd['dropout'] = 0.0
 bpd['channels'] = [30, 30, 30, 30, 30, 30]
 bpd['overlap'] = int(bpd['window_size']*0.5)
@@ -45,6 +45,10 @@ plt.plot(cA, cD)
 plt.title('pywt')
 plt.show()
 
+# try out the multiresolution code.
+c_10 = pywt.wavedec(mackey_data_numpy[0, :], wavelet=wavelet, level=5)
+print([c.shape for c in c_10])
+
 # compare to pytorch implementation.
 pywave_forward = DWTForward(J=1, wave=wavelet)
 pywave_inverse = DWTInverse(wave=wavelet)
@@ -62,18 +66,24 @@ plt.show()
 
 reconstruction = pywave_inverse((cA_pyt, cD_pyt))
 
-# test my own code
+# test my own code 1d 1 level.
 wave1d = Wave1D(wavelet.dec_lo, wavelet.dec_hi, wavelet.rec_lo, wavelet.rec_hi,
                 scales=1)
-
 low, high = wave1d.analysis(mackey_data.unsqueeze(1).unsqueeze(1).cpu())
-high = high[0]
-plt.plot(low[0, 0, 0, :].detach().cpu().numpy(),
-         high[0, 0, 0, :].detach().cpu().numpy())
+plt.plot(high[0, 0, 0, :].detach().cpu().numpy(),
+         low[0, 0, 0, :].detach().cpu().numpy())
 plt.title('my wave')
 plt.show()
-
 print(np.linalg.norm(cA - low[0, 0, 0, :].detach().cpu().numpy()))
 print(np.linalg.norm(cD - high[0, 0, 0, :].detach().cpu().numpy()))
-
 print('done')
+
+# try out the multilevel version.
+wave1d_10 = Wave1D(wavelet.dec_lo, wavelet.dec_hi, wavelet.rec_lo, wavelet.rec_hi,
+                   scales=5)
+wave1d_10r = wave1d_10.analysis(mackey_data.unsqueeze(1).unsqueeze(1).cpu())
+
+for no, cp in enumerate(wave1d_10r):
+    cp = cp[0, 0, 0, :].detach().numpy()
+    c = c_10[len(c_10) - no - 1]
+    print(np.linalg.norm(cp - c), c.shape)

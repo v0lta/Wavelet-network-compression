@@ -14,14 +14,13 @@ class Wave1D(torch.nn.Module):
     def analysis(self, x, mode='zero'):
         yh = []
         lo = x
-
         for s in range(self.scales):
-            # TODO: loop the filtering.
             lohi = afb1d(lo, self.dec_lo, self.dec_hi, mode='zero', dim=-1)
             lo, hi = torch.split(lohi, split_size_or_sections=[1, 1], dim=1)
             yh.append(hi)
-
-        return lo, yh
+        # yh.insert(-1, lo)
+        yh.append(lo)
+        return yh
 
     def reconstruction(self, X):
         pass

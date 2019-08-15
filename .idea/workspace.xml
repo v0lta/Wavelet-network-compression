@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01cc3016-e4a0-4cd9-b6e4-f6b265628041" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/wave/learn_wave.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/wavelet_learning.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/wavelet_learning.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wave/learn_wave.py" beforeDir="false" afterPath="$PROJECT_DIR$/wave/learn_wave.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wave/lowlevel.py" beforeDir="false" afterPath="$PROJECT_DIR$/wave/lowlevel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wavelet_tcn_mackey.py" beforeDir="false" afterPath="$PROJECT_DIR$/wavelet_tcn_mackey.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -176,7 +174,7 @@
       <updated>1564416255196</updated>
       <workItem from="1564416257994" duration="2082000" />
       <workItem from="1565354157237" duration="852000" />
-      <workItem from="1565866994066" duration="12528000" />
+      <workItem from="1565866994066" duration="17111000" />
     </task>
     <servers />
   </component>
@@ -201,8 +199,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/wavelet_tcn_mackey.py</url>
-          <line>68</line>
-          <option name="timeStamp" value="8" />
+          <line>71</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/wavelet_tcn_mackey.py</url>
+          <line>72</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/wave/learn_wave.py</url>
+          <line>20</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -216,6 +224,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/wavelet_learning$ikeda.coverage" NAME="ikeda Coverage Results" MODIFIED="1564416760656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/wavelet_learning$wavelet_tcn_mackey.coverage" NAME="wavelet_tcn_mackey Coverage Results" MODIFIED="1565880321890" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$wavelet_tcn_mackey.coverage" NAME="wavelet_tcn_mackey Coverage Results" MODIFIED="1565884236331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
