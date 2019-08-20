@@ -37,8 +37,8 @@ mackey_data = torch.squeeze(generator())
 # try out the pywavelets wavelet transfrom.
 mackey_data_numpy = mackey_data.detach().cpu().numpy()
 
-wavelet = pywt.Wavelet('haar')
-# wavelet = pywt.Wavelet('sym3')
+# wavelet = pywt.Wavelet('haar')
+wavelet = pywt.Wavelet('bior2.4')
 cA, cD = pywt.dwt(mackey_data_numpy[0, :], wavelet=wavelet)
 plt.plot(mackey_data_numpy[0, :])
 plt.show()
@@ -47,7 +47,7 @@ plt.title('pywt')
 plt.show()
 
 # try out the multiresolution code.
-c_10 = pywt.wavedec(mackey_data_numpy[0, :], wavelet=wavelet, level=5)
+c_10 = pywt.wavedec(mackey_data_numpy[0, :], wavelet=wavelet, level=5, mode='zero')
 print([c.shape for c in c_10])
 
 # compare to pytorch implementation.
@@ -73,10 +73,10 @@ wave1d = Wave1D(wavelet.dec_lo, wavelet.dec_hi, wavelet.rec_lo, wavelet.rec_hi,
                 scales=1)
 low, high = wave1d.analysis(mackey_data.unsqueeze(1).unsqueeze(1).cpu())
 plt.plot(high[0, 0, 0, :].detach().cpu().numpy(),
-         -low[0, 0, 0, :].detach().cpu().numpy())
+         low[0, 0, 0, :].detach().cpu().numpy())
 plt.title('my wave')
 plt.show()
-print('low diff', np.linalg.norm(cD - (-1)*low[0, 0, 0, :].detach().cpu().numpy()))
+print('low diff', np.linalg.norm(cD - low[0, 0, 0, :].detach().cpu().numpy()))
 print('high diff', np.linalg.norm(cA - high[0, 0, 0, :].detach().cpu().numpy()))
 print('done')
 
@@ -84,6 +84,8 @@ print('done')
 wave1d_10 = Wave1D(wavelet.dec_lo, wavelet.dec_hi, wavelet.rec_lo, wavelet.rec_hi,
                    scales=5)
 wave1d_10r = wave1d_10.analysis(mackey_data.unsqueeze(1).unsqueeze(1).cpu())
+print('alias_cancellation_error:', wave1d_10.alias_cancellation_error().numpy(), ',',
+      wavelet.name)
 
 for no, cp in enumerate(wave1d_10r):
     cp = cp[0, 0, 0, :].detach().numpy()

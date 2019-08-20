@@ -1,5 +1,6 @@
 '''
-As defined at: https://github.com/fbcotter/pytorch_wavelets/blob/master/pytorch_wavelets/dwt/lowlevel.py
+As defined at: https://github.com/fbcotter/pytorch_wavelets/blob/\
+master/pytorch_wavelets/dwt/lowlevel.py
 '''
 
 import torch
