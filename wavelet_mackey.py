@@ -38,6 +38,7 @@ mackey_data = torch.squeeze(generator())
 mackey_data_numpy = mackey_data.detach().cpu().numpy()
 
 wavelet = pywt.Wavelet('haar')
+# wavelet = pywt.Wavelet('sym3')
 cA, cD = pywt.dwt(mackey_data_numpy[0, :], wavelet=wavelet)
 plt.plot(mackey_data_numpy[0, :])
 plt.show()
@@ -59,7 +60,8 @@ cD_pyt_numpy = cD_pyt[0][0, 0, 1, 0, :].detach().numpy()
 
 diff_A = np.linalg.norm(cA - cA_pyt_numpy)
 diff_D = np.linalg.norm(cD - cD_pyt_numpy)
-print(diff_A, diff_D)
+print('cA diff', diff_A,
+      'cD diff', diff_D)
 plt.plot(cA_pyt_numpy, cD_pyt_numpy)
 plt.title('torchwave')
 plt.show()
@@ -71,11 +73,11 @@ wave1d = Wave1D(wavelet.dec_lo, wavelet.dec_hi, wavelet.rec_lo, wavelet.rec_hi,
                 scales=1)
 low, high = wave1d.analysis(mackey_data.unsqueeze(1).unsqueeze(1).cpu())
 plt.plot(high[0, 0, 0, :].detach().cpu().numpy(),
-         low[0, 0, 0, :].detach().cpu().numpy())
+         -low[0, 0, 0, :].detach().cpu().numpy())
 plt.title('my wave')
 plt.show()
-print(np.linalg.norm(cA - low[0, 0, 0, :].detach().cpu().numpy()))
-print(np.linalg.norm(cD - high[0, 0, 0, :].detach().cpu().numpy()))
+print('low diff', np.linalg.norm(cD - (-1)*low[0, 0, 0, :].detach().cpu().numpy()))
+print('high diff', np.linalg.norm(cA - high[0, 0, 0, :].detach().cpu().numpy()))
 print('done')
 
 # try out the multilevel version.
@@ -87,5 +89,6 @@ for no, cp in enumerate(wave1d_10r):
     cp = cp[0, 0, 0, :].detach().numpy()
     c = c_10[len(c_10) - no - 1]
     print(np.linalg.norm(cp - c), c.shape)
+
 
 # wavelet compression.

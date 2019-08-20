@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01cc3016-e4a0-4cd9-b6e4-f6b265628041" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/wavelet_learning.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/wavelet_learning.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wave/learn_wave.py" beforeDir="false" afterPath="$PROJECT_DIR$/wave/learn_wave.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wave/lowlevel.py" beforeDir="false" afterPath="$PROJECT_DIR$/wave/lowlevel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wavelet_tcn_mackey.py" beforeDir="false" afterPath="$PROJECT_DIR$/wavelet_tcn_mackey.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +48,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -174,7 +173,7 @@
       <updated>1564416255196</updated>
       <workItem from="1564416257994" duration="2082000" />
       <workItem from="1565354157237" duration="852000" />
-      <workItem from="1565866994066" duration="17111000" />
+      <workItem from="1565866994066" duration="19270000" />
     </task>
     <servers />
   </component>
@@ -197,16 +196,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/wavelet_tcn_mackey.py</url>
-          <line>71</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/wavelet_tcn_mackey.py</url>
-          <line>72</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/wave/learn_wave.py</url>
           <line>20</line>

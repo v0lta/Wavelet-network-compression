@@ -3,5 +3,5 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Geigelstein Anaconda 3.6 (brain_decode)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.6.3 (sftp://wolter@auersberg.informatik.uni-bonn.de:22/home/wolter/anaconda3/bin/python)" project-jdk-type="Python SDK" />
 </project>
