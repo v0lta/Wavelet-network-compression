@@ -83,6 +83,7 @@ class DWTInverse(nn.Module):
         wave (str or pywt.Wavelet): Which wavelet to use
         C: deprecated, will be removed in future
     """
+
     def __init__(self, wave='db1', mode='zero'):
         super().__init__()
         if isinstance(wave, str):
@@ -137,9 +138,9 @@ class DWTInverse(nn.Module):
 
             # 'Unpad' added dimensions
             if ll.shape[-2] > h.shape[-2]:
-                ll = ll[...,:-1,:]
+                ll = ll[..., :-1, :]
             if ll.shape[-1] > h.shape[-1]:
-                ll = ll[...,:-1]
+                ll = ll[..., :-1]
             ll = lowlevel.SFB2D.apply(
                 ll, h, self.g0_col, self.g1_col, self.g0_row, self.g1_row, mode)
         return ll

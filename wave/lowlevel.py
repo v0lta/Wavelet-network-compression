@@ -9,6 +9,7 @@ import numpy as np
 from torch.autograd import Function
 from wave.utils import reflect
 import pywt
+import ipdb
 
 
 def roll(x, n, dim, make_even=False):
@@ -168,6 +169,7 @@ def afb1d(x, h0, h1, mode='zero', dim=-1):
                 x = F.pad(x, pad)
             pad = (p//2, 0) if d == 2 else (0, p//2)
             # Calculate the high and lowpass
+            # ipdb.set_trace()
             lohi = F.conv2d(x, h, padding=pad, stride=s, groups=C)
         elif mode == 'symmetric' or mode == 'reflect' or mode == 'periodic':
             pad = (0, 0, p//2, (p+1)//2) if d == 2 else (p//2, (p+1)//2, 0, 0)
