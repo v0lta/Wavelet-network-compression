@@ -13,8 +13,9 @@ class Wave1D(torch.nn.Module):
         super().__init__()
 
         def to_tensor(filt_lst: list):
-                return torch.tensor(np.array(filt_lst).ravel(),
-                                    dtype=torch.float)
+                tensor = torch.tensor(np.array(filt_lst).ravel(),
+                                      dtype=torch.float)
+                return torch.nn.Parameter(tensor)
 
         self.init_wavelet = init_wavelet
         self.dec_lo = to_tensor(init_wavelet.dec_lo)
@@ -149,6 +150,4 @@ class Wave1D(torch.nn.Module):
                 lo = lo[..., :-1]
 
             lo = sfb1d(lo, hi, self.rec_lo, self.rec_hi, mode=self.mode, dim=-1)
-            # ipdb.set_trace()
-        # ipdb.set_trace()
         return lo

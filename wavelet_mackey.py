@@ -91,11 +91,11 @@ print('done')
 wave1d_10 = Wave1D(wavelet, scales=5)
 wave1d_10_freq = wave1d_10.analysis(
     mackey_data.unsqueeze(1).unsqueeze(1).cpu())
-print('alias cancellation loss:', wave1d_10.alias_cancellation_loss().numpy(), ',',
+print('alias cancellation loss:',
+      wave1d_10.alias_cancellation_loss().detach().numpy(), ',',
       wavelet.name)
 print('perfect reconstruction loss:',
-      wave1d_10.perfect_reconstruction_loss().numpy())
-
+      wave1d_10.perfect_reconstruction_loss().detach().numpy())
 
 for no, cp in enumerate(wave1d_10_freq):
     cp = cp[0, 0, 0, :].detach().numpy()
@@ -105,13 +105,32 @@ for no, cp in enumerate(wave1d_10_freq):
 
 # reconstruct the input
 my_rec = wave1d_10.reconstruction(wave1d_10_freq)
-print('my_rec error', np.sum(np.abs(my_rec[0, 0, 0, :].numpy()
+print('my_rec error', np.sum(np.abs(my_rec[0, 0, 0, :].detach().numpy()
                                     - mackey_data[0, :].cpu().numpy())))
 
-plt.plot(my_rec[0, 0, 0, :].numpy())
+plt.plot(my_rec[0, 0, 0, :].detach().numpy())
 plt.plot(mackey_data[0, :].cpu().numpy())
-plt.plot(np.abs(my_rec[0, 0, 0, :].numpy() - mackey_data[0, :].cpu().numpy()))
+plt.plot(np.abs(my_rec[0, 0, 0, :].detach().numpy() - mackey_data[0, :].cpu().numpy()))
 plt.show()
 
 
 # wavelet compression.
+# zero the low coefficients.
+c_low = []
+for no, c in enumerate(wave1d_10_freq):
+    if no > len(wave1d_10_freq) - 2:
+        c_low.append(c)
+    else:
+        c_low.append(0*c)
+
+rec_low = wave1d_10.reconstruction(c_low)
+print('rec_low error', np.sum(np.abs(rec_low[0, 0, 0, :].detach().numpy()
+                                     - mackey_data[0, :].cpu().numpy())))
+
+plt.plot(rec_low[0, 0, 0, :].detach().numpy())
+plt.plot(mackey_data[0, :].cpu().numpy())
+plt.plot(np.abs(rec_low[0, 0, 0, :].detach().numpy() - mackey_data[0, :].cpu().numpy()))
+plt.show()
+
+plt.plot(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().numpy()))
+plt.show()
