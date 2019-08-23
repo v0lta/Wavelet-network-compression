@@ -40,7 +40,9 @@ mackey_data = torch.squeeze(generator())
 mackey_data_numpy = mackey_data.detach().cpu().numpy()
 
 # wavelet = pywt.Wavelet('haar')
-wavelet = pywt.Wavelet('bior2.4')
+# wavelet = pywt.Wavelet('bior2.4')
+wavelet = pywt.Wavelet('db4')
+
 p_lo = np.convolve(wavelet.filter_bank[0], wavelet.filter_bank[2])
 p_hi = np.convolve(wavelet.filter_bank[1], wavelet.filter_bank[3])
 p_sum = p_lo + p_hi

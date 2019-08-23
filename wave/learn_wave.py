@@ -52,14 +52,16 @@ class Wave1D(torch.nn.Module):
         assert self.rec_lo.shape == self.dec_hi.shape, 'filters must have the same sizes'
         assert self.rec_hi.shape == self.dec_lo.shape, 'filters must have the same sizes'
 
-        m1 = torch.Tensor([-1])
+        m1 = torch.tensor([-1], device=self.dec_hi.device, dtype=self.dec_hi.dtype)
         length = self.rec_lo.shape[0]
-        mask = torch.Tensor([torch.pow(m1, n) for n in range(length)][::-1])
+        mask = torch.tensor([torch.pow(m1, n) for n in range(length)][::-1],
+                            device=self.dec_hi.device, dtype=self.dec_hi.dtype)
         err1 = self.rec_lo - mask*self.dec_hi
         err1 = torch.sum(err1*err1)
 
         length = self.rec_hi.shape[0]
-        mask = torch.Tensor([torch.pow(m1, n) for n in range(length)][::-1])
+        mask = torch.tensor([torch.pow(m1, n) for n in range(length)][::-1],
+                            device=self.dec_lo.device, dtype=self.dec_lo.dtype)
         err2 = self.rec_hi - m1*mask*self.dec_lo
         err2 = torch.sum(err2*err2)
         return err1 + err2
@@ -96,7 +98,7 @@ class Wave1D(torch.nn.Module):
             padding=pad)
 
         p_test = p_lo + p_hi
-        two_at_power_zero = torch.zeros(p_test.shape)
+        two_at_power_zero = torch.zeros(p_test.shape, device=p_test.device, dtype=p_test.dtype)
         # for debugging remove later.
         # np.convolve(self.init_wavelet.filter_bank[0], self.init_wavelet.filter_bank[2])
         # np.convolve(self.init_wavelet.filter_bank[1], self.init_wavelet.filter_bank[3])
@@ -134,7 +136,6 @@ class Wave1D(torch.nn.Module):
             lohi = afb1d(lo, flip_dec_lo, flip_dec_hi, mode=self.mode, dim=-1)
             lo, hi = torch.split(lohi, split_size_or_sections=[1, 1], dim=1)
             yh.append(hi)
-        # yh.insert(-1, lo)
         yh.append(lo)
         return yh
 
@@ -148,6 +149,5 @@ class Wave1D(torch.nn.Module):
                 lo = lo[..., :-1, :]
             if lo.shape[-1] > hi.shape[-1]:
                 lo = lo[..., :-1]
-
             lo = sfb1d(lo, hi, self.rec_lo, self.rec_hi, mode=self.mode, dim=-1)
         return lo
