@@ -13,6 +13,8 @@ from wave.transform2d import DWTForward, DWTInverse
 from wave.learn_wave import Wave1D
 import ipdb
 
+print(torch.cuda.get_device_name(), torch.cuda.is_available())
+
 bpd = {}
 bpd['iterations'] = 8000
 bpd['tmax'] = 256
@@ -54,7 +56,7 @@ plt.show()
 
 # try out the multiresolution code.
 c_10 = pywt.wavedec(mackey_data_numpy[0, :],
-                    wavelet=wavelet, level=5, mode='zero')
+                    wavelet=wavelet, level=8, mode='zero')
 print([c.shape for c in c_10])
 
 # compare to pytorch implementation.
@@ -88,7 +90,7 @@ print('high diff', np.linalg.norm(
 print('done')
 
 # try out the multilevel version.
-wave1d_10 = Wave1D(wavelet, scales=5)
+wave1d_10 = Wave1D(wavelet, scales=8)
 wave1d_10_freq = wave1d_10.analysis(
     mackey_data.unsqueeze(1).unsqueeze(1).cpu())
 print('alias cancellation loss:',
@@ -118,7 +120,7 @@ plt.show()
 # zero the low coefficients.
 c_low = []
 for no, c in enumerate(wave1d_10_freq):
-    if no > len(wave1d_10_freq) - 2:
+    if no > len(wave1d_10_freq) - 5:
         c_low.append(c)
     else:
         c_low.append(0*c)
@@ -132,5 +134,6 @@ plt.plot(mackey_data[0, :].cpu().numpy())
 plt.plot(np.abs(rec_low[0, 0, 0, :].detach().numpy() - mackey_data[0, :].cpu().numpy()))
 plt.show()
 
-plt.plot(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().numpy()))
+plt.semilogy(np.abs(torch.cat(wave1d_10_freq, -1)[0, 0, 0, :].detach().numpy()))
+plt.semilogy(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().numpy()))
 plt.show()
