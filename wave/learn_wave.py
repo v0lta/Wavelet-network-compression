@@ -1,4 +1,5 @@
 import torch
+import pywt
 import numpy as np
 from wave.lowlevel import afb1d
 from wave.lowlevel import sfb1d
@@ -22,6 +23,11 @@ class Wave1D(torch.nn.Module):
         self.dec_hi = to_tensor(init_wavelet.dec_hi)
         self.rec_lo = to_tensor(init_wavelet.rec_lo)
         self.rec_hi = to_tensor(init_wavelet.rec_hi)
+
+        # all filter shapes must be the same.
+        assert self.dec_lo.shape == self.dec_hi.shape, 'filters must have the same sizes'
+        assert self.rec_lo.shape == self.rec_hi.shape, 'filters must have the same sizes'
+        assert self.dec_lo.shape == self.rec_lo.shape, 'filters must have the same sizes'
 
         self.scales = scales
         self.mode = mode
@@ -49,9 +55,6 @@ class Wave1D(torch.nn.Module):
         '''
         Strang 105: F0(z) = H1(-z); F1(z) = -H0(-z)
         '''
-        assert self.rec_lo.shape == self.dec_hi.shape, 'filters must have the same sizes'
-        assert self.rec_hi.shape == self.dec_lo.shape, 'filters must have the same sizes'
-
         m1 = torch.tensor([-1], device=self.dec_hi.device, dtype=self.dec_hi.dtype)
         length = self.rec_lo.shape[0]
         mask = torch.tensor([torch.pow(m1, n) for n in range(length)][::-1],
@@ -80,10 +83,6 @@ class Wave1D(torch.nn.Module):
         https://discuss.pytorch.org/t/numpy-convolve-and-conv1d-in-pytorch/12172
         Therefore for true convolution one element needs to be flipped.
         '''
-        assert self.dec_lo.shape == self.rec_lo.shape, 'filters must have the same sizes'
-        assert self.dec_hi.shape == self.rec_hi.shape, 'filters must have the same sizes'
-        assert self.dec_lo.shape == self.dec_hi.shape, 'filters must have the same sizes'
-
         # polynomial multiplication is convolution, compute p(z):
         pad = self.dec_lo.shape[0]-1  # TODO: len(input/2) ?
         p_lo = torch.nn.functional.conv1d(
@@ -111,11 +110,6 @@ class Wave1D(torch.nn.Module):
         Check the biorthogonality conditions as described in Strang and Nguyen; Wavelets
         and filter banks; Page 111.
         '''
-        # all filter shapes must be the same.
-        assert self.dec_lo.shape == self.dec_hi.shape, 'filters must have the same sizes'
-        assert self.rec_lo.shape == self.rec_hi.shape, 'filters must have the same sizes'
-        assert self.dec_lo.shape == self.rec_lo.shape, 'filters must have the same sizes'
-
         # if even:
         if self.dec_lo.shape[0] % 2 == 0:
             pass
@@ -125,6 +119,14 @@ class Wave1D(torch.nn.Module):
             # filters must symmetric and antisymmetric
             for no, dec_filt in enumerate(self.dec_lo):
                 pass
+
+    def compute_coeff_no(self, init_length):
+        lengths = [init_length]
+        for J in range(self.scales):
+            lengths.append(pywt.dwt_coeff_len(
+                lengths[-1], self.dec_lo.shape[-1], self.mode))
+        lengths.append(lengths[-1])
+        return lengths[1:]
 
     def analysis(self, x, mode='zero'):
         yh = []
