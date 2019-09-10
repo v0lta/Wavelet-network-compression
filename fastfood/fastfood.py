@@ -41,3 +41,4 @@ class FastFoodLayer(torch.nn.Module):
 
     def forward(self, x):
         return self.mul_s(wht(self.mul_g(self.mul_p(wht(self.mul_b(x))))))
+

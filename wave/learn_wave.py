@@ -154,3 +154,4 @@ class Wave1D(torch.nn.Module):
                 lo = lo[..., :-1]
             lo = sfb1d(lo, hi, self.rec_lo, self.rec_hi, mode=self.mode, dim=-1)
         return lo
+
