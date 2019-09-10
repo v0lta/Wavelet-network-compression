@@ -5,10 +5,11 @@ import torchvision
 import pywt
 import matplotlib.pyplot as plt
 from wave.learn_wave import Wave1D
-
+from wave.wavelet_linear import WaveletLinear
+from fastfood.fastfood import FastFoodLayer
 
 epochs = 1
-batch_size = 50
+batch_size = 64
 learning_rate = 0.001
 
 mnist_data_set = torchvision.datasets.MNIST(root='./mnist/', download=True,
@@ -35,47 +36,21 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
 
 
-class WaveletLinear(torch.nn.Module):
-    def __init__(self, init_wavelet, scales, cut_off,
-                 in_features, out_features, bias=False):
-        super().__init__()
-        self.scales = scales
-        self.cut_off = cut_off
-        self.wavelet = Wave1D(init_wavelet,  scales=scales)
-        self.in_features = in_features
-        self.out_features = out_features
-        scales = self.wavelet.compute_coeff_no(out_features)
-
-        self.scale_list = []
-        for no, s in enumerate(scales):
-            if no > cut_off:
-                self.scale_list.append(
-                    torch.nn.Parameter(torch.Tensor(in_features, s).uniform_(-.2, .2).unsqueeze(1).unsqueeze(1)))
-            else:
-                self.scale_list.append(torch.zeros(in_features, s).unsqueeze(1).unsqueeze(1))
-
-        if bias:
-            self.bias = torch.nn.Parameter(torch.Tensor(out_features))
-        else:
-            self.register_parameter('bias', None)
-
-        print('wavlet linear layer.')
-
-    def forward(self, x):
-        mat = self.wavelet.reconstruction(self.scale_list)
-        return torch.mm(x, mat.squeeze(1).squeeze(1))
-
 
 class Net(torch.nn.Module):
-    def __init__(self, wavelet=False):
+    def __init__(self, wavelet=False, fastfood=False):
         super(Net, self).__init__()
         self.conv1 = torch.nn.Conv2d(1, 20, 5, 1)
         self.conv2 = torch.nn.Conv2d(20, 50, 5, 1)
         self.wavelet = wavelet
+        self.fastfood = fastfood
 
-        if wavelet is False:
-            self.fc1 = torch.nn.Linear(4*4*50, 500)
-            self.fc2 = torch.nn.Linear(500, 10)
+        if wavelet is False and fastfood is False:
+            self.fc1 = torch.nn.Linear(4*4*50, 800)
+            self.fc2 = torch.nn.Linear(800, 10)
+        elif fastfood is True:
+            self.fc1 = FastFoodLayer(800)
+            self.fc2 = torch.nn.Linear(800, 10)
         else:
             # TODO: Start from noise here! Or perhaps a haar wavelet which turns into something else.
             wavelet = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
@@ -107,7 +82,7 @@ class Net(torch.nn.Module):
                  + self.fc2.wavelet.alias_cancellation_loss() + self.fc2.wavelet.perfect_reconstruction_loss()
 
 
-net = Net(wavelet=False)
+net = Net(wavelet=False, fastfood=True)
 optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
 loss_fun = torch.nn.CrossEntropyLoss()
 
@@ -134,16 +109,25 @@ with torch.no_grad():
         acc = torch.sum((torch.max(out, dim=1)[1] == target).type(torch.float32))/batch_size * 100
         acc_lst.append(acc)
 
+
+def compute_parameter_total(net):
+    total = 0
+    for p in net.parameters():
+        print(p.shape)
+        total += np.prod(p.shape)
+    return total
+
 # compressed network acc.
 print('test acc:', np.mean(acc_lst))
+print('param_total', compute_parameter_total(net))
 
 # take a look at the wavelet coefficients.
-wavelet = pywt.Wavelet('db6')
-wave1d = Wave1D(init_wavelet=wavelet, scales=5)
-coeff = wave1d.analysis(net.fc1.weight.unsqueeze(1).unsqueeze(1))
+# wavelet = pywt.Wavelet('db6')
+# wave1d = Wave1D(init_wavelet=wavelet, scales=5)
+# coeff = wave1d.analysis(net.fc1.weight.unsqueeze(1).unsqueeze(1))
 
-coeff_cat = torch.cat(coeff, -1).squeeze(1).squeeze(1).detach().numpy()
-plt.plot(coeff_cat.flatten())
-plt.show()
+# coeff_cat = torch.cat(coeff, -1).squeeze(1).squeeze(1).detach().numpy()
+# plt.plot(coeff_cat.flatten())
+# plt.show()
 
 # coefficient cutoff approach.

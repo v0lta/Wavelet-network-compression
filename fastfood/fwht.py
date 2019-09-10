@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 
+# TODO: Double check array results with matlab.
 
 def walsh_hadamard_transform(seq_in, inverse=False, scale=True):
     """Utility function for the Walsh Hadamard Transform,
