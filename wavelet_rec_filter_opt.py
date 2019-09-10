@@ -38,7 +38,7 @@ generator = MackeyGenerator(batch_size=bpd['batch_size'],
                             tmax=bpd['tmax'],
                             delta_t=bpd['delta_t'])
 
-mackey_data = torch.squeeze(generator())
+mackey_data_1 = torch.squeeze(generator())
 
 wavelet = pywt.Wavelet('haar')
 # wavelet = pywt.Wavelet('db4')
@@ -55,7 +55,7 @@ wavelet = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0,
 # try out the multilevel version.
 wave1d_8 = Wave1D(wavelet, scales=8)
 wave1d_8_freq = wave1d_8.analysis(
-    mackey_data.unsqueeze(1).unsqueeze(1).cpu())
+    mackey_data_1.unsqueeze(1).unsqueeze(1).cpu())
 print('alias cancellation loss:',
       wave1d_8.alias_cancellation_loss().detach().numpy(), ',',
       wavelet.name)
@@ -65,39 +65,64 @@ print('perfect reconstruction loss:',
 # reconstruct the input
 my_rec = wave1d_8.reconstruction(wave1d_8_freq)
 print('my_rec error', np.sum(np.abs(my_rec[0, 0, 0, :].detach().numpy()
-                                    - mackey_data[0, :].cpu().numpy())))
+                                    - mackey_data_1[0, :].cpu().numpy())))
 
 plt.plot(my_rec[0, 0, 0, :].detach().numpy())
-plt.plot(mackey_data[0, :].cpu().numpy())
-plt.plot(np.abs(my_rec[0, 0, 0, :].detach().numpy() - mackey_data[0, :].cpu().numpy()))
+plt.plot(mackey_data_1[0, :].cpu().numpy())
+plt.plot(np.abs(my_rec[0, 0, 0, :].detach().numpy() - mackey_data_1[0, :].cpu().numpy()))
 plt.show()
 
 
 # wavelet compression.
 # zero the low coefficients.
-c_low = []
-for no, c in enumerate(wave1d_8_freq):
-    if no > len(wave1d_8_freq) - 5:
-        c_low.append(c)
-    else:
-        c_low.append(0*c)
+def zero_by_scale(wavelet_coeffs, zero_at=5):
+    '''
+    Simply zero out entire scales.
+    :param wavelet_coeffs: The list re
+    :param zero_at:
+    :return: A list where some coefficients are zeroed out.
+    '''
+    coefficients_low = []
+    for no, c in enumerate(wavelet_coeffs):
+        if no > len(wave1d_8_freq) - zero_at:
+            coefficients_low.append(c)
+        else:
+            coefficients_low.append(0*c)
+    return coefficients_low
+
+
+def zero_by_magnitude(wavelet_coeffs, cutoff_mag=5e-1):
+    sparse_coefficients = []
+    for no, c_vec in enumerate(wavelet_coeffs):
+        mask = (torch.abs(c_vec) > cutoff_mag).type(torch.float32)
+        c_vec_sparse = c_vec*mask
+        sparse_coefficients.append(c_vec_sparse)
+    return sparse_coefficients
+
+
+zero_by_method = zero_by_magnitude
+
+c_low = zero_by_method(wave1d_8_freq)
 
 rec_low = wave1d_8.reconstruction(c_low)
 print('rec_low error', np.sum(np.abs(rec_low[0, 0, 0, :].detach().numpy()
-                                     - mackey_data[0, :].cpu().numpy())))
+                                     - mackey_data_1[0, :].cpu().numpy())))
 
+plt.title('haar')
 plt.plot(rec_low[0, 0, 0, :].detach().numpy())
-plt.plot(mackey_data[0, :].cpu().numpy())
-plt.plot(np.abs(rec_low[0, 0, 0, :].detach().numpy() - mackey_data[0, :].cpu().numpy()))
+plt.plot(mackey_data_1[0, :].cpu().numpy())
+plt.plot(np.abs(rec_low[0, 0, 0, :].detach().numpy() - mackey_data_1[0, :].cpu().numpy()))
+plt.savefig('haar')
 plt.show()
 
+plt.title('haar coefficients')
 plt.semilogy(np.abs(torch.cat(wave1d_8_freq, -1)[0, 0, 0, :].detach().numpy()))
 plt.semilogy(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().numpy()))
 plt.show()
 
 # optimize the basis:
 wave1d_8.cuda()
-steps = 600
+steps = 2000
 opt = torch.optim.Adagrad(wave1d_8.parameters(), lr=0.001)
 criterion = torch.nn.MSELoss()
 
@@ -108,12 +133,7 @@ for s in range(steps):
     wave1d_8_freq = wave1d_8.analysis(
         mackey_data.unsqueeze(1).unsqueeze(1))
 
-    c_low = []
-    for no, c in enumerate(wave1d_8_freq):
-        if no > len(wave1d_8_freq) - 6:
-            c_low.append(c)
-        else:
-            c_low.append(0*c)
+    c_low = zero_by_method(wave1d_8_freq)
 
     rec_low = wave1d_8.reconstruction(c_low)
     msel = criterion(mackey_data, torch.squeeze(rec_low))
@@ -132,13 +152,30 @@ for s in range(steps):
           'acl', acl.detach().cpu().numpy(),
           'prl', prl.detach().cpu().numpy())
 
+
+wave1d_8_freq = wave1d_8.analysis(
+    mackey_data_1.unsqueeze(1).unsqueeze(1))
+
+c_low = zero_by_method(wave1d_8_freq)
+
 rec_low = wave1d_8.reconstruction(c_low)
 print('rec_low error', np.sum(np.abs(rec_low[0, 0, 0, :].detach().cpu().numpy()
-                                     - mackey_data[0, :].cpu().numpy())))
+                                     - mackey_data_1[0, :].cpu().numpy())))
 
+plt.title('Optimized Haar')
 plt.plot(rec_low[0, 0, 0, :].detach().cpu().numpy())
-plt.plot(mackey_data[0, :].cpu().numpy())
-plt.plot(np.abs(rec_low[0, 0, 0, :].detach().cpu().numpy() - mackey_data[0, :].cpu().numpy()))
+plt.plot(mackey_data_1[0, :].cpu().numpy())
+plt.plot(np.abs(rec_low[0, 0, 0, :].detach().cpu().numpy() - mackey_data_1[0, :].cpu().numpy()))
+plt.savefig('optimized_haar')
 plt.show()
-plt.semilogy(rec_loss_lst)
+
+plt.title('Optimized haar coefficients')
+plt.semilogy(np.abs(torch.cat(wave1d_8_freq, -1)[0, 0, 0, :].detach().cpu().numpy()))
+plt.semilogy(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().cpu().numpy()))
 plt.show()
+
+plt.semilogy(rec_loss_lst[10:])
+plt.show()
+
+
+# coefficient cutoff approach.

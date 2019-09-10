@@ -1,0 +1,44 @@
+'''
+A fastfood layer implementation.
+'''
+import torch
+import numpy as np
+from torch.nn.parameter import Parameter
+from fwht.fwht import walsh_hadamard_transform as wht
+
+def diag_mul(self, vector, mat):
+    return torch.mm(torch.diag(vector), mat)
+
+
+class Fastfoodlayer(torch.nn.Module):
+    '''
+    Create a learnable fastfood layer as described in
+    https://arxiv.org/abs/1412.7149
+    The weights are parametrized by S*H*G*P*H*B
+    With S,G,B diagonal matrices, P a random permutation and H the Walsh-Hadamard transform.
+    '''
+    def __init__(self, depth):
+        super().__init__()
+        ones = np.ones(depth)
+        self.diag_vec_s = Parameter(torch.from_numpy(ones))
+        self.diag_vec_g = Parameter(torch.from_numpy(ones))
+        self.diag_vec_b = Parameter(torch.from_numpy(ones))
+        perm = np.random.permutation(np.eye(depth, dtype=np.float32))
+        self.perm = Parameter(torch.from_numpy(perm))
+
+        self.
+
+    def mul_s(self, x):
+        return torch.mm(torch.diag(self.diag_vec_s, x))
+
+    def mul_g(self, x):
+        return torch.mm(torch.diag(self.diag_vec_g, x))
+
+    def mul_b(self, x):
+        return torch.mm(torch.diag(self.diag_vec_B, x))
+
+    def mul_p(self, x):
+        return torch.mm(self.perm, x)
+
+    def __forward__(self, x):
+        return self.mul_s(wht(self.mul_g(self.mul_p(wht(self.mul_b(x))))))

@@ -14,7 +14,8 @@ learning_rate = 0.001
 mnist_data_set = torchvision.datasets.MNIST(root='./mnist/', download=True,
                                             transform=torchvision.transforms.Compose([
                                                 torchvision.transforms.ToTensor(),
-                                                torchvision.transforms.Normalize((0.1307,), (0.3081,))
+                                                torchvision.transforms.Normalize(
+                                                    (0.1307,), (0.3081,))
                                             ]), train=True)
 
 mnist_test_set = torchvision.datasets.MNIST(root='./mnist/', download=True,
@@ -142,8 +143,7 @@ wave1d = Wave1D(init_wavelet=wavelet, scales=5)
 coeff = wave1d.analysis(net.fc1.weight.unsqueeze(1).unsqueeze(1))
 
 coeff_cat = torch.cat(coeff, -1).squeeze(1).squeeze(1).detach().numpy()
-coeff_cat_log = np.log(np.abs(coeff_cat))
 plt.plot(coeff_cat.flatten())
 plt.show()
 
-
+# coefficient cutoff approach.

@@ -97,7 +97,8 @@ class Wave1D(torch.nn.Module):
             padding=pad)
 
         p_test = p_lo + p_hi
-        two_at_power_zero = torch.zeros(p_test.shape, device=p_test.device, dtype=p_test.dtype)
+        two_at_power_zero = torch.zeros(p_test.shape, device=p_test.device,
+                                        dtype=p_test.dtype)
         # for debugging remove later.
         # np.convolve(self.init_wavelet.filter_bank[0], self.init_wavelet.filter_bank[2])
         # np.convolve(self.init_wavelet.filter_bank[1], self.init_wavelet.filter_bank[3])
