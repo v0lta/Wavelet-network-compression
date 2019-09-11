@@ -39,31 +39,31 @@ class Net(torch.nn.Module):
     def __init__(self, wavelet=False, fastfood=False):
         super(Net, self).__init__()
         self.conv1 = torch.nn.Conv2d(1, 24, 5, 1)
-        self.conv2 = torch.nn.Conv2d(24, 64, 5, 1)
+        self.conv2 = torch.nn.Conv2d(24, 32, 5, 1)
         self.wavelet = wavelet
         self.fastfood = fastfood
 
         if wavelet is False and fastfood is False:
-            self.fc1 = torch.nn.Linear(4*4*64, 512)
-            self.fc2 = torch.nn.Linear(512, 10)
+            self.fc1 = torch.nn.Linear(4*4*32, 256)
+            self.fc2 = torch.nn.Linear(256, 10)
         elif fastfood is True:
-            self.fc1 = FastFoodLayer(1024)
-            self.fc2 = torch.nn.Linear(1024, 10)
+            self.fc1 = FastFoodLayer(512)
+            self.fc2 = torch.nn.Linear(512, 10)
         else:
             wavelet = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
                                     dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
                                     rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
                                     rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
                                     name='custom')
-            self.fc1 = WaveletLayer(init_wavelet=wavelet, scales=8, depth=1024)
-            self.fc2 = torch.nn.Linear(1024, 10)
+            self.fc1 = WaveletLayer(init_wavelet=wavelet, scales=8, depth=512)
+            self.fc2 = torch.nn.Linear(512, 10)
 
     def forward(self, x):
         x = torch.nn.functional.relu(self.conv1(x))
         x = torch.nn.functional.max_pool2d(x, 2, 2)
         x = torch.nn.functional.relu(self.conv2(x))
         x = torch.nn.functional.max_pool2d(x, 2, 2)
-        x = x.view(-1, 4*4*64)
+        x = x.view(-1, 4*4*32)
         x = torch.nn.functional.relu(self.fc1(x))
         x = self.fc2(x)
         # return torch.nn.functional.log_softmax(x, dim=1)
@@ -76,7 +76,7 @@ class Net(torch.nn.Module):
             return self.fc1.wavelet.alias_cancellation_loss() + self.fc1.wavelet.perfect_reconstruction_loss()
 
 
-net = Net(wavelet=False, fastfood=False)
+net = Net(wavelet=False, fastfood=True).cuda()
 optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
 loss_fun = torch.nn.CrossEntropyLoss()
 
@@ -85,32 +85,34 @@ for e in range(0, epochs):
     print(e)
     for i, (input, target) in enumerate(mnist_loader):
         optimizer.zero_grad()
-        out = net(input)
-        cel = loss_fun(out, target)
+        out = net(input.cuda())
+        cel = loss_fun(out, target.cuda())
         wvl = net.wavelet_loss()
         loss = cel + wvl
         loss.backward()
         optimizer.step()
-        print(e, i, cel.detach().numpy(), wvl.detach().numpy())
+        print(e, i, cel.detach().cpu().numpy(), wvl.detach().cpu().numpy())
 
 
 # full network acc
 acc_lst = []
 with torch.no_grad():
     for i, (input, target) in enumerate(test_mnist_loader):
-        out = net(input)
+        out = net(input.cuda())
         out = torch.nn.functional.log_softmax(out, dim=1)
-        acc = torch.sum((torch.max(out, dim=1)[1] == target).type(torch.float32))/batch_size * 100
-        acc_lst.append(acc)
+        acc = torch.sum((torch.max(out, dim=1)[1] == target.cuda()).type(torch.float32))/batch_size * 100
+        acc_lst.append(acc.cpu().numpy())
 
 
 def compute_parameter_total(net):
     total = 0
     for p in net.parameters():
-        print(p.shape)
-        total += np.prod(p.shape)
+        if p.requires_grad:
+            print(p.shape)
+            total += np.prod(p.shape)
     return total
 
 # compressed network acc.
 print('test acc:', np.mean(acc_lst))
 print('param_total', compute_parameter_total(net))
+print(net)

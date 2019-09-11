@@ -37,10 +37,9 @@ class WaveletLinear(torch.nn.Module):
 
 class WaveletLayer(torch.nn.Module):
     """
-    Create a learn-able Fast-food layer as described in
-    https://arxiv.org/abs/1412.7149
-    The weights are parametrized by S*H*G*P*H*B
-    With S,G,B diagonal matrices, P a random permutation and H the Walsh-Hadamard transform.
+    Create a learn-able Wavelet layer to be published in upcoming paper.
+    The weights are parametrized by S*W*G*P*W*B
+    With S,G,B diagonal matrices, P a random permutation and W a learnable-wavelet transform.
     """
     def __init__(self, depth, init_wavelet, scales):
         super().__init__()
@@ -49,7 +48,7 @@ class WaveletLayer(torch.nn.Module):
         self.diag_vec_g = Parameter(torch.from_numpy(ones))
         self.diag_vec_b = Parameter(torch.from_numpy(ones))
         perm = np.random.permutation(np.eye(depth, dtype=np.float32))
-        self.perm = torch.from_numpy(perm)
+        self.perm = Parameter(torch.from_numpy(perm), requires_grad=False)
         self.wavelet = Wave1D(init_wavelet=init_wavelet, scales=scales)
 
     def mul_s(self, x):
