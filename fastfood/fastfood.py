@@ -26,6 +26,7 @@ class FastFoodLayer(torch.nn.Module):
         self.diag_vec_b = Parameter(torch.from_numpy(ones))
         perm = np.random.permutation(np.eye(depth, dtype=np.float32))
         self.perm = Parameter(torch.from_numpy(perm), requires_grad=False)
+        self.depth = depth
 
     def mul_s(self, x):
         return torch.mm(x, torch.diag(self.diag_vec_s))
@@ -42,3 +43,5 @@ class FastFoodLayer(torch.nn.Module):
     def forward(self, x):
         return self.mul_s(wht(self.mul_g(self.mul_p(wht(self.mul_b(x))))))
 
+    def extra_repr(self):
+        return 'depth={}'.format(self.depth)

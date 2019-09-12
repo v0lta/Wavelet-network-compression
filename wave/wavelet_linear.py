@@ -50,6 +50,7 @@ class WaveletLayer(torch.nn.Module):
         perm = np.random.permutation(np.eye(depth, dtype=np.float32))
         self.perm = Parameter(torch.from_numpy(perm), requires_grad=False)
         self.wavelet = Wave1D(init_wavelet=init_wavelet, scales=scales)
+        self.depth = depth
 
     def mul_s(self, x):
         return torch.mm(x, torch.diag(self.diag_vec_s))
@@ -73,3 +74,6 @@ class WaveletLayer(torch.nn.Module):
     def forward(self, x):
         # test = self.wavelet_analysis(x)
         return self.mul_s(self.wavelet_analysis(self.mul_g(self.mul_p(self.wavelet_analysis(self.mul_b(x))))))
+
+    def extra_repr(self):
+        return 'depth={}'.format(self.depth)

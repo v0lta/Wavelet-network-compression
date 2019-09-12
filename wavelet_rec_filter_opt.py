@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 # from torch.utils.tensorboard import SummaryWriter
 from generators.mackey_glass import MackeyGenerator
 from temporal_conv_net import TemporalConvNet
-from wave.transform2d import DWTForward, DWTInverse
 from wave.learn_wave import Wave1D
+import matplotlib2tikz as tikz
 
 
 CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
@@ -19,24 +19,24 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
 
 print(torch.cuda.get_device_name(), torch.cuda.is_available())
 
-bpd = {}
-bpd['iterations'] = 8000
-bpd['tmax'] = 256
-bpd['delta_t'] = 0.1
-bpd['pred_samples'] = 256
-bpd['window_size'] = 512
-bpd['lr'] = 0.004
-bpd['batch_size'] = 256
-bpd['dropout'] = 0.0
-bpd['channels'] = [30, 30, 30, 30, 30, 30]
-bpd['overlap'] = int(bpd['window_size']*0.5)
-bpd['step_size'] = bpd['window_size'] - bpd['overlap']
-bpd['fft_freq_no'] = int(bpd['window_size']//2 + 1)*2  # *2 for C
-bpd['window_fun'] = 'hamming'
+pd = {}
+pd['iterations'] = 8000
+pd['tmax'] = 256
+pd['delta_t'] = 0.1
+pd['pred_samples'] = 256
+pd['window_size'] = 512
+pd['lr'] = 0.004
+pd['batch_size'] = 256
+pd['dropout'] = 0.0
+pd['channels'] = [30, 30, 30, 30, 30, 30]
+pd['overlap'] = int(pd['window_size']*0.5)
+pd['step_size'] = pd['window_size'] - pd['overlap']
+pd['fft_freq_no'] = int(pd['window_size']//2 + 1)*2  # *2 for C
+pd['window_fun'] = 'hamming'
 
-generator = MackeyGenerator(batch_size=bpd['batch_size'],
-                            tmax=bpd['tmax'],
-                            delta_t=bpd['delta_t'])
+generator = MackeyGenerator(batch_size=pd['batch_size'],
+                            tmax=pd['tmax'],
+                            delta_t=pd['delta_t'])
 
 mackey_data_1 = torch.squeeze(generator())
 
@@ -112,17 +112,19 @@ plt.title('haar')
 plt.plot(rec_low[0, 0, 0, :].detach().numpy())
 plt.plot(mackey_data_1[0, :].cpu().numpy())
 plt.plot(np.abs(rec_low[0, 0, 0, :].detach().numpy() - mackey_data_1[0, :].cpu().numpy()))
-plt.savefig('haar')
+# savefig('haar')
+tikz.save('haar.tex', standalone=True)
 plt.show()
 
 plt.title('haar coefficients')
 plt.semilogy(np.abs(torch.cat(wave1d_8_freq, -1)[0, 0, 0, :].detach().numpy()))
-plt.semilogy(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().numpy()))
+plt.semilogy(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().numpy()), '.')
+tikz.save('haar_coefficients.tex', standalone=True)
 plt.show()
 
 # optimize the basis:
 wave1d_8.cuda()
-steps = 2000
+steps = pd['iterations']
 opt = torch.optim.Adagrad(wave1d_8.parameters(), lr=0.001)
 criterion = torch.nn.MSELoss()
 
@@ -147,10 +149,11 @@ for s in range(steps):
     # apply gradients
     opt.step()
     rec_loss_lst.append(msel.detach().cpu().numpy())
-    print(s, loss.detach().cpu().numpy(),
-          'mse', msel.detach().cpu().numpy(),
-          'acl', acl.detach().cpu().numpy(),
-          'prl', prl.detach().cpu().numpy())
+    if s % 250 == 0:
+        print(s, loss.detach().cpu().numpy(),
+              'mse', msel.detach().cpu().numpy(),
+              'acl', acl.detach().cpu().numpy(),
+              'prl', prl.detach().cpu().numpy())
 
 
 wave1d_8_freq = wave1d_8.analysis(
@@ -166,16 +169,15 @@ plt.title('Optimized Haar')
 plt.plot(rec_low[0, 0, 0, :].detach().cpu().numpy())
 plt.plot(mackey_data_1[0, :].cpu().numpy())
 plt.plot(np.abs(rec_low[0, 0, 0, :].detach().cpu().numpy() - mackey_data_1[0, :].cpu().numpy()))
-plt.savefig('optimized_haar')
+# plt.savefig('optimized_haar')
+tikz.save('optimized_haar.tex', standalone=True)
 plt.show()
 
 plt.title('Optimized haar coefficients')
 plt.semilogy(np.abs(torch.cat(wave1d_8_freq, -1)[0, 0, 0, :].detach().cpu().numpy()))
-plt.semilogy(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().cpu().numpy()))
+plt.semilogy(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().cpu().numpy()), '.')
+tikz.save('optimized_haar_coefficients.tex', standalone=True)
 plt.show()
 
 plt.semilogy(rec_loss_lst[10:])
 plt.show()
-
-
-# coefficient cutoff approach.
