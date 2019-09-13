@@ -15,14 +15,14 @@ runs = 20
 wavelet = False
 fastfood = True
 
-mnist_data_set = torchvision.datasets.MNIST(root='./data_sets/mnist/', download=True,
+mnist_data_set = torchvision.datasets.ImageNet(root='./data_sets/image_net/', download=True,
                                             transform=torchvision.transforms.Compose([
                                                 torchvision.transforms.ToTensor(),
                                                 torchvision.transforms.Normalize(
                                                     (0.1307,), (0.3081,))
                                             ]), train=True)
 
-mnist_test_set = torchvision.datasets.MNIST(root='./data_sets/mnist/', download=True,
+mnist_test_set = torchvision.datasets.ImageNet(root='./data_sets/image_net/', download=True,
                                             transform=torchvision.transforms.Compose([
                                                 torchvision.transforms.ToTensor(),
                                                 torchvision.transforms.Normalize((0.1307,), (0.3081,))

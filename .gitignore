@@ -2,6 +2,8 @@
 mnist/
 runs/
 runs_archive/
+# data set folders
+data_sets/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -395,3 +397,5 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+
+
