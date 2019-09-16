@@ -2,6 +2,7 @@
 mnist/
 runs/
 runs_archive/
+mnist_runs/
 # data set folders
 data_sets/
 
