@@ -9,7 +9,7 @@ from fastfood.fastfood import FastFoodLayer
 from torch.utils.tensorboard.writer import SummaryWriter
 
 epochs = 2
-batch_size = 64
+batch_size = 4  # 64
 learning_rate = 0.001
 runs = 20
 wavelet = False

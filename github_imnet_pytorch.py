@@ -114,6 +114,7 @@ def main():
 
 
 def main_worker(gpu, ngpus_per_node, args):
+    print('Logging to:', args.log_dir)
     global best_acc1
     args.gpu = gpu
 
@@ -263,7 +264,7 @@ def main_worker(gpu, ngpus_per_node, args):
                 'state_dict': model.state_dict(),
                 'best_acc1': best_acc1,
                 'optimizer': optimizer.state_dict(),
-            }, is_best)
+            }, is_best, log_dir=args.log_dir)
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args):
