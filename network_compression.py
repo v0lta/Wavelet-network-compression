@@ -60,7 +60,7 @@ class Net(torch.nn.Module):
                                     dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
                                     rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
                                     rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
-                                    name='custom')
+                                    name='customHaar')
             self.fc1 = WaveletLayer(init_wavelet=wavelet, scales=8, depth=256)
             self.fc2 = torch.nn.Linear(256, 10)
 

@@ -1,10 +1,13 @@
 import torch
+import collections
 # from torch.utils import load_state_dict_from_url
 import torchvision.models as models
 import torch.nn as nn
 from wave.wavelet_linear import WaveletLayer
 from fastfood.fastfood import FastFoodLayer
 
+CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
+                                                   'rec_lo', 'rec_hi', 'name'])
 
 class DeepFriedAlexNet(nn.Module):
     '''
@@ -36,9 +39,9 @@ class DeepFriedAlexNet(nn.Module):
             # nn.ReLU(inplace=True),
             # nn.Dropout(),
             # nn.Linear(4096, 4096),
-            FastFoodLayer(256*6*6),  # TODO: Dropout
+            FastFoodLayer(256*6*6),
             nn.ReLU(inplace=True),
-            nn.Linear(4096, num_classes),
+            nn.Linear(256*6*6, num_classes),
         )
 
     def forward(self, x):
@@ -57,6 +60,13 @@ class WaveletAlexNet(nn.Module):
 
     def __init__(self, num_classes=1000):
         super().__init__()
+
+        wavelet = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                        dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
+                        rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                        rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
+                        name='customHaar')
+
         self.features = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
             nn.ReLU(inplace=True),
@@ -79,9 +89,9 @@ class WaveletAlexNet(nn.Module):
             # nn.ReLU(inplace=True),
             # nn.Dropout(),
             # nn.Linear(4096, 4096),
-            WaveletLayer(256*6*6),  # TODO: Dropout, after the diagonal layers.
+            WaveletLayer(depth=256*6*6, init_wavelet=wavelet, scales=8),
             nn.ReLU(inplace=True),
-            nn.Linear(4096, num_classes),
+            nn.Linear(256*6*6, num_classes),
         )
 
     def forward(self, x):
@@ -91,14 +101,15 @@ class WaveletAlexNet(nn.Module):
         x = self.classifier(x)
         return x
 
+    def wavelet_loss(self):
+        return self.classifier[1].wavelet.alias_cancellation_loss() + \
+               self.classifier[1].wavelet.perfect_reconstruction_loss()
 
 def convert_states(alexnet_states):
     reduced_dict = {}
     for key in alexnet_states.keys():
         if key.split('.')[0] == 'classifier':
-            if key.split('.')[1] == '6':
-                new_key = 'classifier.3.' + key.split('.')[-1]
-                reduced_dict[new_key] = alexnet_states[key]
+            pass
         else:
             reduced_dict[key] = alexnet_states[key]
     return reduced_dict
@@ -118,5 +129,6 @@ if __name__ == '__main__':
     fried_dict = convert_states(alexnet.state_dict())
     missing_keys, unexpected_keys = fried_alex.load_state_dict(fried_dict, strict=False)
     print(missing_keys, unexpected_keys)
-
     freeze_alexnet_features(fried_alex)
+
+    wavelet_alex = WaveletAlexNet()

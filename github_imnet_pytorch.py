@@ -27,7 +27,6 @@ parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('data', metavar='DIR', default='/home/wolter/waveletnet/data_sets/image_net',
                     help='path to dataset')
 parser.add_argument('-a', '--arch', metavar='ARCH', default='alexnet',
-                    choices=model_names,
                     help='model architecture: ' +
                         ' | '.join(model_names) +
                         ' (default: alexnet)')
@@ -49,8 +48,8 @@ parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
 parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float,
                     metavar='W', help='weight decay (default: 1e-4)',
                     dest='weight_decay')
-parser.add_argument('-p', '--print-freq', default=10, type=int,
-                    metavar='N', help='print frequency (default: 10)')
+parser.add_argument('-p', '--print-freq', default=100, type=int,
+                    metavar='N', help='print frequency (default: 100)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
@@ -61,7 +60,7 @@ parser.add_argument('--world-size', default=-1, type=int,
                     help='number of nodes for distributed training')
 parser.add_argument('--rank', default=-1, type=int,
                     help='node rank for distributed training')
-parser.add_argument('--dist-url', default='tcp://224.66.41.62:23456', type=str,
+parser.add_argument('--dist-url', default='tcp://127.0.0.1:6006', type=str,
                     help='url used to set up distributed training')
 parser.add_argument('--dist-backend', default='nccl', type=str,
                     help='distributed backend')
@@ -74,7 +73,8 @@ parser.add_argument('--multiprocessing-distributed', action='store_true',
                          'N processes per node, which has N GPUs. This is the '
                          'fastest way to use PyTorch for either single node or '
                          'multi node data parallel training')
-
+parser.add_argument('-log-dir', '--log-dir', default='./logs/', type=str,
+                    help='where to store the logs.')
 best_acc1 = 0
 
 
@@ -134,8 +134,13 @@ def main_worker(gpu, ngpus_per_node, args):
         print("=> using pre-trained model '{}'".format(args.arch))
         model = models.__dict__[args.arch](pretrained=True)
     else:
-        print("=> creating model '{}'".format(args.arch))
-        model = models.__dict__[args.arch]()
+        if args.arch == 'DeepFriedAlexNet':
+            model = DeepFriedAlexNet()
+        elif args.arch == 'WaveletAlexNet':
+            model = WaveletAlexNet()
+        else:
+            print("=> creating model '{}'".format(args.arch))
+            model = models.__dict__[args.arch]()
 
     if args.distributed:
         # For multiprocessing distributed, DistributedDataParallel constructor
@@ -257,7 +262,7 @@ def main_worker(gpu, ngpus_per_node, args):
                 'arch': args.arch,
                 'state_dict': model.state_dict(),
                 'best_acc1': best_acc1,
-                'optimizer' : optimizer.state_dict(),
+                'optimizer': optimizer.state_dict(),
             }, is_best)
 
 
@@ -294,8 +299,12 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
         top1.update(acc1[0], images.size(0))
         top5.update(acc5[0], images.size(0))
 
+        if type(model.module) is WaveletAlexNet:
+            loss += model.module.wavelet_loss()
+
         # compute gradient and do SGD step
         optimizer.zero_grad()
+
         loss.backward()
         optimizer.step()
 
@@ -351,10 +360,10 @@ def validate(val_loader, model, criterion, args):
     return top1.avg
 
 
-def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
-    torch.save(state, filename)
+def save_checkpoint(state, is_best, filename='checkpoint.pth.tar', log_dir='./logs/'):
+    torch.save(state, log_dir + filename)
     if is_best:
-        shutil.copyfile(filename, 'model_best.pth.tar')
+        shutil.copyfile(filename, log_dir + 'model_best.pth.tar')
 
 
 class AverageMeter(object):
