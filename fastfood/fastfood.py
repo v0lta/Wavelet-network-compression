@@ -18,7 +18,7 @@ class FastFoodLayer(torch.nn.Module):
     The weights are parametrized by S*H*G*P*H*B
     With S,G,B diagonal matrices, P a random permutation and H the Walsh-Hadamard transform.
     """
-    def __init__(self, depth):
+    def __init__(self, depth, p_drop=0.5):
         super().__init__()
         ones = np.ones(depth, np.float32)
         self.diag_vec_s = Parameter(torch.from_numpy(ones))
@@ -27,15 +27,18 @@ class FastFoodLayer(torch.nn.Module):
         perm = np.random.permutation(np.eye(depth, dtype=np.float32))
         self.perm = Parameter(torch.from_numpy(perm), requires_grad=False)
         self.depth = depth
+        self.drop_s = torch.nn.Dropout(p=p_drop)
+        self.drop_g = torch.nn.Dropout(p=p_drop)
+        self.drop_b = torch.nn.Dropout(p=p_drop)
 
     def mul_s(self, x):
-        return torch.mm(x, torch.diag(self.diag_vec_s))
+        return torch.mm(x, self.drop_s(torch.diag(self.diag_vec_s)))
 
     def mul_g(self, x):
-        return torch.mm(x, torch.diag(self.diag_vec_g))
+        return torch.mm(x, self.drop_g(torch.diag(self.diag_vec_g)))
 
     def mul_b(self, x):
-        return torch.mm(x, torch.diag(self.diag_vec_b))
+        return torch.mm(x, self.drop_b(torch.diag(self.diag_vec_b)))
 
     def mul_p(self, x):
         return torch.mm(x, self.perm)

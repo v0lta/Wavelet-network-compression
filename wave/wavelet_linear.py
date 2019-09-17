@@ -41,7 +41,7 @@ class WaveletLayer(torch.nn.Module):
     The weights are parametrized by S*W*G*P*W*B
     With S,G,B diagonal matrices, P a random permutation and W a learnable-wavelet transform.
     """
-    def __init__(self, depth, init_wavelet, scales):
+    def __init__(self, depth, init_wavelet, scales, p_drop=0.5):
         super().__init__()
         ones = np.ones(depth, np.float32)
         self.diag_vec_s = Parameter(torch.from_numpy(ones))
@@ -51,15 +51,18 @@ class WaveletLayer(torch.nn.Module):
         self.perm = Parameter(torch.from_numpy(perm), requires_grad=False)
         self.wavelet = Wave1D(init_wavelet=init_wavelet, scales=scales)
         self.depth = depth
+        self.drop_s = torch.nn.Dropout(p=p_drop)
+        self.drop_g = torch.nn.Dropout(p=p_drop)
+        self.drop_b = torch.nn.Dropout(p=p_drop)
 
     def mul_s(self, x):
-        return torch.mm(x, torch.diag(self.diag_vec_s))
+        return torch.mm(x, self.drop_s(torch.diag(self.diag_vec_s)))
 
     def mul_g(self, x):
-        return torch.mm(x, torch.diag(self.diag_vec_g))
+        return torch.mm(x, self.drop_g(torch.diag(self.diag_vec_g)))
 
     def mul_b(self, x):
-        return torch.mm(x, torch.diag(self.diag_vec_b))
+        return torch.mm(x, self.drop_b(torch.diag(self.diag_vec_b)))
 
     def mul_p(self, x):
         return torch.mm(x, self.perm)
