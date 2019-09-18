@@ -4,7 +4,7 @@ A fastfood layer implementation.
 import torch
 import numpy as np
 from torch.nn.parameter import Parameter
-from fastfood.fwht import walsh_hadamard_transform as wht
+from fastfood.fwht import fwht as wht
 
 
 def diag_mul(self, vector, mat):
@@ -44,7 +44,7 @@ class FastFoodLayer(torch.nn.Module):
         return torch.mm(x, self.perm)
 
     def forward(self, x):
-        return self.mul_s(wht(self.mul_g(self.mul_p(wht(self.mul_b(x))))))
+        return self.mul_s(wht(self.mul_g(self.mul_p(wht(self.mul_b(x)))), inverse=True))
 
     def extra_repr(self):
         return 'depth={}'.format(self.depth)

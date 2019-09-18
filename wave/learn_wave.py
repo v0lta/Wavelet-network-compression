@@ -32,6 +32,9 @@ class Wave1D(torch.nn.Module):
         self.scales = scales
         self.mode = mode
 
+    def coeff_len(self, input_length):
+            return pywt.dwt_coeff_len(input_length, self.dec_lo.shape[0], self.mode)
+
     def check_sym(self, filt) -> bool:
         # 1d filter arrays.
         assert len(filt.shape) == 1

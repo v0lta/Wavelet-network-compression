@@ -2,8 +2,49 @@ import torch
 import numpy as np
 
 
-def fwht(x):
-    pass
+def fwht(x, inverse=False):
+    '''
+    Matlab inspired fast welsh-hadamard transform.
+    :param inverse: If true the ifwht is computed.
+    :param x: The tensor to be transformed
+    :return: The welsh hadamard coefficients.
+    '''
+    x = x.clone()
+
+    n = x.shape[-1]
+    if n < 2:
+        return x
+
+    if n % 2 != 0:
+        raise AssertionError("Input feature dimension must be a power of two.")
+
+    for i in range(0, n, 2):
+        x[..., i] = x[..., i] + x[..., i+1]
+        x[..., i+1] = x[..., i] - 2 * x[..., i+1]
+
+    l = 1
+    y = torch.zeros(x.shape, dtype=x.dtype, device=x.device)
+    for nStage in range(2, int(np.log2(n) + 1)):  # np.log2(n) = number of stages in the flow diagram
+        # calculate coefficients for the ith stage specified by nStage
+        m = int(np.power(2, l))
+        jb = 0
+        k = 0
+        while k < n:
+            # TODO: use torch.nn.conv2d to do this?
+            for j in range(jb, jb+m, 2):
+                y[..., k] = x[..., j] + x[..., j+m]
+                y[..., k+1] = x[..., j] - x[..., j+m]
+                y[..., k+2] = x[..., j+1] - x[..., j+1+m]
+                y[..., k+3] = x[..., j+1] + x[..., j+1+m]
+                k = k + 4
+            jb = jb + 2*m
+        # store coefficients in x at the end of each stage
+        x = y.clone()
+        l = l + 1
+    # perform scaling of coefficients
+    if not inverse:
+         y = x / n
+    return y
 
 
 def walsh_hadamard_transform(seq_in, inverse=False, scale=True):
@@ -56,3 +97,5 @@ if __name__ == '__main__':
     seq_rec_scl = walsh_hadamard_transform(seq_freq_scl, inverse=True, scale=False)
     print(seq_rec_scl.numpy(), seq - seq_rec_scl)
 
+    fwht_seq = fwht(seq)
+    print(fwht_seq)

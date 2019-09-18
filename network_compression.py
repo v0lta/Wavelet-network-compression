@@ -9,7 +9,7 @@ from fastfood.fastfood import FastFoodLayer
 from torch.utils.tensorboard.writer import SummaryWriter
 
 epochs = 2
-batch_size = 4  # 64
+batch_size = 64
 learning_rate = 0.001
 runs = 20
 wavelet = False
@@ -85,6 +85,7 @@ class Net(torch.nn.Module):
 test_accs = []
 for run_no in range(runs):
     net = Net(wavelet=wavelet, fastfood=fastfood).cuda()
+    net.eval()
     optimizer = torch.optim.Adam(net.parameters(), lr=0.001)
     loss_fun = torch.nn.CrossEntropyLoss()
     if wavelet:

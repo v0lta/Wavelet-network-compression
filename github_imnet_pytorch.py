@@ -256,6 +256,7 @@ def main_worker(gpu, ngpus_per_node, args):
         is_best = acc1 > best_acc1
         best_acc1 = max(acc1, best_acc1)
 
+        # TODO: Fixme
         if not args.multiprocessing_distributed or (args.multiprocessing_distributed
                 and args.rank % ngpus_per_node == 0):
             save_checkpoint({
@@ -362,9 +363,10 @@ def validate(val_loader, model, criterion, args):
 
 
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar', log_dir='./logs/'):
-    torch.save(state, log_dir + filename)
+    print('log_dir', log_dir + '/' +  filename)
+    torch.save(state, log_dir + '/' + filename)
     if is_best:
-        shutil.copyfile(filename, log_dir + 'model_best.pth.tar')
+        shutil.copyfile( log_dir + '/' + filename, log_dir + '/' + 'model_best.pth.tar')
 
 
 class AverageMeter(object):
