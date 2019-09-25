@@ -35,26 +35,28 @@ class Wave1D(torch.nn.Module):
     def coeff_len(self, input_length):
             return pywt.dwt_coeff_len(input_length, self.dec_lo.shape[0], self.mode)
 
-    def check_sym(self, filt) -> bool:
-        # 1d filter arrays.
-        assert len(filt.shape) == 1
-        length = filt.shape[0]
+    @staticmethod
+    def check_sym(in_filter) -> bool:
+        # 1d in_filterer arrays.
+        assert len(in_filter.shape) == 1
+        length = in_filter.shape[0]
         sym = True
         for i in range(length//2):
-            if filt[i] != filt[length-1]:
+            if in_filter[i] != in_filter[length-1]:
                 sym = False
         return sym
 
-    def check_antisym(self, filt) -> bool:
-        assert len(filt.shape) == 1
-        length = filt.shape[0]
+    @staticmethod
+    def check_anti_sym(in_filter) -> bool:
+        assert len(in_filter.shape) == 1
+        length = in_filter.shape[0]
         anti_sym = True
         for i in range(length//2):
-            if filt[i] != -filt[length-1]:
+            if in_filter[i] != -in_filter[length-1]:
                 anti_sym = False
         return anti_sym
 
-    def alias_cancellation_loss(self) -> torch.Tensor:
+    def alias_cancellation_loss(self) -> [torch.Tensor, torch.Tensor, torch.Tensor]:
         '''
         Strang 105: F0(z) = H1(-z); F1(z) = -H0(-z)
         '''
@@ -63,16 +65,16 @@ class Wave1D(torch.nn.Module):
         mask = torch.tensor([torch.pow(m1, n) for n in range(length)][::-1],
                             device=self.dec_hi.device, dtype=self.dec_hi.dtype)
         err1 = self.rec_lo - mask*self.dec_hi
-        err1 = torch.sum(err1*err1)
+        err1s = torch.sum(err1*err1)
 
         length = self.rec_hi.shape[0]
         mask = torch.tensor([torch.pow(m1, n) for n in range(length)][::-1],
                             device=self.dec_lo.device, dtype=self.dec_lo.dtype)
         err2 = self.rec_hi - m1*mask*self.dec_lo
-        err2 = torch.sum(err2*err2)
-        return err1 + err2
+        err2s = torch.sum(err2*err2)
+        return err1s + err2s, err1, err2
 
-    def perfect_reconstruction_loss(self) -> torch.Tensor:
+    def perfect_reconstruction_loss(self) -> [torch.Tensor, torch.Tensor, torch.Tensor]:
         '''
         Strang 107:
         Assuming alias cancellation holds:
@@ -107,7 +109,7 @@ class Wave1D(torch.nn.Module):
         # np.convolve(self.init_wavelet.filter_bank[1], self.init_wavelet.filter_bank[3])
         # ipdb.set_trace()
         two_at_power_zero[..., p_test.shape[-1]//2] = 2
-        return torch.sum((p_test - two_at_power_zero)*(p_test - two_at_power_zero))
+        return torch.sum((p_test - two_at_power_zero)*(p_test - two_at_power_zero)), p_test, two_at_power_zero
 
     def orthogonal_filter_cond(self):
         '''
@@ -158,3 +160,30 @@ class Wave1D(torch.nn.Module):
             lo = sfb1d(lo, hi, self.rec_lo, self.rec_hi, mode=self.mode, dim=-1)
         return lo
 
+    def add_wavelet_summary(self, tensoboard_writer, step):
+        fig = plt.figure()
+        plt.plot(self.dec_lo.detach().cpu().numpy())
+        plt.plot(self.dec_hi.detach().cpu().numpy())
+        plt.plot(self.rec_lo.detach().cpu().numpy())
+        plt.plot(self.rec_hi.detach().cpu().numpy())
+        plt.legend(['dec_lo,', 'dec_hi', 'rec_lo', 'rec_hi'])
+        tensoboard_writer.add_figure('wavelet/filters', fig, step, close=True)
+        plt.close()
+        acl, err1, err2 = self.alias_cancellation_loss()
+        prl, p_test, two_at_power_zero = self.perfect_reconstruction_loss()
+        tensoboard_writer.add_scalar('wavelet/prl', prl.detach().cpu().numpy(), step)
+        tensoboard_writer.add_scalar('wavelet/acl', acl.detach().cpu().numpy(), step)
+
+        fig = plt.figure()
+        plt.plot(err1.detach().cpu().numpy())
+        plt.plot(err2.detach().cpu().numpy())
+        plt.legend(['e1,', 'e2'])
+        tensoboard_writer.add_figure('wavelet/filters-acl', fig, step, close=True)
+        plt.close()
+
+        fig = plt.figure()
+        plt.plot(p_test.squeeze().detach().cpu().numpy())
+        plt.plot(np.abs((p_test - two_at_power_zero).squeeze().detach().cpu().numpy()))
+        plt.legend(['p_test,', 'err'])
+        tensoboard_writer.add_figure('wavelet/filters-prl', fig, step, close=True)
+        plt.close()

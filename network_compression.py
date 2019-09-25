@@ -10,13 +10,13 @@ from fastfood.fastfood import FastFoodLayer
 from torch.utils.tensorboard.writer import SummaryWriter
 
 
-epochs = 20
+epochs = 30
 batch_size = 64
 learning_rate_init = 0.001
 # learning_rate_init = 0.01
 milestones = [10, 20, 30]
 gamma = 0.6
-runs = 1
+runs = 106
 wavelet = True
 fastfood = False
 
@@ -93,7 +93,9 @@ class LeNet5(torch.nn.Module):
         if self.wavelet is None:
             return torch.tensor(0.0)
         else:
-            return self.fc1.wavelet.alias_cancellation_loss() + self.fc1.wavelet.perfect_reconstruction_loss()
+            acl, _, _ = self.fc1.wavelet.alias_cancellation_loss()
+            prl, _, _ = self.fc1.wavelet.perfect_reconstruction_loss()
+            return acl + prl
 
 
 test_accs = []
@@ -102,13 +104,20 @@ time_per_update = []
 for run_no in range(runs):
 
     if wavelet:
-        init_wavelet = CustomWavelet(
-            dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-            dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
-            rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-            rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
-            name='customHaar')
-        # init_wavelet = pywt.Wavelet('db1')
+        # init_wavelet = CustomWavelet(
+        #    dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+        #    dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
+        #    rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+        #    rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
+        #    name='customHaar')
+        # init_wavelet = pywt.Wavelet('db12')
+        init_wavelet = pywt.Wavelet(pywt.wavelist(kind='discrete')[run_no])
+        # init_wavelet = CustomWavelet(
+        #    dec_lo=np.random.normal(size=12),
+        #    dec_hi=np.random.normal(size=12),
+        #    rec_lo=np.random.normal(size=12),
+        #   rec_hi=np.random.normal(size=12),
+        #   name='random_init')
     else:
         init_wavelet = None
 
@@ -118,10 +127,10 @@ for run_no in range(runs):
     optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate_init)
     # optimizer = torch.optim.SGD(net.parameters(), momentum=0.9, lr=learning_rate_init,
     #                             weight_decay=0.0005, nesterov=False)
-    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[6, 12, 18], gamma=gamma)
+    # scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[6, 12, 18], gamma=gamma)
     loss_fun = torch.nn.CrossEntropyLoss()
     if wavelet:
-        comment_str = '_wavelet2_run_' + str(run_no)
+        comment_str = '_' + init_wavelet.name + '_' + str(run_no) + '_expl'
     elif fastfood:
         comment_str = '_fastfood_run_' + str(run_no)
     else:
@@ -142,6 +151,8 @@ for run_no in range(runs):
                 acc = torch.sum((torch.max(out_test, dim=1)[1] == target_test.cuda()).type(torch.float32))/batch_size * 100
                 acc_lst_test.append(acc.cpu().numpy())
         writer.add_scalar('test/acc', np.mean(acc_lst_test), train_iters)
+        if wavelet:
+            net.fc1.wavelet.add_wavelet_summary(writer, train_iters)
         # print('accs', acc_lst_test)
         return np.mean(acc_lst_test)
 
@@ -163,15 +174,15 @@ for run_no in range(runs):
                     print('e', e, 'i', i, 'l', cel.detach().cpu().numpy(), wvl.detach().cpu().numpy())
             train_iters += 1
             writer.add_scalar('train/loss', cel.detach().cpu().numpy(), train_iters)
-            writer.add_scalar('train/wavelet-loss', wvl.detach().cpu().numpy(), train_iters)
+            # writer.add_scalar('train/wavelet-loss', wvl.detach().cpu().numpy(), train_iters)
             writer.add_scalar('train/lr', optimizer.param_groups[-1]['lr'], train_iters)
 
-            if i % 465 == 0 and i > 0:
+            if (i % 465 == 0 and i > 0) or (i == 0 and e == 0):
                 acc_lst = test()
-                print('test accs:', np.mean(acc_lst), 'test error', 100.0-np.mean(acc_lst))
+                print('test acc:', np.mean(acc_lst), 'test error', 100.0-np.mean(acc_lst))
                 print('mean time per update', np.mean(time_per_update), 's')
                 test_max.append(np.mean(acc_lst))
-        scheduler.step()
+        # scheduler.step()
         acc = test()
 
     test_accs.append(acc)
