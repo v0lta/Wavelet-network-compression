@@ -9,7 +9,7 @@ from fastfood.fastfood import FastFoodLayer
 from torch.utils.tensorboard.writer import SummaryWriter
 
 bpd = {}
-bpd['iterations'] = 30000
+bpd['iterations'] = 100000
 bpd['tmax'] = 100
 bpd['delta_t'] = 1.0
 bpd['pred_samples'] = 50
@@ -17,7 +17,9 @@ bpd['window_size'] = 1
 bpd['hidden_size'] = 1024
 bpd['lr'] = 0.001
 bpd['batch_size'] = 32
-bpd['wavelet'] = True
+bpd['wavelet'] = False
+bpd['fastfood'] = True
+
 pd_list = [bpd]
 
 
@@ -52,10 +54,10 @@ class GRUCell(torch.nn.Module):
     def forward(self, x, h=None):
         if h is None:
             h = torch.zeros(x.size(0), self._hidden_size, dtype=x.dtype, device=x.device)
-        z = torch.nn.functional.sigmoid(self.Whz(h) + self.Wxz(x))
-        r = torch.nn.functional.sigmoid(self.Whr(h) + self.Wxr(x))
-        hc = torch.nn.functional.tanh(self.Whh(r*h) + self.Wxh(x))
-        hn = (1 - z)*hc + z*hc
+        z = torch.sigmoid(self.Whz(h) + self.Wxz(x))
+        r = torch.sigmoid(self.Whr(h) + self.Wxr(x))
+        hc = torch.tanh(self.Whh(r*h) + self.Wxh(x))
+        hn = (1 - z)*h + z*hc
         y = self.W_proj(hn)
         return y, hn
 
@@ -71,13 +73,15 @@ class WaveletGRU(GRUCell):
         self.Whu = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
         self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
 
+    def get_wavelet_loss(self):
+        return self.Whh.get_wavelet_loss() + self.Whu.get_wavelet_loss() + self.Whr.get_wavelet_loss()
+
 
 class FastFoodGRU(GRUCell):
     """ A compressed cell using a wavelet basis in the gates."""
 
     def __init__(self, input_size, hidden_size, out_size):
         super().__init__(input_size, hidden_size, out_size)
-
         self.Whh = FastFoodLayer(hidden_size)
         self.Whu = FastFoodLayer(hidden_size)
         self.Whr = FastFoodLayer(hidden_size)
@@ -87,6 +91,9 @@ for pd in pd_list:
     if pd['wavelet']:
         cell = WaveletGRU(input_size=pd['window_size'], hidden_size=pd['hidden_size'],
                           out_size=pd['window_size']).cuda()
+    elif pd['fastfood']:
+        cell = FastFoodGRU(input_size=pd['window_size'], hidden_size=pd['hidden_size'],
+                           out_size=pd['window_size']).cuda()
     else:
         cell = GRUCell(input_size=pd['window_size'], hidden_size=pd['hidden_size'],
                        out_size=pd['window_size']).cuda()
@@ -123,6 +130,7 @@ for pd in pd_list:
         for j in range(x.shape[-1]):
             yti, hi = cell(x[:, j].unsqueeze(-1))
             pred_encode_lst.append(yti)
+        pred_enc = torch.cat(pred_encode_lst, -1)
 
         pred_lst = []
         yt = x[:, -1].unsqueeze(-1)
@@ -133,7 +141,11 @@ for pd in pd_list:
         prediction = torch.cat(pred_lst, -1)
         # loss = -torch.trace(torch.matmul(y, torch.log(prediction).float().t()) +
         #                     torch.matmul((1 - y), torch.log(1 - prediction).float().t()))
+        enc_loss = critereon(x, pred_enc)*0.5
         loss = critereon(y, prediction)
+        loss += enc_loss
+        if pd['wavelet']:
+            loss += cell.get_wavelet_loss()
         loss.backward()
         torch.nn.utils.clip_grad_value_(cell.parameters(), 1.)
         optimizer.step()
