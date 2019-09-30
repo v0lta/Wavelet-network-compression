@@ -10,13 +10,14 @@ from temporal_convolutions.kernel_dilation import TemporalConvNet
 from temporal_convolutions.wavelet_dilation import FrequencyDilationNetwork
 
 bpd = {}
-bpd['iterations'] = 8000
-bpd['tmax'] = 200
+bpd['iterations'] = 500
+bpd['tmax'] = 500
 bpd['delta_t'] = 1.0
-bpd['pred_samples'] = 100
+bpd['pred_samples'] = 250
 bpd['window_size'] = 1
 bpd['lr'] = 0.004
 bpd['batch_size'] = 32
+bpd['std_factor'] = 0.25
 bpd['dropout'] = 0.0
 
 
@@ -30,8 +31,8 @@ pd_lst = [bpd]
 for pd in pd_lst:
     init_wavelet = pywt.Wavelet('db1')
     # init_wavelet, scales, threshold, in_dim, depth, out_dim
-    fdn = FrequencyDilationNetwork(init_wavelet=init_wavelet, scales=8, threshold=0.25,
-                                   in_dim=pd['pred_samples'], depth=800, out_dim=1).cuda()
+    fdn = FrequencyDilationNetwork(init_wavelet=init_wavelet, scales=8, std_factor=bpd['std_factor'],
+                                   in_dim=pd['pred_samples'], depth=400, out_dim=1).cuda()
     fdn.block1.init_weights()
 
     model_parameters = filter(lambda p: p.requires_grad, fdn.parameters())
@@ -90,6 +91,7 @@ for pd in pd_lst:
             plt.close()
 
             fdn.block1.summary_to_tensorboard(summary, i)
+            fdn.block2.summary_to_tensorboard(summary, i)
 
     fig = plt.figure()
     plt.plot(prediction.detach().cpu().numpy()[0, :])
