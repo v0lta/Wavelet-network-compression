@@ -160,30 +160,30 @@ class Wave1D(torch.nn.Module):
             lo = sfb1d(lo, hi, self.rec_lo, self.rec_hi, mode=self.mode, dim=-1)
         return lo
 
-    def add_wavelet_summary(self, tensoboard_writer, step):
+    def add_wavelet_summary(self, tensorboard_writer, step):
         fig = plt.figure()
         plt.plot(self.dec_lo.detach().cpu().numpy())
         plt.plot(self.dec_hi.detach().cpu().numpy())
         plt.plot(self.rec_lo.detach().cpu().numpy())
         plt.plot(self.rec_hi.detach().cpu().numpy())
         plt.legend(['dec_lo,', 'dec_hi', 'rec_lo', 'rec_hi'])
-        tensoboard_writer.add_figure('wavelet/filters', fig, step, close=True)
+        tensorboard_writer.add_figure('wavelet/filters', fig, step, close=True)
         plt.close()
         acl, err1, err2 = self.alias_cancellation_loss()
         prl, p_test, two_at_power_zero = self.perfect_reconstruction_loss()
-        tensoboard_writer.add_scalar('wavelet/prl', prl.detach().cpu().numpy(), step)
-        tensoboard_writer.add_scalar('wavelet/acl', acl.detach().cpu().numpy(), step)
+        tensorboard_writer.add_scalar('wavelet/prl', prl.detach().cpu().numpy(), step)
+        tensorboard_writer.add_scalar('wavelet/acl', acl.detach().cpu().numpy(), step)
 
         fig = plt.figure()
         plt.plot(err1.detach().cpu().numpy())
         plt.plot(err2.detach().cpu().numpy())
         plt.legend(['e1,', 'e2'])
-        tensoboard_writer.add_figure('wavelet/filters-acl', fig, step, close=True)
+        tensorboard_writer.add_figure('wavelet/filters-acl', fig, step, close=True)
         plt.close()
 
         fig = plt.figure()
         plt.plot(p_test.squeeze().detach().cpu().numpy())
         plt.plot(np.abs((p_test - two_at_power_zero).squeeze().detach().cpu().numpy()))
         plt.legend(['p_test,', 'err'])
-        tensoboard_writer.add_figure('wavelet/filters-prl', fig, step, close=True)
+        tensorboard_writer.add_figure('wavelet/filters-prl', fig, step, close=True)
         plt.close()

@@ -7,9 +7,8 @@ import scipy.signal as scisig
 import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
 from generators.mackey_glass import MackeyGenerator
-from temporal_conv_net import TemporalConvNet
+from temporal_convolutions.kernel_dilation import TemporalConvNet
 from fourier.short_time_fourier_pytorch import stft, istft
-import ipdb
 
 bpd = {}
 bpd['iterations'] = 8000

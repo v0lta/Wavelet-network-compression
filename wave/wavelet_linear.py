@@ -108,3 +108,8 @@ class WaveletLayer(torch.nn.Module):
 
     def extra_repr(self):
         return 'depth={}'.format(self.depth)
+
+    def get_wavelet_loss(self) -> torch.Tensor:
+        prl, _, _ = self.wavelet.perfect_reconstruction_loss()
+        acl, _, _ = self.wavelet.perfect_reconstruction_loss()
+        return prl + acl

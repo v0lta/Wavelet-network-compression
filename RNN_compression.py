@@ -17,8 +17,8 @@ bpd['window_size'] = 1
 bpd['hidden_size'] = 1024
 bpd['lr'] = 0.001
 bpd['batch_size'] = 32
-bpd['wavelet'] = False
-bpd['fastfood'] = True
+bpd['wavelet'] = True
+bpd['fastfood'] = False
 
 pd_list = [bpd]
 

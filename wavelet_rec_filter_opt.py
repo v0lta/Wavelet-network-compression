@@ -1,14 +1,11 @@
-import time
 import pywt
 import numpy as np
 import collections
 import torch
-import scipy.signal as scisig
 
 import matplotlib.pyplot as plt
 # from torch.utils.tensorboard import SummaryWriter
 from generators.mackey_glass import MackeyGenerator
-from temporal_conv_net import TemporalConvNet
 from wave.learn_wave import Wave1D
 import matplotlib2tikz as tikz
 

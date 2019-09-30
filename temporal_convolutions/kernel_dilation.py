@@ -94,28 +94,3 @@ class TemporalConvNet(nn.Module):
         return self.network(x)
 
 
-# class FreqTempBlock(nn.Module):
-
-#     def __init__(self, n_inputs, n_outputs, kernel_size,
-#                  stride, dilation, padding, dropout=0.2, activation=nn.Relu()):
-#         '''
-#         Set up a frequency-time 2D temporal convnet.
-#         '''
-#         super().__init__()
-#         self.conv1 = weight_norm(nn.Conv2d(n_inputs, n_outputs, kernel_size,
-#                                            stride=stride, padding=padding,
-#                                            dilation=dilation))
-#         self.act1 = activation
-#         self.net = nn.Sequential(self.conv1, self.act1)
-#         self.downsample = nn.Conv1d(n_inputs, n_outputs, 1) \
-#             if n_inputs != n_outputs else None
-
-#         self.init_weights()
-
-#     def init_weights(self):
-#         self.conv1.weight.data.normal_(0, 0.01)
-
-#     def forward(self, x):
-#         out = self.net(x)
-#         res = x if self.downsample is None else self.downsample(x)
-#         return self.relu(out + res)
