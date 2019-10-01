@@ -61,8 +61,11 @@ for current_run_pd in pd_lst:
     x_test_lst = torch.split(x_test.cuda(), current_run_pd['batch_size'], dim=0)
     y_test_lst = torch.split(y_test.cuda(), current_run_pd['batch_size'], dim=0)
 
-    for train_iteration_no in range(train_iterations):
-        optimizer.zero_grad()
+    def train_test_loop(train_iteration_no, train):
+        loss_lst = []
+        acc_lst  = []
+        if train:
+            optimizer.zero_grad()
         x_train_batch = x_train_lst[train_iteration_no]
         y_train_batch = y_train_lst[train_iteration_no]
 
@@ -84,15 +87,34 @@ for current_run_pd in pd_lst:
             assert time_steps == current_run_pd['time_steps'] + 20
             y_tensor = torch.stack(y_cell_lst, dim=-1)
             loss = loss_fun(y_tensor, y_train_batch)
+            mem_res = torch.max(y_tensor[:, :, -10:], dim=1)[1]
+            el = np.prod(y_train_batch[:, -10:].shape).astype(np.float32)
+            acc = torch.sum(mem_res == y_train_batch[:, -10:]).type(torch.float32).detach().cpu().numpy()
+            acc = acc/el
         else:
             assert time_steps == current_run_pd['time_steps']
             # only the last output is interesting
             loss = loss_fun(y, y_train_batch.type(torch.float32))
-
+            # TODO: fixme.
+            acc = None
         # compute gradients
-        loss.backward()
-        # apply gradients
-        optimizer.step()
-        print('step', train_iteration_no, 'loss', loss.detach().cpu().numpy(), 'baseline:', baseline)
+        if train:
+            loss.backward()
+            # apply gradients
+            optimizer.step()
+        cpu_loss = loss.detach().cpu().numpy()
+        print('step', train_iteration_no, 'loss', cpu_loss, 'baseline:', baseline, 'acc', acc)
+        loss_lst.append(cpu_loss)
+        acc_lst.append(acc)
+        return  loss_lst, acc_lst
+
+    for train_iteration_no in range(train_iterations):
+        train_loss_lst, train_acc_lst = train_test_loop(train_iteration_no, train=True)
 
     print('training done... testing ...')
+    for test_iteration_no in range(test_iterations):
+        with torch.no_grad():
+            test_loss_lst, test_acc_lst = train_test_loop(train_iteration_no, train=False)
+
+
+
