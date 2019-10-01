@@ -5,15 +5,13 @@ import torch
 
 import matplotlib.pyplot as plt
 # from torch.utils.tensorboard import SummaryWriter
-from generators.mackey_glass import MackeyGenerator
+from RNN_compression.mackey_glass import MackeyGenerator
 from wave.learn_wave import Wave1D
 import matplotlib2tikz as tikz
 
 
 CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
-
-
 print(torch.cuda.get_device_name(), torch.cuda.is_available())
 
 pd = {}

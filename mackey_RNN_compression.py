@@ -3,9 +3,8 @@ import torch
 import pywt
 import numpy as np
 import matplotlib.pyplot as plt
-from generators.mackey_glass import MackeyGenerator
-from wave.wavelet_linear import WaveletLayer
-from fastfood.fastfood import FastFoodLayer
+from RNN_compression.mackey_glass import MackeyGenerator
+from RNN_compression.cells import GRUCell, WaveletGRU, FastFoodGRU
 from torch.utils.tensorboard.writer import SummaryWriter
 
 bpd = {}
@@ -26,66 +25,6 @@ pd_list = [bpd]
 generator = MackeyGenerator(batch_size=bpd['batch_size'],
                             tmax=bpd['tmax'],
                             delta_t=bpd['delta_t'])
-
-
-# Define Baseline and compressed GRU-Cells.
-class GRUCell(torch.nn.Module):
-    """ A LSTM-Cell reference implementation as outlined in https://arxiv.org/abs/1503.04069 """
-
-    def __init__(self, input_size, hidden_size, out_size):
-        super().__init__()
-        self._input_size = input_size
-        self._hidden_size = hidden_size
-
-        # update gate weights.
-        self.Whz = torch.nn.Linear(hidden_size, hidden_size, bias=False)
-        self.Wxz = torch.nn.Linear(input_size, hidden_size, bias=True)
-
-        # reset gate weights.
-        self.Whr = torch.nn.Linear(hidden_size, hidden_size, bias=False)
-        self.Wxr = torch.nn.Linear(input_size, hidden_size, bias=True)
-
-        # state candidate mapping
-        self.Whh = torch.nn.Linear(hidden_size, hidden_size, bias=False)
-        self.Wxh = torch.nn.Linear(input_size, hidden_size, bias=True)
-
-        self.W_proj = torch.nn.Linear(hidden_size, out_size, bias=True)
-
-    def forward(self, x, h=None):
-        if h is None:
-            h = torch.zeros(x.size(0), self._hidden_size, dtype=x.dtype, device=x.device)
-        z = torch.sigmoid(self.Whz(h) + self.Wxz(x))
-        r = torch.sigmoid(self.Whr(h) + self.Wxr(x))
-        hc = torch.tanh(self.Whh(r*h) + self.Wxh(x))
-        hn = (1 - z)*h + z*hc
-        y = self.W_proj(hn)
-        return y, hn
-
-
-class WaveletGRU(GRUCell):
-    """ A compressed cell using a wavelet basis in the gates."""
-
-    def __init__(self, input_size, hidden_size, out_size):
-        super().__init__(input_size, hidden_size, out_size)
-        init_wavelet = pywt.Wavelet('db6')
-        scales = 8
-        self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-        self.Whu = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-        self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-
-    def get_wavelet_loss(self):
-        return self.Whh.get_wavelet_loss() + self.Whu.get_wavelet_loss() + self.Whr.get_wavelet_loss()
-
-
-class FastFoodGRU(GRUCell):
-    """ A compressed cell using a wavelet basis in the gates."""
-
-    def __init__(self, input_size, hidden_size, out_size):
-        super().__init__(input_size, hidden_size, out_size)
-        self.Whh = FastFoodLayer(hidden_size)
-        self.Whu = FastFoodLayer(hidden_size)
-        self.Whr = FastFoodLayer(hidden_size)
-
 
 for pd in pd_list:
     if pd['wavelet']:

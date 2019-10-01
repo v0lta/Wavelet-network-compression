@@ -5,12 +5,12 @@ import torch
 import pywt
 import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
-from generators.mackey_glass import MackeyGenerator
+from RNN_compression.mackey_glass import MackeyGenerator
 from temporal_convolutions.kernel_dilation import TemporalConvNet
 from temporal_convolutions.wavelet_dilation import FrequencyDilationNetwork
 
 bpd = {}
-bpd['iterations'] = 500
+bpd['iterations'] = 5000
 bpd['tmax'] = 500
 bpd['delta_t'] = 1.0
 bpd['pred_samples'] = 250
@@ -34,6 +34,7 @@ for pd in pd_lst:
     fdn = FrequencyDilationNetwork(init_wavelet=init_wavelet, scales=8, std_factor=bpd['std_factor'],
                                    in_dim=pd['pred_samples'], depth=400, out_dim=1).cuda()
     fdn.block1.init_weights()
+    fdn.block2.init_weights()
 
     model_parameters = filter(lambda p: p.requires_grad, fdn.parameters())
     params = sum([np.prod(p.size()) for p in model_parameters])

@@ -4,7 +4,7 @@ import torch
 
 import matplotlib.pyplot as plt
 # from torch.utils.tensorboard import SummaryWriter
-from generators.mackey_glass import MackeyGenerator
+from RNN_compression.mackey_glass import MackeyGenerator
 from wave.transform2d import DWTForward, DWTInverse
 from wave.learn_wave import Wave1D
 

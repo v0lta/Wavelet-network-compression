@@ -5,7 +5,7 @@ import torch
 
 import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
-from generators.mackey_glass import MackeyGenerator
+from RNN_compression.mackey_glass import MackeyGenerator
 from temporal_convolutions.kernel_dilation import TemporalConvNet
 import ipdb
 
