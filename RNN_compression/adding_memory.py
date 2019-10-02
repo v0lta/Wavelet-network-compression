@@ -33,7 +33,7 @@ def generate_data_adding(time_steps, n_data):
 
     y = (x[:, :, 0] * x[:, :, 1]).sum(axis=0)
     y = np.reshape(y, (n_data, 1))
-    return torch.from_numpy(x).permute([1, 0, 2]), torch.from_numpy(y).permute([1, 0, 2])
+    return torch.from_numpy(x).permute([1, 0, 2]), torch.from_numpy(y)
 
 
 def generate_data_memory(time_steps, n_data, n_sequence=10):

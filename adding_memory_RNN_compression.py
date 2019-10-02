@@ -8,15 +8,37 @@ import pywt
 import matplotlib.pyplot as plt
 from RNN_compression.cells import GRUCell, FastFoodGRU, WaveletGRU
 from RNN_compression.adding_memory import generate_data_adding, generate_data_memory
+import pickle
+
+
+def pd_to_string(pd_var) -> str:
+    '''
+    Convert a parameter dict to string
+    :param pd_var: The Parameter dictionary
+    :return: A string containg what was in the dict.
+    '''
+    pd_var = pd_var.copy()
+    pd_var_str = ''
+    for key in list(pd_var.keys()):
+        if type(pd_var[key]) is str:
+            pd_var_str += '_' + key + pd_var[key]
+        elif type(pd_var[key]) is bool:
+            pd_var_str += '_' + key
+        elif type(pd_var[key]) is pywt.Wavelet:
+            pd_var_str += '_' + pd_var[key].name
+        else:
+            pd_var_str += '_' + key + str(pd_var[key])
+    return pd_var_str
+
 
 pd = {}
-pd['problem'] = 'memory'
-pd['cell'] = 'GRU'
+pd['problem'] = 'adding'
+pd['cell'] = 'GRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
 pd['init_wavelet'] = pywt.Wavelet('db6')
-pd['hidden'] = 600
+pd['hidden'] = 512
 pd['time_steps'] = 65
 pd['batch_size'] = 50
-pd['n_train'] = int(1e5)  # int(9e5)
+pd['n_train'] = int(9e5)  # int(9e5)
 pd['n_test'] = int(1e4)
 pd['lr'] = 1e-3
 train_iterations = int(pd['n_train']/pd['batch_size'])
@@ -62,8 +84,6 @@ for current_run_pd in pd_lst:
     y_test_lst = torch.split(y_test.cuda(), current_run_pd['batch_size'], dim=0)
 
     def train_test_loop(train_iteration_no, train):
-        loss_lst = []
-        acc_lst  = []
         if train:
             optimizer.zero_grad()
         x_train_batch = x_train_lst[train_iteration_no]
@@ -83,38 +103,60 @@ for current_run_pd in pd_lst:
             y, h = cell(x_train_batch[:, t, :].type(torch.float32), h)
             y_cell_lst.append(y)
 
+        el = np.prod(y_train_batch[:, -10:].shape).astype(np.float32)
         if current_run_pd['problem'] == 'memory':
             assert time_steps == current_run_pd['time_steps'] + 20
             y_tensor = torch.stack(y_cell_lst, dim=-1)
             loss = loss_fun(y_tensor, y_train_batch)
             mem_res = torch.max(y_tensor[:, :, -10:], dim=1)[1]
-            el = np.prod(y_train_batch[:, -10:].shape).astype(np.float32)
             acc = torch.sum(mem_res == y_train_batch[:, -10:]).type(torch.float32).detach().cpu().numpy()
             acc = acc/el
         else:
             assert time_steps == current_run_pd['time_steps']
             # only the last output is interesting
-            loss = loss_fun(y, y_train_batch.type(torch.float32))
-            # TODO: fixme.
-            acc = None
+            y_train_batch = y_train_batch.type(torch.float32)
+            loss = loss_fun(y, y_train_batch)
+            acc = torch.sum(torch.abs(y - y_train_batch) < 0.05).type(torch.float32).detach().cpu().numpy()
+            acc = acc/el
+
+        cpu_loss = loss.detach().cpu().numpy()
         # compute gradients
+        if pd['cell'] == 'WaveletGRU':
+            loss_wave = cell.get_wavelet_loss()
+            loss_full = loss + loss_wave
+            loss_wave_cpu = loss_wave.detach().cpu().numpy()
+        else:
+            loss_wave_cpu = 0
+            loss_full = loss
+
         if train:
-            loss.backward()
+            loss_full.backward()
             # apply gradients
             optimizer.step()
-        cpu_loss = loss.detach().cpu().numpy()
-        print('step', train_iteration_no, 'loss', cpu_loss, 'baseline:', baseline, 'acc', acc)
-        loss_lst.append(cpu_loss)
-        acc_lst.append(acc)
-        return  loss_lst, acc_lst
+        if train_iteration_no % 100 == 0:
+            print('step', train_iteration_no, 'loss', cpu_loss, 'baseline:', baseline, 'acc', acc, 'wl',
+                  loss_wave_cpu, 'train', train)
+        return cpu_loss, acc
 
+    train_loss_lst = []
+    train_acc_lst = []
     for train_iteration_no in range(train_iterations):
-        train_loss_lst, train_acc_lst = train_test_loop(train_iteration_no, train=True)
+        train_loss, train_acc = train_test_loop(train_iteration_no, train=True)
+        train_loss_lst.append(train_loss)
+        train_acc_lst.append(train_acc)
 
     print('training done... testing ...')
+    test_loss_lst = []
+    test_acc_lst = []
     for test_iteration_no in range(test_iterations):
         with torch.no_grad():
-            test_loss_lst, test_acc_lst = train_test_loop(train_iteration_no, train=False)
+            test_loss, test_acc = train_test_loop(test_iteration_no, train=False)
+            test_loss_lst.append(test_loss)
+            test_acc_lst.append(test_acc)
 
 
-
+# pickle the results
+print(np.mean(test_loss_lst), np.mean(test_acc))
+pd_str = pd_to_string(current_run_pd)
+store_lst = [train_loss_lst, train_acc_lst, test_loss_lst, test_acc_lst]
+pickle.dump(store_lst, open('./runs/amp' + pd_str + '.pkl', 'wb'))
