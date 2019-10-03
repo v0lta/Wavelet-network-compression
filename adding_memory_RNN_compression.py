@@ -11,6 +11,15 @@ from RNN_compression.adding_memory import generate_data_adding, generate_data_me
 import pickle
 
 
+def compute_parameter_total(net):
+    total = 0
+    for p in net.parameters():
+        if p.requires_grad:
+            print(p.shape)
+            total += np.prod(p.shape)
+    return total
+
+
 def pd_to_string(pd_var) -> str:
     '''
     Convert a parameter dict to string
@@ -30,20 +39,25 @@ def pd_to_string(pd_var) -> str:
             pd_var_str += '_' + key + str(pd_var[key])
     return pd_var_str
 
-
 pd = {}
 pd['problem'] = 'adding'
 pd['cell'] = 'GRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
-pd['init_wavelet'] = pywt.Wavelet('db6')
 pd['hidden'] = 512
-pd['time_steps'] = 65
+pd['time_steps'] = 150
 pd['batch_size'] = 50
 pd['n_train'] = int(9e5)  # int(9e5)
 pd['n_test'] = int(1e4)
 pd['lr'] = 1e-3
+if pd['cell'] == 'WaveletGRU':
+    pd['init_wavelet'] = pywt.Wavelet('db6')
+else:
+    pd['init_wavelet'] = None
+
 train_iterations = int(pd['n_train']/pd['batch_size'])
 test_iterations = int(pd['n_test']/pd['batch_size'])
 pd_lst = [pd]
+
+print(pd)
 
 for current_run_pd in pd_lst:
 
@@ -76,6 +90,8 @@ for current_run_pd in pd_lst:
     else:
         raise NotImplementedError()
 
+    pt = compute_parameter_total(cell)
+    print('parameter total', pt)
     optimizer = torch.optim.RMSprop(cell.parameters(), current_run_pd['lr'])
 
     x_train_lst = torch.split(x_train.cuda(), current_run_pd['batch_size'], dim=0)
@@ -133,7 +149,7 @@ for current_run_pd in pd_lst:
             loss_full.backward()
             # apply gradients
             optimizer.step()
-        if train_iteration_no % 100 == 0:
+        if train_iteration_no % 50 == 0:
             print('step', train_iteration_no, 'loss', cpu_loss, 'baseline:', baseline, 'acc', acc, 'wl',
                   loss_wave_cpu, 'train', train)
         return cpu_loss, acc
@@ -156,7 +172,8 @@ for current_run_pd in pd_lst:
 
 
 # pickle the results
-print(np.mean(test_loss_lst), np.mean(test_acc))
+print(pd)
+print('test loss mean', np.mean(test_loss_lst), 'test acc mean', np.mean(test_acc), 'pt', pt)
 pd_str = pd_to_string(current_run_pd)
-store_lst = [train_loss_lst, train_acc_lst, test_loss_lst, test_acc_lst]
+store_lst = [train_loss_lst, train_acc_lst, test_loss_lst, test_acc_lst, pt]
 pickle.dump(store_lst, open('./runs/amp' + pd_str + '.pkl', 'wb'))
