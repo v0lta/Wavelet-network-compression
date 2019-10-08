@@ -16,7 +16,7 @@ learning_rate_init = 0.001
 # learning_rate_init = 0.01
 milestones = [10, 20, 30]
 gamma = 0.6
-runs = 106
+runs = 1
 wavelet = True
 fastfood = False
 
@@ -95,7 +95,7 @@ class LeNet5(torch.nn.Module):
         else:
             acl, _, _ = self.fc1.wavelet.alias_cancellation_loss()
             prl, _, _ = self.fc1.wavelet.perfect_reconstruction_loss()
-            return acl + prl
+            return acl, prl
 
 
 test_accs = []
@@ -111,13 +111,13 @@ for run_no in range(runs):
         #    rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
         #    name='customHaar')
         # init_wavelet = pywt.Wavelet('db12')
-        init_wavelet = pywt.Wavelet(pywt.wavelist(kind='discrete')[run_no])
-        # init_wavelet = CustomWavelet(
-        #    dec_lo=np.random.normal(size=12),
-        #    dec_hi=np.random.normal(size=12),
-        #    rec_lo=np.random.normal(size=12),
-        #   rec_hi=np.random.normal(size=12),
-        #   name='random_init')
+        # init_wavelet = pywt.Wavelet(pywt.wavelist(kind='discrete')[run_no])
+        init_wavelet = CustomWavelet(
+            dec_lo=np.random.normal(size=12),
+            dec_hi=np.random.normal(size=12),
+            rec_lo=np.random.normal(size=12),
+            rec_hi=np.random.normal(size=12),
+            name='random_init')
     else:
         init_wavelet = None
 
@@ -138,6 +138,8 @@ for run_no in range(runs):
             str(batch_size) + '_lr_' + str(learning_rate_init) + '_run_' + str(run_no)
     writer = SummaryWriter(comment=comment_str)
     train_loss = []
+    train_acl = []
+    train_prl = []
     train_iters = 0
 
     def test():
@@ -152,7 +154,7 @@ for run_no in range(runs):
                 acc_lst_test.append(acc.cpu().numpy())
         writer.add_scalar('test/acc', np.mean(acc_lst_test), train_iters)
         if wavelet:
-            net.fc1.wavelet.add_wavelet_summary(writer, train_iters)
+            net.fc1.wavelet.add_wavelet_summary('wavelet_layer', writer, train_iters)
         # print('accs', acc_lst_test)
         return np.mean(acc_lst_test)
 
@@ -164,18 +166,21 @@ for run_no in range(runs):
             in_norm = (train_input.cuda() - mean)/std
             out = net(train_input.cuda())
             cel = loss_fun(out, target.cuda())
-            wvl = net.wavelet_loss()
+            acl, prl = net.wavelet_loss()
+            wvl = acl + prl
             loss = cel + wvl
             loss.backward()
             optimizer.step()
             time_per_update.append((time.time() - time_start))
             if i % 15 == 0:
-                with np.printoptions(precision=10, suppress=True):
-                    print('e', e, 'i', i, 'l', cel.detach().cpu().numpy(), wvl.detach().cpu().numpy())
+                print('e', e, 'i', i, 'l', cel.detach().cpu().numpy(), 'wvl', wvl.detach().cpu().numpy())
             train_iters += 1
             writer.add_scalar('train/loss', cel.detach().cpu().numpy(), train_iters)
             # writer.add_scalar('train/wavelet-loss', wvl.detach().cpu().numpy(), train_iters)
             writer.add_scalar('train/lr', optimizer.param_groups[-1]['lr'], train_iters)
+            train_loss.append(cel.detach().cpu().numpy())
+            train_acl.append(acl.detach().cpu().numpy())
+            train_prl.append(prl.detach().cpu().numpy())
 
             if (i % 465 == 0 and i > 0) or (i == 0 and e == 0):
                 acc_lst = test()
@@ -205,3 +210,55 @@ print('max', np.max(test_max))
 print('time_per_update', np.mean(time_per_update))
 print(net)
 print(epochs, batch_size, learning_rate_init)
+
+plot = False
+if plot:
+    acc_lst = []
+    for acc_no, acc in enumerate(test_max):
+        acc_lst.append((acc_no*465, acc))
+    acc_array = np.array(acc_lst)
+
+    p_lo = np.convolve(init_wavelet.dec_lo, init_wavelet.rec_lo)
+    p_hi = np.convolve(init_wavelet.dec_hi, init_wavelet.rec_hi)
+    p_test = p_lo + p_hi
+
+    two_at_power_zero = np.zeros(p_test.shape)
+    two_at_power_zero[..., p_test.shape[-1]//2] = 2
+
+    length = init_wavelet.rec_lo.shape[0]
+    mask = np.array([np.power(-1, n) for n in range(length)][::-1])
+    err1 = init_wavelet.rec_lo - mask*init_wavelet.dec_hi
+    err1s = np.sum(err1*err1)
+
+    length = init_wavelet.rec_hi.shape[0]
+    mask = np.array([np.power(-1, n) for n in range(length)][::-1])
+    err2 = init_wavelet.rec_hi - -1*mask*init_wavelet.dec_lo
+    err2s = np.sum(err2*err2)
+
+    _, p_test_final, _ = net.fc1.wavelet.perfect_reconstruction_loss()
+    p_test_final_np = p_test_final.squeeze().detach().cpu().numpy()
+    ac_final, err1_final, err2_final = net.fc1.wavelet.alias_cancellation_loss()
+    err1_final_np = err1_final.squeeze().detach().cpu().numpy()
+    err2_final_np = err2_final.squeeze().detach().cpu().numpy()
+
+    plt.plot(p_test)
+    plt.plot(p_test_final_np)
+    plt.show()
+
+    plt.plot(err1 + err2)
+    plt.plot(err1_final_np + err2_final_np)
+    plt.show()
+
+    plt.plot(init_wavelet.dec_lo)
+    plt.plot(init_wavelet.dec_hi)
+    plt.plot(init_wavelet.rec_lo)
+    plt.plot(init_wavelet.rec_hi)
+    plt.legend(['dec_lo', 'dec_hi', 'rec_lo', 'rec_hi'])
+    plt.show()
+
+    plt.plot(net.fc1.wavelet.dec_lo.detach().cpu().numpy())
+    plt.plot(net.fc1.wavelet.dec_hi.detach().cpu().numpy())
+    plt.plot(net.fc1.wavelet.rec_lo.detach().cpu().numpy())
+    plt.plot(net.fc1.wavelet.rec_hi.detach().cpu().numpy())
+    plt.legend(['dec_lo', 'dec_hi', 'rec_lo', 'rec_hi'])
+    plt.show()

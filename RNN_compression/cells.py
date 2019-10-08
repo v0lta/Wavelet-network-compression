@@ -42,17 +42,44 @@ class GRUCell(torch.nn.Module):
 class WaveletGRU(GRUCell):
     """ A compressed cell using a wavelet basis in the gates."""
 
-    def __init__(self, input_size, hidden_size, out_size, init_wavelet=pywt.Wavelet('db6')):
+    def __init__(self, input_size, hidden_size, out_size, init_wavelet=pywt.Wavelet('db6'), mode='full'):
         super().__init__(input_size, hidden_size, out_size)
         self.init_wavelet = init_wavelet
+        self.mode = mode
         scales = 8
-        self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-        self.Whu = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-        self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+        if mode == 'gates':
+            print('gates compression')
+            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+        elif mode == 'state':
+            print('state compression')
+            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+        elif mode == 'state_reset':
+            print('state+reset gate compression')
+            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+        elif mode == 'state_update':
+            print('state+reset gate compression')
+            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+        else:
+            print('full compression')
+            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
         print('Creating a Wavelet GRU, do not forget to add the wavelet-loss.')
 
     def get_wavelet_loss(self):
-        return self.Whh.get_wavelet_loss() + self.Whu.get_wavelet_loss() + self.Whr.get_wavelet_loss()
+        if self.mode == 'gates':
+            return self.Whz.get_wavelet_loss() + self.Whr.get_wavelet_loss()
+        elif self.mode == 'state':
+            return self.Whh.get_wavelet_loss()
+        elif self.mode == 'state_reset':
+            return self.Whh + self.Whr.get_wavelet_loss()
+        elif self.mode == 'state_update':
+            return self.Whh + self.Whr.get_wavelet_loss()
+        else:
+            return self.Whh.get_wavelet_loss() + self.Whz.get_wavelet_loss() + self.Whr.get_wavelet_loss()
 
 
 class FastFoodGRU(GRUCell):
@@ -60,6 +87,6 @@ class FastFoodGRU(GRUCell):
 
     def __init__(self, input_size, hidden_size, out_size):
         super().__init__(input_size, hidden_size, out_size)
-        self.Whh = FastFoodLayer(hidden_size)
-        self.Whu = FastFoodLayer(hidden_size)
+        self.Whz = FastFoodLayer(hidden_size)
         self.Whr = FastFoodLayer(hidden_size)
+        self.Whh = FastFoodLayer(hidden_size)

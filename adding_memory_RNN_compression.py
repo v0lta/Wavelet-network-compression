@@ -14,9 +14,10 @@ import pickle
 
 pd = {}
 pd['problem'] = 'adding'
-pd['cell'] = 'GRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
+pd['cell'] = 'FastFoodGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
 pd['hidden'] = 512
 pd['time_steps'] = 150
+pd['compression_mode'] = 'full'
 pd['batch_size'] = 50
 pd['n_train'] = int(9e5)  # int(9e5)
 pd['n_test'] = int(1e4)
@@ -57,7 +58,7 @@ for current_run_pd in pd_lst:
     if current_run_pd['cell'] == 'GRU':
         cell = GRUCell(input_size, current_run_pd['hidden'], output_size).cuda()
     elif current_run_pd['cell'] == 'WaveletGRU':
-        cell = WaveletGRU(input_size, current_run_pd['hidden'], output_size).cuda()
+        cell = WaveletGRU(input_size, current_run_pd['hidden'], output_size, mode=pd['compression_mode']).cuda()
     elif current_run_pd['cell'] == 'FastFoodGRU':
         cell = FastFoodGRU(input_size, current_run_pd['hidden'], output_size).cuda()
     else:

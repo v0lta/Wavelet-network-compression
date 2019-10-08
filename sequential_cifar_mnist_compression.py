@@ -14,10 +14,11 @@ import pickle
 pd = {}
 pd['problem'] = 'MNIST'
 pd['cell'] = 'WaveletGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
+pd['compression_mode'] = 'gates'
 pd['hidden'] = 512
-pd['batch_size'] = 50
+pd['batch_size'] = 16
 pd['epochs'] = 10
-pd['lr'] = 1e-3
+pd['lr'] = 5e-3
 if pd['cell'] == 'WaveletGRU':
     pd['init_wavelet'] = pywt.Wavelet('db6')
 else:
@@ -43,7 +44,8 @@ for current_run_pd in pd_lst:
     if current_run_pd['cell'] == 'GRU':
         cell = GRUCell(input_size, current_run_pd['hidden'], output_size).cuda()
     elif current_run_pd['cell'] == 'WaveletGRU':
-        cell = WaveletGRU(input_size, current_run_pd['hidden'], output_size).cuda()
+        cell = WaveletGRU(input_size, current_run_pd['hidden'], output_size,
+                          mode=current_run_pd['compression_mode']).cuda()
     elif current_run_pd['cell'] == 'FastFoodGRU':
         cell = FastFoodGRU(input_size, current_run_pd['hidden'], output_size).cuda()
     else:
