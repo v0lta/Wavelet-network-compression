@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="01cc3016-e4a0-4cd9-b6e4-f6b265628041" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/network_compression.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="01cc3016-e4a0-4cd9-b6e4-f6b265628041" name="Default Changelist" comment="cleanup.">
+      <change afterPath="$PROJECT_DIR$/plot_from_tensorboard/random_wavelet_mnist_plot.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/wavelet_learning.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/wavelet_learning.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wave/learn_wave.py" beforeDir="false" afterPath="$PROJECT_DIR$/wave/learn_wave.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adding_memory_RNN_compression.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alexnet.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github_imnet_pytorch.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/network_compression.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sequential_cifar_mnist_compression.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +47,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ikeda.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -54,7 +56,20 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="wavelet_learning" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="wavelet_learning" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/temporal_convolutions" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -91,7 +106,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="copymem_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="adding_memory_RNN_compression" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -100,11 +115,33 @@
       </envs>
       <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TCN-master/TCN/copy_memory/copymem_test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/adding_memory_RNN_compression.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="mackey_wfn" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="wavelet_learning" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mackey_fdn.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -117,9 +154,12 @@
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -132,10 +172,35 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="sequential_cifar_mnist_compression" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="wavelet_learning" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sequential_cifar_mnist_compression.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="wavelet_mackey" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -151,63 +216,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="wavelet_rec_filter_opt" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="wavelet_learning" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wavelet_rec_filter_opt.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="wavelet_tcn_mackey" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="wavelet_learning" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wavelet_tcn_mackey.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
-      <item itemvalue="Python.copymem_test" />
-      <item itemvalue="Python.wavelet_tcn_mackey" />
-      <item itemvalue="Python.wavelet_rec_filter_opt" />
-      <item itemvalue="Python.network_compression" />
       <item itemvalue="Python.wavelet_mackey" />
+      <item itemvalue="Python.mackey_wfn" />
+      <item itemvalue="Python.adding_memory_RNN_compression" />
+      <item itemvalue="Python.sequential_cifar_mnist_compression" />
+      <item itemvalue="Python.network_compression" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.network_compression" />
+        <item itemvalue="Python.sequential_cifar_mnist_compression" />
+        <item itemvalue="Python.adding_memory_RNN_compression" />
+        <item itemvalue="Python.mackey_wfn" />
         <item itemvalue="Python.wavelet_mackey" />
-        <item itemvalue="Python.wavelet_rec_filter_opt" />
-        <item itemvalue="Python.wavelet_tcn_mackey" />
-        <item itemvalue="Python.copymem_test" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SshConsoleOptionsProvider">
+    <option name="myEncoding" value="UTF-8" />
+    <option name="myConnectionType" value="REMOTE_SDK" />
+    <option name="myConnectionId" value="sftp://wolter@infcuda.informatik.uni-bonn.de:22/home/wolter/anaconda3/bin/python" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -222,8 +251,210 @@
       <workItem from="1564416257994" duration="2082000" />
       <workItem from="1565354157237" duration="852000" />
       <workItem from="1565866994066" duration="19270000" />
-      <workItem from="1566566573950" duration="37040000" />
+      <workItem from="1566566573950" duration="48290000" />
+      <workItem from="1567096931797" duration="10193000" />
+      <workItem from="1567588582246" duration="5541000" />
+      <workItem from="1568038825775" duration="16247000" />
+      <workItem from="1568123710863" duration="27466000" />
+      <workItem from="1568370864380" duration="14767000" />
+      <workItem from="1568625202502" duration="3373000" />
+      <workItem from="1568636345055" duration="26163000" />
+      <workItem from="1568742591218" duration="25638000" />
+      <workItem from="1569232240467" duration="91626000" />
+      <workItem from="1569922118132" duration="57483000" />
+      <workItem from="1570550715215" duration="11630000" />
+      <workItem from="1570791769734" duration="271000" />
     </task>
+    <task id="LOCAL-00001" summary="So preliminary work on network compression.">
+      <created>1566920659702</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1566920659702</updated>
+    </task>
+    <task id="LOCAL-00002" summary="More preliminary work on network compression.">
+      <created>1568120914120</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1568120914120</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Fastfood runs ok. Performance drops to 97.15% from 98.5 with 5% of parameters on mnist.">
+      <created>1568123554981</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1568123554981</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Wavelet compression prototype runs.">
+      <created>1568133936184</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1568133936184</updated>
+    </task>
+    <task id="LOCAL-00005" summary="First comparison checkpoint.">
+      <created>1568211769699</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1568211769699</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Loop over multiple experiments.">
+      <created>1568302962244</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1568302962244</updated>
+    </task>
+    <task id="LOCAL-00007" summary="moved data to data_sets.">
+      <created>1568373375710</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1568373375710</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Moving to Alexnet.">
+      <created>1568393268984</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1568393268984</updated>
+    </task>
+    <task id="LOCAL-00009" summary=".gitignore update.">
+      <created>1568653357490</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1568653357490</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Code for imagnet learning.">
+      <created>1568653380093</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1568653380093</updated>
+    </task>
+    <task id="LOCAL-00011" summary="cleanup.">
+      <created>1568653428379</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1568653428379</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added dropout.">
+      <created>1568719126126</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1568719126126</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fix wavelet loss">
+      <created>1568729686073</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1568729686073</updated>
+    </task>
+    <task id="LOCAL-00014" summary="fwht revisited.">
+      <created>1568742845303</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1568742845303</updated>
+    </task>
+    <task id="LOCAL-00015" summary="fwht bugfix.">
+      <created>1568817626264</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1568817626264</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Better performance on mnist.">
+      <created>1569330639143</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1569330639143</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Wavelet summary code and RNN compression.">
+      <created>1569419626096</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1569419626096</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Bugfix.">
+      <created>1569426482893</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1569426482893</updated>
+    </task>
+    <task id="LOCAL-00019" summary="wavelet dilation prototype">
+      <created>1569837394707</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1569837394707</updated>
+    </task>
+    <task id="LOCAL-00020" summary="pre-profiled version.">
+      <created>1569843302084</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1569843302084</updated>
+    </task>
+    <task id="LOCAL-00021" summary="compression memory and adding problem training implemented.">
+      <created>1569949670716</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1569949670716</updated>
+    </task>
+    <task id="LOCAL-00022" summary="memory accuracy.">
+      <created>1569953345157</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1569953345157</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Adding memory exp runs 50.">
+      <created>1570031161366</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1570031161366</updated>
+    </task>
+    <task id="LOCAL-00024" summary="experimental setup.">
+      <created>1570115440498</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1570115440498</updated>
+    </task>
+    <task id="LOCAL-00025" summary="more RNN compression experiments.">
+      <created>1570122186887</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1570122186887</updated>
+    </task>
+    <task id="LOCAL-00026" summary="cleanup.">
+      <created>1570122208554</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1570122208554</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Fixed gate override. Added additional plots.">
+      <created>1570556412149</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1570556412149</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -244,6 +475,32 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="More preliminary work on network compression." />
+    <MESSAGE value="Fastfood runs ok. Performance drops to 97.15% from 98.5 with 5% of parameters on mnist." />
+    <MESSAGE value="Wavelet compression prototype runs." />
+    <MESSAGE value="First comparison checkpoint." />
+    <MESSAGE value="Loop over multiple experiments." />
+    <MESSAGE value="moved data to data_sets." />
+    <MESSAGE value="Moving to Alexnet." />
+    <MESSAGE value=".gitignore update." />
+    <MESSAGE value="Code for imagnet learning." />
+    <MESSAGE value="Added dropout." />
+    <MESSAGE value="fix wavelet loss" />
+    <MESSAGE value="fwht revisited." />
+    <MESSAGE value="fwht bugfix." />
+    <MESSAGE value="Better performance on mnist." />
+    <MESSAGE value="Wavelet summary code and RNN compression." />
+    <MESSAGE value="Bugfix." />
+    <MESSAGE value="wavelet dilation prototype" />
+    <MESSAGE value="pre-profiled version." />
+    <MESSAGE value="compression memory and adding problem training implemented." />
+    <MESSAGE value="memory accuracy." />
+    <MESSAGE value="Adding memory exp runs 50." />
+    <MESSAGE value="experimental setup." />
+    <MESSAGE value="more RNN compression experiments." />
+    <MESSAGE value="cleanup." />
+    <MESSAGE value="Fixed gate override. Added additional plots." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed gate override. Added additional plots." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -257,9 +514,17 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/wavelet_learning$RNN_compression.coverage" NAME="RNN_compression Coverage Results" MODIFIED="1569413787434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$sequential_cifar_mnist_compression.coverage" NAME="sequential_cifar_mnist_compression Coverage Results" MODIFIED="1570543672615" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$alexnet.coverage" NAME="alexnet Coverage Results" MODIFIED="1568723172125" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$github_imnet_pytorch.coverage" NAME="github_imnet_pytorch Coverage Results" MODIFIED="1568726618340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$network_compression_imnet.coverage" NAME="network_compression_imnet Coverage Results" MODIFIED="1568649387459" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wavelet_learning$ikeda.coverage" NAME="ikeda Coverage Results" MODIFIED="1564416760656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/wavelet_learning$network_compression.coverage" NAME="network_compression Coverage Results" MODIFIED="1566918697411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$mackey_wfn.coverage" NAME="mackey_wfn Coverage Results" MODIFIED="1569841356724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$adding_memory_RNN_compression.coverage" NAME="adding_memory_RNN_compression Coverage Results" MODIFIED="1570030515489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$network_compression.coverage" NAME="network_compression Coverage Results" MODIFIED="1570616705747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wavelet_learning$wavelet_tcn_mackey.coverage" NAME="wavelet_tcn_mackey Coverage Results" MODIFIED="1565884236331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/wavelet_learning$wavelet_rec_filter_opt.coverage" NAME="wavelet_rec_filter_opt Coverage Results" MODIFIED="1566900871273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$wavelet_rec_filter_opt.coverage" NAME="wavelet_rec_filter_opt Coverage Results" MODIFIED="1567103036567" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$fwht.coverage" NAME="fwht Coverage Results" MODIFIED="1569243864910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
