@@ -25,14 +25,22 @@ def complex_hadamard(ci1, ci2):
     return torch.stack([x, y], -1)
 
 
-def freq_convolution_1d(input_tensor, weight_tensor, freq_dilation=1):
+def freq_convolution_1d(input_tensor, weight_tensor, frequency_dilation=1):
+    '''
+    Compute a frequency domain convolution using frequency dilation.
+    :param input_tensor: The input data tensor [batch_size, time]
+    :param weight_tensor: The kernel [1, kernel_size].
+    :param frequency_dilation: The ration of frequency domain coefficients.
+    :return: The kernel input convolution result [batch_size, time].
+    '''
     to_pad = (input_tensor.shape[-1] - weight_tensor.shape[-1])
-    pad_weight_tensor = torch.nn.functional.pad(weight_tensor, (to_pad, 0))
+    pad_weight_tensor = torch.nn.functional.pad(weight_tensor, [to_pad, 0])
     fft_inp = torch.rfft(input_tensor, 1)
     fft_ker = torch.rfft(pad_weight_tensor, 1)
-    freqs = fft_inp.shape[-2]//freq_dilation
-    out = torch.irfft(complex_hadamard(fft_ker[:, :, :freqs, :], fft_inp[:, :, :freqs, :]), 1)
-    return out
+    frequencies = fft_inp.shape[-2]//frequency_dilation
+    output = torch.irfft(complex_hadamard(fft_ker[:, :, :frequencies, :],
+                                          fft_inp[:, :, :frequencies, :]), 1)
+    return output
 
 
 def convolution_1d(input_tensor, weight_tensor, pad, freq_dilation=1):
@@ -49,9 +57,41 @@ def convolution_1d(input_tensor, weight_tensor, pad, freq_dilation=1):
     return out, out_pad
 
 
-class FreqConv1d(torch.nn.module):
-    # TODO: Write me!
-    pass
+class FreqConv1d(torch.nn.Module):
+    # TODO: Add frequency domain weights to save on the initial kernel fft.
+    def __init__(self, in_channels, out_channels, kernel_size, padding=0, freq_dilation=1,
+                 time_weights=True, bias=True):
+        super().__init__()
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
+        self.padding = padding
+        self.freq_dilation = freq_dilation
+        self.time_weights = time_weights
+        self.bias_add = bias
+        if time_weights:
+            self.weight = torch.nn.Parameter(torch.Tensor(out_channels, in_channels, kernel_size))
+        else:
+            pass
+            # TODO: explore complex freq-domain weight formulations.
+        if self.bias_add:
+            self.bias = torch.nn.Parameter(torch.Tensor(out_channels))
+        else:
+            self.register_parameter('bias', None)
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        torch.nn.init.kaiming_uniform_(self.weight)
+        if self.bias is not None:
+            torch.nn.init.uniform_(self.bias, -1.0, 1.0)
+
+    def forward(self, input_tensor):
+        pad = self.padding // 2
+        input_tensor_pad = torch.nn.functional.pad(input_tensor, [pad, pad])
+        conv_out = freq_convolution_1d(input_tensor_pad, self.weight, self.freq_dilation)
+        if self.bias_add:
+            conv_out += self.bias
+        return conv_out
 
 
 if __name__ == '__main__':
@@ -66,6 +106,9 @@ if __name__ == '__main__':
     kernel_t = torch.from_numpy(sine).unsqueeze(0).unsqueeze(0)
     out, out_pad = convolution_1d(input_signal_t, kernel_t, pad=length//2, freq_dilation=freq_dilation)
 
+    freq_conv = FreqConv1d(1, 1, kernel_size=3, padding=length//2, freq_dilation=freq_dilation)
+    out_pad2 = freq_conv(input_signal_t)
+
     plt.plot(input_signal)
     plt.plot(out[0, 0, :(length*5)].numpy()/np.max(out.numpy()))
     if freq_dilation != 1:
@@ -78,3 +121,4 @@ if __name__ == '__main__':
     else:
         plt.plot(out_pad[0, 0, :(length*5)].numpy()/np.max(out_pad.numpy()))
     plt.show()
+
