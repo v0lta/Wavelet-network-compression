@@ -14,11 +14,11 @@ import pickle
 pd = {}
 pd['problem'] = 'MNIST'
 pd['cell'] = 'WaveletGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
-pd['compression_mode'] = 'gates'
+pd['compression_mode'] = 'gates' # gates, state, state_reset, state_update, full
 pd['hidden'] = 512
-pd['batch_size'] = 16
+pd['batch_size'] = 50
 pd['epochs'] = 10
-pd['lr'] = 5e-3
+pd['lr'] = 1e-3
 if pd['cell'] == 'WaveletGRU':
     pd['init_wavelet'] = pywt.Wavelet('db6')
 else:

@@ -17,8 +17,8 @@ learning_rate_init = 0.001
 milestones = [10, 20, 30]
 gamma = 0.6
 runs = 1
-wavelet = True
-fastfood = False
+wavelet = False
+fastfood = True
 
 mnist_data_set = torchvision.datasets.MNIST(root='./data_sets/mnist/', download=True,
                                             transform=torchvision.transforms.Compose([
@@ -91,7 +91,7 @@ class LeNet5(torch.nn.Module):
 
     def wavelet_loss(self):
         if self.wavelet is None:
-            return torch.tensor(0.0)
+            return torch.tensor(0.0), torch.tensor(0.0)
         else:
             acl, _, _ = self.fc1.wavelet.alias_cancellation_loss()
             prl, _, _ = self.fc1.wavelet.perfect_reconstruction_loss()
