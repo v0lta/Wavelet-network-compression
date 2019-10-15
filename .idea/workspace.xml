@@ -2,14 +2,164 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01cc3016-e4a0-4cd9-b6e4-f6b265628041" name="Default Changelist" comment="cleanup.">
-      <change afterPath="$PROJECT_DIR$/plot_from_tensorboard/random_wavelet_mnist_plot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_loading/mackey_glass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/wavelet_learning.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/wavelet_learning.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adding_memory_RNN_compression.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/alexnet.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/github_imnet_pytorch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/network_compression.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sequential_cifar_mnist_compression.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fourier/fourier_convolution.py" beforeDir="false" afterPath="$PROJECT_DIR$/fourier/fourier_convolution.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_loading/sequential_mnist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/adding_problem/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/adding_problem/add_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/adding_problem/model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/adding_problem/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/char_cnn/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/char_cnn/char_cnn_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/char_cnn/model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/char_cnn/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/copy_memory/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/copy_memory/copymem_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/copy_memory/model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/copy_memory/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/lambada_language/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/lambada_language/lambada_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/lambada_language/model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/lambada_language/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/mnist_pixel/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/mnist_pixel/data/mnist/processed/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/mnist_pixel/data/mnist/raw/t10k-images-idx3-ubyte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/mnist_pixel/data/mnist/raw/t10k-labels-idx1-ubyte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/mnist_pixel/data/mnist/raw/train-images-idx3-ubyte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/mnist_pixel/data/mnist/raw/train-labels-idx1-ubyte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/mnist_pixel/model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/mnist_pixel/pmnist_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/mnist_pixel/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/poly_music/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/poly_music/mdata/JSB_Chorales.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/poly_music/mdata/MuseData.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/poly_music/mdata/Nottingham.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/poly_music/mdata/Piano_midi.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/poly_music/model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/poly_music/music_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/poly_music/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/tcn.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/word_cnn/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/word_cnn/data/penn/corpus" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/word_cnn/data/penn/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/word_cnn/data/penn/train.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/word_cnn/data/penn/valid.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/word_cnn/model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/word_cnn/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/TCN-master/TCN/word_cnn/word_cnn_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/.travis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/MANIFEST.in" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/README.rst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/_version.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/coeffs.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/fourier/frequency_dilation_networks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/antonini.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/farras.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/legall.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/near_sym_a.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/near_sym_a2.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/near_sym_b.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/near_sym_b_bp.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/qshift_06.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/qshift_32.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/qshift_a.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/qshift_b.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/qshift_b_bp.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/qshift_c.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/data/qshift_d.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/lowlevel.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/lowlevel2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/transform2d.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dtcwt/transform_funcs.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dwt/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/sequential_mnist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dwt/lowlevel.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dwt/swt_inverse.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/dwt/transform2d.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/pytorch_wavelets/utils.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/save.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/setup.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/Transform2d_np.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/barbara.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/cplx.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/datasets.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/ivan_fwd_j1.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/ivan_fwd_j2.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/mandrill.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/near_sym_a2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/nick_fwd_j1.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/nick_fwd_j2.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/parser.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profile.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profile2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profile_xfms" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j1.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j1_nohp.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j1_symb.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j2.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j2_nohp.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j2_symb.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j3.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j3a.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j4.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/end_to_end_j5.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/forward_j1.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/forward_j1_nohp.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/forward_j1_symb.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/forward_j2.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/forward_j2_nohp.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/forward_j2_symb.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/forward_j3.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/forward_j4.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/forward_j5.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/inverse_j1.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/inverse_j1_nohp.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/inverse_j1_symb.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/inverse_j2.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/inverse_j2_nohp.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/inverse_j2_symb.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/inverse_j3.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/inverse_j4.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/inverse_j5.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/reference.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/remove_c_fwd_j1.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/profiles/xfmifm_fwd_j2a.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/temp1.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/temp1_5.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/temp1_5a.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/temp2.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/temp2_5a.prof" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/test_coldfilt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/test_colfilter.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/test_dtcwt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/test_dtcwt_grad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/test_dwt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/test_dwt_grad.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/test_rowdfilt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tests/test_rowfilter.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/thresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/github/pytorch_wavelets-master/tox.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mackey_fdn.py" beforeDir="false" afterPath="$PROJECT_DIR$/mackey_fdn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mackey_tcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/mackey_tcn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/arxiv.sty" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/bib.bib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/paper.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/paper.tex" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/paper/paper_idea.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temporal_convolutions/wavelet_dilation.py" beforeDir="false" afterPath="$PROJECT_DIR$/temporal_convolutions/wavelet_dilation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wavelet_learning.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wavelet_mackey.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wavelet_rec_filter_opt.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wavelet_tcn_mackey.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,6 +182,32 @@
     <select />
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="master" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="frequency-dilation" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1Oh3ySB1KfLsv42Zc12uJPlAZA2" />
@@ -56,7 +232,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
+    <property name="settings.editor.selected.configurable" value="web.server" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -83,7 +259,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.network_compression">
+  <component name="RunManager" selected="Python.fourier_convolution">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -106,20 +282,17 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="adding_memory_RNN_compression" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="fourier_convolution" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/adding_memory_RNN_compression.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fourier/fourier_convolution.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -128,7 +301,26 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="mackey_wfn" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="mackey_fdn" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="wavelet_learning" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mackey_fdn.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="mackey_tcn" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="wavelet_learning" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -141,7 +333,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mackey_fdn.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mackey_tcn.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -194,42 +386,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="wavelet_mackey" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="wavelet_learning" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wavelet_mackey.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
-      <item itemvalue="Python.wavelet_mackey" />
-      <item itemvalue="Python.mackey_wfn" />
-      <item itemvalue="Python.adding_memory_RNN_compression" />
       <item itemvalue="Python.sequential_cifar_mnist_compression" />
       <item itemvalue="Python.network_compression" />
+      <item itemvalue="Python.fourier_convolution" />
+      <item itemvalue="Python.mackey_tcn" />
+      <item itemvalue="Python.mackey_fdn" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.mackey_fdn" />
+        <item itemvalue="Python.fourier_convolution" />
+        <item itemvalue="Python.mackey_tcn" />
         <item itemvalue="Python.network_compression" />
         <item itemvalue="Python.sequential_cifar_mnist_compression" />
-        <item itemvalue="Python.adding_memory_RNN_compression" />
-        <item itemvalue="Python.mackey_wfn" />
-        <item itemvalue="Python.wavelet_mackey" />
       </list>
     </recent_temporary>
   </component>
@@ -263,7 +433,9 @@
       <workItem from="1569232240467" duration="91626000" />
       <workItem from="1569922118132" duration="57483000" />
       <workItem from="1570550715215" duration="11630000" />
-      <workItem from="1570791769734" duration="271000" />
+      <workItem from="1570791769734" duration="2346000" />
+      <workItem from="1570795819444" duration="14092000" />
+      <workItem from="1571043547408" duration="27445000" />
     </task>
     <task id="LOCAL-00001" summary="So preliminary work on network compression.">
       <created>1566920659702</created>
@@ -454,7 +626,21 @@
       <option name="project" value="LOCAL" />
       <updated>1570556412149</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="cleanup.">
+      <created>1570806512209</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1570806512209</updated>
+    </task>
+    <task id="LOCAL-00029" summary="cleanup.">
+      <created>1571043983886</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1571043983886</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -498,12 +684,19 @@
     <MESSAGE value="Adding memory exp runs 50." />
     <MESSAGE value="experimental setup." />
     <MESSAGE value="more RNN compression experiments." />
-    <MESSAGE value="cleanup." />
     <MESSAGE value="Fixed gate override. Added additional plots." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed gate override. Added additional plots." />
+    <MESSAGE value="cleanup." />
+    <option name="LAST_COMMIT_MESSAGE" value="cleanup." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/sequential_mnist.py</url>
+          <line>57</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -514,17 +707,20 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/wavelet_learning$RNN_compression.coverage" NAME="RNN_compression Coverage Results" MODIFIED="1569413787434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/frequency_dilation$fourier_convolution.coverage" NAME="fourier_convolution Coverage Results" MODIFIED="1571043689869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wavelet_learning$sequential_cifar_mnist_compression.coverage" NAME="sequential_cifar_mnist_compression Coverage Results" MODIFIED="1570543672615" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wavelet_learning$alexnet.coverage" NAME="alexnet Coverage Results" MODIFIED="1568723172125" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wavelet_learning$github_imnet_pytorch.coverage" NAME="github_imnet_pytorch Coverage Results" MODIFIED="1568726618340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/wavelet_learning$network_compression_imnet.coverage" NAME="network_compression_imnet Coverage Results" MODIFIED="1568649387459" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/wavelet_learning$ikeda.coverage" NAME="ikeda Coverage Results" MODIFIED="1564416760656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wavelet_learning$mackey_wfn.coverage" NAME="mackey_wfn Coverage Results" MODIFIED="1569841356724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/wavelet_learning$adding_memory_RNN_compression.coverage" NAME="adding_memory_RNN_compression Coverage Results" MODIFIED="1570030515489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/wavelet_learning$network_compression.coverage" NAME="network_compression Coverage Results" MODIFIED="1570616705747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wavelet_learning$wavelet_tcn_mackey.coverage" NAME="wavelet_tcn_mackey Coverage Results" MODIFIED="1565884236331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wavelet_learning$wavelet_rec_filter_opt.coverage" NAME="wavelet_rec_filter_opt Coverage Results" MODIFIED="1567103036567" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/frequency_dilation$mackey_fdn.coverage" NAME="mackey_fdn Coverage Results" MODIFIED="1571072595552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$RNN_compression.coverage" NAME="RNN_compression Coverage Results" MODIFIED="1569413787434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/frequency_dilation$mackey_tcn.coverage" NAME="mackey_tcn Coverage Results" MODIFIED="1571054443276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$network_compression_imnet.coverage" NAME="network_compression_imnet Coverage Results" MODIFIED="1568649387459" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$ikeda.coverage" NAME="ikeda Coverage Results" MODIFIED="1564416760656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$adding_memory_RNN_compression.coverage" NAME="adding_memory_RNN_compression Coverage Results" MODIFIED="1570030515489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/wavelet_learning$network_compression.coverage" NAME="network_compression Coverage Results" MODIFIED="1570616705747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/wavelet_learning$fwht.coverage" NAME="fwht Coverage Results" MODIFIED="1569243864910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

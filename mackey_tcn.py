@@ -5,7 +5,7 @@ import torch
 
 import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
-from RNN_compression.mackey_glass import MackeyGenerator
+from synthetic.mackey_glass import MackeyGenerator
 from temporal_convolutions.kernel_dilation import TemporalConvNet
 import ipdb
 
@@ -37,7 +37,6 @@ for pd in pd_lst:
     tcn = TemporalConvNet(num_inputs=1,
                           num_channels=bpd['channels'] + [pd['window_size']],
                           dropout=bpd['dropout']).cuda()
-    ipdb.set_trace()
     model_parameters = filter(lambda p: p.requires_grad, tcn.parameters())
     params = sum([np.prod(p.size()) for p in model_parameters])
     print('model parameters', params)
@@ -70,7 +69,7 @@ for pd in pd_lst:
             y_pred = tcn(x_in.unsqueeze(1)).squeeze(0)
             y_pred = y_pred[:, :, -1]
             net_out.append(y_pred)
-            x_in = torch.cat([x_in, y_pred], -1)
+            x_in = torch.cat([x_in[:, bpd['window_size']:], y_pred], -1)
 
         prediction = torch.cat(net_out, -1)
         # loss = -torch.trace(torch.matmul(y, torch.log(prediction).float().t()) +

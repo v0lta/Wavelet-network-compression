@@ -5,7 +5,7 @@ import pywt
 import matplotlib.pyplot as plt
 
 
-class FrequencyDilationBlock(torch.nn.Module):
+class WaveletDilationBlock(torch.nn.Module):
     def __init__(self, init_wavelet, scales, std_factor, in_dim, out_dim, name):
         '''
         Set up a frequency-time 1D temporal convnet.
@@ -70,13 +70,13 @@ class FrequencyDilationBlock(torch.nn.Module):
         plt.close()
 
 
-class FrequencyDilationNetwork(torch.nn.Module):
-    """ Create a FPN """
+class WaveletDilationNetwork(torch.nn.Module):
+    """ Create a WDN """
     def __init__(self, init_wavelet, scales, std_factor, in_dim, depth, out_dim):
         super().__init__()
-        self.block1 = FrequencyDilationBlock(init_wavelet, scales, std_factor, in_dim, depth,
+        self.block1 = WaveletDilationBlock(init_wavelet, scales, std_factor, in_dim, depth,
                                              name='block_1')
-        self.block2 = FrequencyDilationBlock(init_wavelet, scales, std_factor, in_dim=depth, out_dim=depth,
+        self.block2 = WaveletDilationBlock(init_wavelet, scales, std_factor, in_dim=depth, out_dim=depth,
                                              name='block_2')
         self.output_projection = torch.nn.Linear(depth, out_dim, bias=True)
 

@@ -5,20 +5,20 @@ import torch
 import pywt
 import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
-from RNN_compression.mackey_glass import MackeyGenerator
+from data_loading.mackey_glass import MackeyGenerator
 from temporal_convolutions.kernel_dilation import TemporalConvNet
-from temporal_convolutions.wavelet_dilation import FrequencyDilationNetwork
+from fourier.frequency_dilation_networks import FDN
 
 bpd = {}
-bpd['iterations'] = 5000
-bpd['tmax'] = 500
+bpd['iterations'] = 50000
+bpd['tmax'] = 512
 bpd['delta_t'] = 1.0
-bpd['pred_samples'] = 250
+bpd['pred_samples'] = 256
 bpd['window_size'] = 1
-bpd['lr'] = 0.004
-bpd['batch_size'] = 32
-bpd['std_factor'] = 0.25
+bpd['lr'] = 0.0005
+bpd['batch_size'] = 16
 bpd['dropout'] = 0.0
+bpd['channels'] = [50, 50] + [bpd['window_size']]
 
 
 generator = MackeyGenerator(batch_size=bpd['batch_size'],
@@ -27,14 +27,12 @@ generator = MackeyGenerator(batch_size=bpd['batch_size'],
 
 pd_lst = [bpd]
 
-
 for pd in pd_lst:
-    init_wavelet = pywt.Wavelet('db1')
-    # init_wavelet, scales, threshold, in_dim, depth, out_dim
-    fdn = FrequencyDilationNetwork(init_wavelet=init_wavelet, scales=8, std_factor=bpd['std_factor'],
-                                   in_dim=pd['pred_samples'], depth=400, out_dim=1).cuda()
-    fdn.block1.init_weights()
-    fdn.block2.init_weights()
+    fdn = FDN(in_channels=1,
+              output_channels=pd['window_size'],
+              num_channels=pd['channels']).cuda()
+    # fdn.block1.init_weights()
+    # fdn.block2.init_weights()
 
     model_parameters = filter(lambda p: p.requires_grad, fdn.parameters())
     params = sum([np.prod(p.size()) for p in model_parameters])
@@ -48,7 +46,7 @@ for pd in pd_lst:
     summary = SummaryWriter(comment='_fdn_' + pd_str)
     # summary.add_graph(fdn)
 
-    optimizer = torch.optim.Adam(fdn.parameters(), lr=pd['lr'])
+    optimizer = torch.optim.RMSprop(fdn.parameters(), lr=pd['lr'])
     critereon = torch.nn.MSELoss()
     loss_lst = []
 
@@ -64,24 +62,34 @@ for pd in pd_lst:
 
         x_in = x
         net_out = []
+        # with torch.autograd.detect_anomaly():
         for j in range(steps):
-            y_pred = fdn(x_in[:, -bpd['pred_samples']:])
+            y_pred = fdn(x_in[:, -bpd['pred_samples']:].unsqueeze(1))
             net_out.append(y_pred)
-            x_in = torch.cat([x_in, y_pred], -1)
+            x_in = torch.cat([x_in[:, bpd['window_size']:], y_pred], -1)
+            # print(j, x_in.shape)
 
         prediction = torch.cat(net_out, -1)
         # loss = -torch.trace(torch.matmul(y, torch.log(prediction).float().t()) +
         #                     torch.matmul((1 - y), torch.log(1 - prediction).float().t()))
-        wl = fdn.wavelet_loss()
-        loss = critereon(y, prediction) + wl
+        # wl = fdn.wavelet_loss()
+        loss = critereon(y, prediction)  # + wl
         loss.backward()
+
+        total_norm = 0
+        for p in fdn.parameters():
+            param_norm = p.grad.data.norm(2)
+            total_norm += param_norm.item() ** 2
+        total_norm = total_norm ** (1. / 2)
+        # torch.nn.utils.clip_grad_norm_(fdn.parameters(), max_norm=200)
         optimizer.step()
 
         rec_loss = loss.detach().cpu().numpy()
         loss_lst.append(rec_loss)
         runtime = time.time() - start
-        print('iteration', i, 'loss', loss_lst[-1], 'wl', wl.detach().cpu().numpy(), 'runtime', runtime)
+        print('iteration', i, 'loss', loss_lst[-1], 'grad_norm', total_norm, 'runtime', runtime)
         summary.add_scalar('mse', loss_lst[-1], global_step=i)
+        summary.add_scalar('gradient-norm', total_norm, global_step=i)
 
         if i % 100 == 0:
             fig = plt.figure()
@@ -91,8 +99,8 @@ for pd in pd_lst:
             plt.clf()
             plt.close()
 
-            fdn.block1.summary_to_tensorboard(summary, i)
-            fdn.block2.summary_to_tensorboard(summary, i)
+            # fdn.block1.summary_to_tensorboard(summary, i)
+            # fdn.block2.summary_to_tensorboard(summary, i)
 
     fig = plt.figure()
     plt.plot(prediction.detach().cpu().numpy()[0, :])
