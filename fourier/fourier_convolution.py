@@ -40,12 +40,11 @@ def freq_convolution_1d(input_tensor, weight_tensor, frequency_dilation=1):
     # add the batch_dimension.
     weight_tensor = weight_tensor.unsqueeze(0)
 
-    time_steps = input_tensor.shape[-1]
     to_pad = (input_tensor.shape[-1] - weight_tensor.shape[-1])
     pad_weight_tensor = torch.nn.functional.pad(weight_tensor, [to_pad, 0])
     fft_inp = torch.rfft(input_tensor, 1)
     fft_ker = torch.rfft(pad_weight_tensor, 1)
-    frequencies = fft_inp.shape[-2]//frequency_dilation
+    frequencies = int(fft_inp.shape[-2]/frequency_dilation)
     coefficients = complex_hadamard(fft_ker[..., :frequencies, :],
                                     fft_inp[..., :frequencies, :])
     # sum the input dimension away.
@@ -80,6 +79,7 @@ class FreqConv1d(torch.nn.Module):
         self.freq_dilation = freq_dilation
         self.time_weights = time_weights
         self.bias_add = bias
+        self._print = True
         if time_weights:
             self.weight = torch.nn.Parameter(torch.Tensor(out_channels, in_channels, kernel_size))
         else:
@@ -92,7 +92,7 @@ class FreqConv1d(torch.nn.Module):
         self.reset_parameters()
 
     def reset_parameters(self):
-        torch.nn.init.normal_(self.weight, mean=0.0, std=0.1)
+        torch.nn.init.normal_(self.weight, mean=0.0, std=0.01)
         if self.bias is not None:
             torch.nn.init.uniform_(self.bias, -0.01, 0.01)
 
@@ -104,10 +104,12 @@ class FreqConv1d(torch.nn.Module):
             # unsqueeze the batch and time dimensions.
             conv_out += self.bias.unsqueeze(0).unsqueeze(-1)
 
-        unpad = int(np.ceil(pad/self.freq_dilation))
-        # if unpad > 0:
-        #     conv_out = conv_out[..., unpad:-unpad]
-        # print('input_shape', input_tensor.shape, 'output_shape', conv_out.shape)
+        # un_pad = int(np.ceil(pad/self.freq_dilation))
+        # if un_pad > 0:
+        #     conv_out = conv_out[..., un_pad:-un_pad]
+        if self._print:
+            print('input_shape', input_tensor.shape, 'output_shape', conv_out.shape)
+            self._print = False
         return conv_out
 
 
@@ -120,6 +122,13 @@ if __name__ == '__main__':
     input_signal = np.concatenate([zeroes, sine, zeroes, sine, zeroes])
     input_signal_t = torch.from_numpy(input_signal).unsqueeze(0).unsqueeze(0)
     kernel_t = torch.from_numpy(sine).unsqueeze(0).unsqueeze(0)
+    # test the case without filtering.
+    out, out_pad = convolution_1d(input_signal_t, kernel_t, pad=length//2, freq_dilation=1)
+    err = out/torch.max(out) - out_pad[:, :, :out.shape[-1]]/torch.max(out_pad)
+    err_norm = torch.norm(err)
+    plt.plot(err[0, 0, :].numpy())
+    plt.show()
+    print('error norm', err, err_norm)
     out, out_pad = convolution_1d(input_signal_t, kernel_t, pad=length//2, freq_dilation=freq_dilation)
     freq_conv = FreqConv1d(1, 1, kernel_size=3, padding=length//2, freq_dilation=freq_dilation)
     out_pad2 = freq_conv(input_signal_t)
@@ -135,5 +144,6 @@ if __name__ == '__main__':
                 break
     else:
         plt.plot(out_pad[0, 0, :(length*5)].numpy()/np.max(out_pad.numpy()))
+        pass
     plt.show()
 

@@ -66,7 +66,8 @@ class TemporalBlock(nn.Module):
 
 
 class TemporalConvNet(nn.Module):
-    def __init__(self, num_inputs, num_channels, kernel_size=2, dropout=0.2):
+    def __init__(self, num_inputs, num_channels, kernel_size=2, dropout=0.2,
+                 output_size=None):
         '''
         Create a dilated multi-layer single stride temporal-CNN
         Args:
@@ -90,7 +91,14 @@ class TemporalConvNet(nn.Module):
 
         self.network = nn.Sequential(*layers)
 
+        self.output_size = output_size
+        if self.output_size is not None:
+            self.linear = nn.Linear(num_channels[-1], output_size)
+
     def forward(self, x):
-        return self.network(x)
+        if self.output_size is not None:
+            return self.linear(self.network(x)[:, :, -1])
+        else:
+            return self.network(x)
 
 
