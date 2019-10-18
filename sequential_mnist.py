@@ -39,7 +39,7 @@ for current_run_pd in pd_lst:
         net = FDN(in_channels=input_size,
                   output_channels=output_size,
                   num_channels=current_run_pd['num_channels'],
-                  initial_kernel_size=6).cuda()
+                  initial_kernel_size=8).cuda()
     elif current_run_pd['architecture'] == 'TCN':
         net = TemporalConvNet(num_inputs=input_size,
                               num_channels=current_run_pd['num_channels'],

@@ -15,10 +15,11 @@ bpd['tmax'] = 512
 bpd['delta_t'] = 1.0
 bpd['pred_samples'] = 256
 bpd['window_size'] = 1
-bpd['lr'] = 0.0005
-bpd['batch_size'] = 16
+bpd['lr'] = 0.001
+bpd['batch_size'] = 32
 bpd['dropout'] = 0.0
-bpd['channels'] = [50, 50] + [bpd['window_size']]
+bpd['channels'] = [25, 25, 25] + [bpd['window_size']]
+bpd['time_weights'] = True
 
 
 generator = MackeyGenerator(batch_size=bpd['batch_size'],
@@ -30,7 +31,8 @@ pd_lst = [bpd]
 for pd in pd_lst:
     fdn = FDN(in_channels=1,
               output_channels=pd['window_size'],
-              num_channels=pd['channels']).cuda()
+              num_channels=pd['channels'],
+              time_weights=pd['time_weights']).cuda()
     # fdn.block1.init_weights()
     # fdn.block2.init_weights()
 

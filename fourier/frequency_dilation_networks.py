@@ -22,7 +22,7 @@ class FreqBlock(torch.nn.Module):
 
 class FDN(torch.nn.Module):
     def __init__(self,  in_channels, num_channels, output_channels=None,
-                 initial_kernel_size=4, dropout=0.2):
+                 initial_kernel_size=4, dropout=0.2, time_weights=True):
         '''
 
         :param num_inputs: The input dimensions.
@@ -38,6 +38,7 @@ class FDN(torch.nn.Module):
         layers = []
         self.relu = torch.nn.ReLU()
         self.output_channels = output_channels
+        self.time_weights = time_weights
         if self.output_channels is not None:
             self.linear = torch.nn.Linear(num_channels[-1], output_channels)
 
@@ -46,9 +47,10 @@ class FDN(torch.nn.Module):
             kernel_size = self.initial_kernel_size  # *(i+1)
             in_channels = in_channels if i == 0 else num_channels[i-1]
             print('layer', i, 'dilation', dilation_factor, 'kernel', kernel_size, 'channels', in_channels)
-            layers += [weight_norm(FreqConv1d(in_channels, out_channels, kernel_size,
-                                   freq_dilation=dilation_factor,
-                                   padding=kernel_size//2, bias=True)),
+            layers += [FreqConv1d(in_channels, out_channels, kernel_size,
+                                  freq_dilation=dilation_factor,
+                                  padding=kernel_size//2, bias=True,
+                                  time_weights=self.time_weights),
                        torch.nn.Dropout(self.dropout)]
         self.network = torch.nn.Sequential(*layers)
         self._print = True

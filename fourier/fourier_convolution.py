@@ -27,14 +27,21 @@ def complex_hadamard(ci1, ci2):
     return torch.stack([x, y], -1)
 
 
+def complex_exp(r, phi):
+    """ Compute z = r*exp(i*phi) """
+    x = r*torch.cos(phi)
+    y = r*torch.sin(phi)
+    return torch.stack([x, y], -1)
+
+
 def freq_convolution_1d(input_tensor, weight_tensor, frequency_dilation=1):
-    '''
+    """
     Compute a frequency domain convolution using frequency dilation.
     :param input_tensor: The input data tensor [batch_size, dim, time]
     :param weight_tensor: The kernel [out_channels, in_channels, kernel_size].
     :param frequency_dilation: The ration of frequency domain coefficients.
     :return: The kernel input convolution result [batch_size, time].
-    '''
+    """
     # add the out_channels dimension
     input_tensor = input_tensor.unsqueeze(1)
     # add the batch_dimension.
@@ -68,7 +75,6 @@ def convolution_1d(input_tensor, weight_tensor, pad, freq_dilation=1):
 
 
 class FreqConv1d(torch.nn.Module):
-    # TODO: Add frequency domain weights to save on the initial kernel fft.
     def __init__(self, in_channels, out_channels, kernel_size, padding=0, freq_dilation=1,
                  time_weights=True, bias=True):
         super().__init__()
@@ -79,12 +85,20 @@ class FreqConv1d(torch.nn.Module):
         self.freq_dilation = freq_dilation
         self.time_weights = time_weights
         self.bias_add = bias
+        self.polar = True
         self._print = True
-        if time_weights:
-            self.weight = torch.nn.Parameter(torch.Tensor(out_channels, in_channels, kernel_size))
+        if self.time_weights:
+            self.conv_weight = torch.nn.Parameter(torch.Tensor(out_channels, in_channels, kernel_size))
         else:
-            pass
-            # TODO: explore complex freq-domain weight formulations.
+            if self.polar:
+                self.r = torch.nn.Parameter(torch.Tensor(out_channels, in_channels, kernel_size//2))
+                self.phi = torch.nn.Parameter(torch.Tensor(out_channels, in_channels, kernel_size//2))
+                self.weight = None
+            else:
+                self.x = torch.nn.Parameter(torch.Tensor(out_channels, in_channels, kernel_size//2))
+                self.y = torch.nn.Parameter(torch.Tensor(out_channels, in_channels, kernel_size//2))
+                self.weight = None
+
         if self.bias_add:
             self.bias = torch.nn.Parameter(torch.Tensor(out_channels))
         else:
@@ -92,14 +106,33 @@ class FreqConv1d(torch.nn.Module):
         self.reset_parameters()
 
     def reset_parameters(self):
-        torch.nn.init.normal_(self.weight, mean=0.0, std=0.01)
+        if self.time_weights:
+            torch.nn.init.normal_(self.conv_weight, mean=0.0, std=0.01)
+        else:
+            if self.polar:
+                torch.nn.init.normal_(self.r, mean=0.0, std=0.01)
+                torch.nn.init.uniform_(self.phi, 0.0, 2*np.pi)
+            else:
+                torch.nn.init.normal_(self.x, mean=0.0, std=0.01)
+                torch.nn.init.normal_(self.y, mean=0.0, std=0.01)
         if self.bias is not None:
             torch.nn.init.uniform_(self.bias, -0.01, 0.01)
 
     def forward(self, input_tensor):
+
+        if not self.time_weights:
+            if self.polar:
+                freq_weights = complex_exp(self.r, self.phi)
+                weight = torch.irfft(freq_weights, signal_ndim=1)
+            else:
+                freq_weights = torch.stack([self.x, self.y], -1)
+                weight = torch.irfft(freq_weights, signal_ndim=1)
+        else:
+            weight = self.conv_weight
+
         pad = self.padding // 2
         input_tensor_pad = torch.nn.functional.pad(input_tensor, [pad, pad])
-        conv_out = freq_convolution_1d(input_tensor_pad, self.weight, self.freq_dilation)
+        conv_out = freq_convolution_1d(input_tensor_pad, weight, self.freq_dilation)
         if self.bias_add:
             # unsqueeze the batch and time dimensions.
             conv_out += self.bias.unsqueeze(0).unsqueeze(-1)

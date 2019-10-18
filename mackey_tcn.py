@@ -5,17 +5,17 @@ import torch
 
 import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
-from synthetic.mackey_glass import MackeyGenerator
+from data_loading.mackey_glass import MackeyGenerator
 from temporal_convolutions.kernel_dilation import TemporalConvNet
 import ipdb
 
 bpd = {}
 bpd['iterations'] = 8000
-bpd['tmax'] = 800
+bpd['tmax'] = 512
 bpd['delta_t'] = 1.0
-bpd['pred_samples'] = 400
-bpd['window_size'] = 10
-bpd['lr'] = 0.004
+bpd['pred_samples'] = 256
+bpd['window_size'] = 1
+bpd['lr'] = 0.001
 bpd['batch_size'] = 32
 bpd['dropout'] = 0.0
 bpd['channels'] = [30, 30, 30, 30, 30, 30]
@@ -76,6 +76,13 @@ for pd in pd_lst:
         #                     torch.matmul((1 - y), torch.log(1 - prediction).float().t()))
         loss = critereon(y, prediction)
         loss.backward()
+
+        total_norm = 0
+        for p in tcn.parameters():
+            param_norm = p.grad.data.norm(2)
+            total_norm += param_norm.item() ** 2
+        total_norm = total_norm ** (1. / 2)
+
         optimizer.step()
 
         rec_loss = loss.detach().cpu().numpy()
@@ -83,6 +90,7 @@ for pd in pd_lst:
         runtime = time.time() - start
         print('iteration', i, 'loss', loss_lst[-1], 'runtime', runtime)
         summary.add_scalar('mse', loss_lst[-1], global_step=i)
+        summary.add_scalar('gradient-norm', total_norm, global_step=i)
 
         if i % 100 == 0:
             fig = plt.figure()
