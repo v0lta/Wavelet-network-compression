@@ -39,12 +39,13 @@ wavelet = pywt.Wavelet('haar')
 # wavelet = pywt.Wavelet('db4')
 # wavelet = pywt.Wavelet('bior2.4')
 
-# TODO: Start from noise here! Or perhaps a haar wavelet which turns into something else.
-wavelet = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-                        dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
-                        rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-                        rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
-                        name='custom')
+# TODO: Start from noise here!
+wavelet = CustomWavelet(
+    dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+    dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
+    rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+    rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
+    name='custom')
 
 
 # try out the multilevel version.
@@ -52,15 +53,16 @@ wave1d_8 = Wave1D(wavelet, scales=8)
 wave1d_8_freq = wave1d_8.analysis(
     mackey_data_1.unsqueeze(1).unsqueeze(1).cpu())
 print('alias cancellation loss:',
-      wave1d_8.alias_cancellation_loss().detach().numpy(), ',',
+      wave1d_8.alias_cancellation_loss()[0].detach().numpy(), ',',
       wavelet.name)
 print('perfect reconstruction loss:',
-      wave1d_8.perfect_reconstruction_loss().detach().numpy())
+      wave1d_8.perfect_reconstruction_loss()[0].detach().numpy())
 
 # reconstruct the input
 my_rec = wave1d_8.reconstruction(wave1d_8_freq)
-print('my_rec error', np.sum(np.abs(my_rec[0, 0, 0, :].detach().numpy()
-                                    - mackey_data_1[0, :].cpu().numpy())))
+print('my_rec error', np.sum(
+    np.abs(my_rec[0, 0, 0, :].detach().numpy() -
+    mackey_data_1[0, :].cpu().numpy())))
 
 plt.plot(my_rec[0, 0, 0, :].detach().numpy())
 plt.plot(mackey_data_1[0, :].cpu().numpy())
@@ -135,9 +137,9 @@ for s in range(steps):
     rec_low = wave1d_8.reconstruction(c_low)
     msel = criterion(mackey_data, torch.squeeze(rec_low))
     loss = msel
-    acl = wave1d_8.alias_cancellation_loss()
-    prl = wave1d_8.perfect_reconstruction_loss()
-    loss += (acl + prl) # * s/steps
+    acl = wave1d_8.alias_cancellation_loss()[0]
+    prl = wave1d_8.perfect_reconstruction_loss()[0]
+    loss += (acl + prl)  # * s/steps
 
     # compute gradients
     loss.backward()
