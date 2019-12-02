@@ -9,6 +9,10 @@ from RNN_compression.cells import GRUCell, FastFoodGRU, WaveletGRU
 from RNN_compression.sequential_mnist import data_generator
 from util import pd_to_string, compute_parameter_total
 import pickle
+import collections
+
+CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
+                                                   'rec_lo', 'rec_hi', 'name'])
 
 pd = {}
 pd['problem'] = 'MNIST'
@@ -19,7 +23,12 @@ pd['batch_size'] = 50
 pd['epochs'] = 10
 pd['lr'] = 1e-3
 if pd['cell'] == 'WaveletGRU':
-    pd['init_wavelet'] = pywt.Wavelet('db6')
+    # pd['init_wavelet'] = pywt.Wavelet('db6')
+    pd['init_wavelet'] = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                                       dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
+                                       rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                                       rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
+                                       name='custom')
 else:
     pd['init_wavelet'] = None
 
