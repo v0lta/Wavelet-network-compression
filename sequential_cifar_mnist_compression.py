@@ -12,9 +12,8 @@ import pickle
 
 pd = {}
 pd['problem'] = 'MNIST'
-pd['cell'] = 'WaveletGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
-pd['compression_mode'] = '' \
-                         ''  # gates, state, state_reset, state_update, full
+pd['cell'] = 'GRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
+pd['compression_mode'] = 'full'  # gates, state, state_reset, state_update, full
 pd['hidden'] = 512
 pd['batch_size'] = 50
 pd['epochs'] = 10
