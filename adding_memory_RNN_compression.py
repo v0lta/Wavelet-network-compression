@@ -10,11 +10,13 @@ from RNN_compression.cells import GRUCell, FastFoodGRU, WaveletGRU
 from RNN_compression.adding_memory import generate_data_adding, generate_data_memory
 from util import pd_to_string, compute_parameter_total
 import pickle
-
+import collections
+CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
+                                                   'rec_lo', 'rec_hi', 'name'])
 
 pd = {}
 pd['problem'] = 'adding'
-pd['cell'] = 'FastFoodGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
+pd['cell'] = 'WaveletGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
 pd['hidden'] = 512
 pd['time_steps'] = 150
 pd['compression_mode'] = 'full'
@@ -23,7 +25,13 @@ pd['n_train'] = int(9e5)  # int(9e5)
 pd['n_test'] = int(1e4)
 pd['lr'] = 1e-3
 if pd['cell'] == 'WaveletGRU':
-    pd['init_wavelet'] = pywt.Wavelet('db6')
+    # pd['init_wavelet'] = pywt.Wavelet('db6')
+    pd['init_wavelet'] = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                                       dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
+                                       rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                                       rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
+                                       name='custom')
+
 else:
     pd['init_wavelet'] = None
 
