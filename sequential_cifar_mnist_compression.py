@@ -10,11 +10,11 @@ from RNN_compression.sequential_mnist import data_generator
 from util import pd_to_string, compute_parameter_total
 import pickle
 
-
 pd = {}
 pd['problem'] = 'MNIST'
 pd['cell'] = 'WaveletGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
-pd['compression_mode'] = 'gates' # gates, state, state_reset, state_update, full
+pd['compression_mode'] = '' \
+                         ''  # gates, state, state_reset, state_update, full
 pd['hidden'] = 512
 pd['batch_size'] = 50
 pd['epochs'] = 10

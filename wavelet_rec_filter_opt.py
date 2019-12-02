@@ -52,10 +52,10 @@ wave1d_8 = Wave1D(wavelet, scales=8)
 wave1d_8_freq = wave1d_8.analysis(
     mackey_data_1.unsqueeze(1).unsqueeze(1).cpu())
 print('alias cancellation loss:',
-      wave1d_8.alias_cancellation_loss().detach().numpy(), ',',
+      wave1d_8.alias_cancellation_loss()[0].detach().numpy(), ',',
       wavelet.name)
 print('perfect reconstruction loss:',
-      wave1d_8.perfect_reconstruction_loss().detach().numpy())
+      wave1d_8.perfect_reconstruction_loss()[0].detach().numpy())
 
 # reconstruct the input
 my_rec = wave1d_8.reconstruction(wave1d_8_freq)
@@ -135,8 +135,8 @@ for s in range(steps):
     rec_low = wave1d_8.reconstruction(c_low)
     msel = criterion(mackey_data, torch.squeeze(rec_low))
     loss = msel
-    acl = wave1d_8.alias_cancellation_loss()
-    prl = wave1d_8.perfect_reconstruction_loss()
+    acl = wave1d_8.alias_cancellation_loss()[0]
+    prl = wave1d_8.perfect_reconstruction_loss()[0]
     loss += (acl + prl) # * s/steps
 
     # compute gradients
