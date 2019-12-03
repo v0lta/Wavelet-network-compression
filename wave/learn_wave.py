@@ -127,6 +127,10 @@ class Wave1D(torch.nn.Module):
                 pass
 
     def compute_coeff_no(self, init_length):
+        """
+        Compute the number of resulting wavelet coefficients.
+        @param init_length: length of the input signal vector.
+        """
         lengths = [init_length]
         for J in range(self.scales):
             lengths.append(pywt.dwt_coeff_len(

@@ -15,7 +15,7 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
 print(torch.cuda.get_device_name(), torch.cuda.is_available())
 
 pd = {}
-pd['iterations'] = 8000
+pd['iterations'] = 1
 pd['tmax'] = 256
 pd['delta_t'] = 0.1
 pd['pred_samples'] = 256
@@ -108,13 +108,13 @@ plt.plot(rec_low[0, 0, 0, :].detach().numpy())
 plt.plot(mackey_data_1[0, :].cpu().numpy())
 plt.plot(np.abs(rec_low[0, 0, 0, :].detach().numpy() - mackey_data_1[0, :].cpu().numpy()))
 # savefig('haar')
-tikz.save('haar.tex', standalone=True)
+# tikz.save('haar.tex', standalone=True)
 plt.show()
 
 plt.title('haar coefficients')
 plt.semilogy(np.abs(torch.cat(wave1d_8_freq, -1)[0, 0, 0, :].detach().numpy()))
 plt.semilogy(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().numpy()), '.')
-tikz.save('haar_coefficients.tex', standalone=True)
+# tikz.save('haar_coefficients.tex', standalone=True)
 plt.show()
 
 # optimize the basis:
@@ -165,13 +165,13 @@ plt.plot(rec_low[0, 0, 0, :].detach().cpu().numpy())
 plt.plot(mackey_data_1[0, :].cpu().numpy())
 plt.plot(np.abs(rec_low[0, 0, 0, :].detach().cpu().numpy() - mackey_data_1[0, :].cpu().numpy()))
 # plt.savefig('optimized_haar')
-tikz.save('optimized_haar.tex', standalone=True)
+# tikz.save('optimized_haar.tex', standalone=True)
 plt.show()
 
 plt.title('Optimized haar coefficients')
 plt.semilogy(np.abs(torch.cat(wave1d_8_freq, -1)[0, 0, 0, :].detach().cpu().numpy()))
 plt.semilogy(np.abs(torch.cat(c_low, -1)[0, 0, 0, :].detach().cpu().numpy()), '.')
-tikz.save('optimized_haar_coefficients.tex', standalone=True)
+# tikz.save('optimized_haar_coefficients.tex', standalone=True)
 plt.show()
 
 plt.semilogy(rec_loss_lst[10:])

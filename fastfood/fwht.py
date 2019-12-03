@@ -1,14 +1,25 @@
 import torch
 import numpy as np
+from scipy.linalg import hadamard
+
+
+def matmul_wht(x, inverse=False):
+    n = x.shape[-1]
+    h_mat = torch.from_numpy(hadamard(n).astype(np.float32)).unsqueeze(0)
+    y = torch.matmul(x, h_mat)
+    if not inverse:
+        y = y/n
+    return y
 
 
 def fwht(x, inverse=False):
-    '''
+    """
     Matlab inspired fast welsh-hadamard transform.
     :param inverse: If true the ifwht is computed.
     :param x: The tensor to be transformed
     :return: The welsh hadamard coefficients.
-    '''
+    """
+
     x = x.clone()
 
     n = x.shape[-1]
@@ -30,7 +41,7 @@ def fwht(x, inverse=False):
         jb = 0
         k = 0
         while k < n:
-            # TODO: use torch.nn.conv2d to do this?
+            # print('jb, jb+m, k, n, m', jb, jb+m, k, n, m)
             for j in range(jb, jb+m, 2):
                 y[..., k] = x[..., j] + x[..., j+m]
                 y[..., k+1] = x[..., j] - x[..., j+m]
@@ -38,6 +49,7 @@ def fwht(x, inverse=False):
                 y[..., k+3] = x[..., j+1] + x[..., j+1+m]
                 k = k + 4
             jb = jb + 2*m
+
         # store coefficients in x at the end of each stage
         x = y.clone()
         l = l + 1
@@ -86,6 +98,7 @@ def walsh_hadamard_transform(seq_in, inverse=False, scale=True):
 
 
 if __name__ == '__main__':
+
     seq = torch.tensor([1., 1., 1., 1., 0, 0, 0, 1.])
     print('len', len(seq))
     seq_freq = walsh_hadamard_transform(seq)
@@ -99,3 +112,9 @@ if __name__ == '__main__':
 
     fwht_seq = fwht(seq)
     print(fwht_seq)
+
+    # haramard
+    res = matmul_wht(seq.unsqueeze(0), inverse=False)
+    print('res', res)
+    inv = matmul_wht(res, inverse=True)
+    print('inv', inv)

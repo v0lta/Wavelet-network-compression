@@ -4,7 +4,7 @@ A fastfood layer implementation.
 import torch
 import numpy as np
 from torch.nn.parameter import Parameter
-from fastfood.fwht import fwht as wht
+from fastfood.fwht import matmul_wht as wht
 
 
 def diag_mul(self, vector, mat):
