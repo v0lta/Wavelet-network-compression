@@ -4,6 +4,11 @@ from scipy.linalg import hadamard
 
 
 def matmul_wht(x, inverse=False):
+    """
+    Welsh-Hadamard transform by matrix multiplication.
+    @ param x: The sequence to be transformed [batchsize, seq_len].
+    @ param inverse: If true computes the inverse transform.
+    """
     n = x.shape[-1]
     h_mat = torch.from_numpy(hadamard(n).astype(np.float32)).unsqueeze(0)
     y = torch.matmul(x, h_mat)
