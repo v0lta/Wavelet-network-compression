@@ -16,7 +16,7 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
 
 pd = {}
 pd['problem'] = 'adding'
-pd['cell'] = 'GRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
+pd['cell'] = 'FastFoodGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
 pd['hidden'] = 512
 pd['time_steps'] = 150
 pd['compression_mode'] = 'full'  # gates, state, state_reset, state_update, full

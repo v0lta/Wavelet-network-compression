@@ -5,6 +5,7 @@ import torch
 import numpy as np
 from torch.nn.parameter import Parameter
 from fastfood.fwht import matmul_wht as wht
+from scipy.linalg import hadamard
 
 
 def diag_mul(self, vector, mat):
@@ -30,6 +31,7 @@ class FastFoodLayer(torch.nn.Module):
         self.drop_s = torch.nn.Dropout(p=p_drop)
         self.drop_g = torch.nn.Dropout(p=p_drop)
         self.drop_b = torch.nn.Dropout(p=p_drop)
+        self.h_mat = Parameter(torch.from_numpy(hadamard(depth).astype(np.float32)), requires_grad=False)
 
     def mul_s(self, x):
         return torch.mm(x, self.drop_s(torch.diag(self.diag_vec_s)))
@@ -44,7 +46,9 @@ class FastFoodLayer(torch.nn.Module):
         return torch.mm(x, self.perm)
 
     def forward(self, x):
-        return self.mul_s(wht(self.mul_g(self.mul_p(wht(self.mul_b(x)))), inverse=True))
+        return self.mul_s(wht(self.mul_g(self.mul_p(wht(self.mul_b(x),
+                                                        h_mat=self.h_mat))),
+                              h_mat=self.h_mat, inverse=True))
 
     def extra_repr(self):
         return 'depth={}'.format(self.depth)

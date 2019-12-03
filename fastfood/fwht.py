@@ -3,20 +3,22 @@ import numpy as np
 from scipy.linalg import hadamard
 
 
-def matmul_wht(x, inverse=False):
+def matmul_wht(x, h_mat=None, inverse=False):
     """
     Welsh-Hadamard transform by matrix multiplication.
     @ param x: The sequence to be transformed [batchsize, seq_len].
     @ param inverse: If true computes the inverse transform.
     """
     n = x.shape[-1]
-    h_mat = torch.from_numpy(hadamard(n).astype(np.float32)).unsqueeze(0)
-    if x.device.type == 'cuda':
-        h_mat = h_mat.cude()
-    y = torch.matmul(x, h_mat)
+
+    if h_mat is None:
+        h_mat = torch.from_numpy(hadamard(n).astype(np.float32))
+        if x.device.type == 'cuda':
+            h_mat = h_mat.cuda()
+    y = torch.nn.functional.linear(x.unsqueeze(0), h_mat, bias=None)
     if not inverse:
         y = y/n
-    return y
+    return y[0]
 
 
 def fwht(x, inverse=False):
