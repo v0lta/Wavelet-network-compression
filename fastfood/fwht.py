@@ -11,6 +11,8 @@ def matmul_wht(x, inverse=False):
     """
     n = x.shape[-1]
     h_mat = torch.from_numpy(hadamard(n).astype(np.float32)).unsqueeze(0)
+    if x.device.type == 'cuda':
+        h_mat = h_mat.cude()
     y = torch.matmul(x, h_mat)
     if not inverse:
         y = y/n
