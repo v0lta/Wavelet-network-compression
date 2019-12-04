@@ -51,6 +51,10 @@ class WaveletGRU(GRUCell):
             print('gates compression')
             self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
             self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+        elif mode == 'reset':
+            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+        elif mode == 'update':
+            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
         elif mode == 'state':
             print('state compression')
             self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)

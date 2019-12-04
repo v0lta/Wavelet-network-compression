@@ -1,6 +1,8 @@
+import collections
 import numpy as np
 import pywt
-
+CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
+                                                   'rec_lo', 'rec_hi', 'name'])
 
 def compute_parameter_total(net):
     total = 0
@@ -25,6 +27,8 @@ def pd_to_string(pd_var) -> str:
         elif type(pd_var[key]) is bool:
             pd_var_str += '_' + key
         elif type(pd_var[key]) is pywt.Wavelet:
+            pd_var_str += '_' + pd_var[key].name
+        elif type(pd_var[key]) is CustomWavelet:
             pd_var_str += '_' + pd_var[key].name
         else:
             pd_var_str += '_' + key + str(pd_var[key])

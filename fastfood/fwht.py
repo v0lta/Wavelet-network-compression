@@ -107,7 +107,6 @@ def walsh_hadamard_transform(seq_in, inverse=False, scale=True):
 
 
 if __name__ == '__main__':
-
     seq = torch.tensor([1., 1., 1., 1., 0, 0, 0, 1.])
     print('len', len(seq))
     seq_freq = walsh_hadamard_transform(seq)
