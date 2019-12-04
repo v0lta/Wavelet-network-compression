@@ -52,8 +52,10 @@ class WaveletGRU(GRUCell):
             self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
             self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
         elif mode == 'reset':
+            print('reset compression')
             self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
         elif mode == 'update':
+            print('update compression')
             self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
         elif mode == 'state':
             print('state compression')
@@ -78,6 +80,10 @@ class WaveletGRU(GRUCell):
             return self.Whz.get_wavelet_loss() + self.Whr.get_wavelet_loss()
         elif self.mode == 'state':
             return self.Whh.get_wavelet_loss()
+        elif self.mode == 'reset':
+            return self.Whr.get_wavelet_loss()
+        elif self.mode == 'update':
+            return self.Whz.get_wavelet_loss()
         elif self.mode == 'state_reset':
             return self.Whh.get_wavelet_loss() + self.Whr.get_wavelet_loss()
         elif self.mode == 'state_update':
