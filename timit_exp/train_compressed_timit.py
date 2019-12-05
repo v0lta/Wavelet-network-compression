@@ -11,7 +11,7 @@ pd = {}
 pd['epochs'] = 2
 pd['cell'] = 'GRU'
 pd['lr'] = 0.001
-pd['hidden'] =
+pd['hidden'] = 0
 
 timit = TIMITDataSet()
 input_size = 13
@@ -41,8 +41,3 @@ else:
 for e in range(pd['epochs']):
     # go for spectrum prediction here!!
     train_keys, train_features, train_phones, train_feat_len, train_phone_len = timit.get_train_batches()
-
-    pad_features = torch.nn.utils.rnn.pad_sequence(train_features)
-    pad_phones = torch.nn.utils.rnn.pad_sequence(train_phones)
-
-    print('stop')
