@@ -16,12 +16,12 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
 
 pd = {}
 pd['problem'] = 'adding'
-pd['cell'] = 'FastFoodGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
+pd['cell'] = 'WaveletGRU'  # 'GRU'  'WaveletGRU' 'FastFoodGRU'
 pd['hidden'] = 512
 pd['time_steps'] = 150
-pd['compression_mode'] = 'full'  # gates, state, state_reset, state_update, full
+pd['compression_mode'] = 'state'  # gates, state, state_reset, state_update, full
 pd['batch_size'] = 50
-pd['n_train'] = int(9e5)  # int(9e5)
+pd['n_train'] = int(1e4)  # int(9e5)
 pd['n_test'] = int(1e4)
 pd['lr'] = 1e-3
 if pd['cell'] == 'WaveletGRU':

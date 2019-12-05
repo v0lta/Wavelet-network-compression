@@ -28,7 +28,7 @@ def pd_to_string(pd_var) -> str:
             pd_var_str += '_' + key
         elif type(pd_var[key]) is pywt.Wavelet:
             pd_var_str += '_' + pd_var[key].name
-        elif type(pd_var[key]) is CustomWavelet:
+        elif key == 'init_wavelet':
             pd_var_str += '_' + pd_var[key].name
         else:
             pd_var_str += '_' + key + str(pd_var[key])
