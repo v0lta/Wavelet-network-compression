@@ -87,6 +87,9 @@ class EmbeddingRnnWrapper(torch.nn.Module):
         emb = self.encoder(x)
         return self.cell(emb, h)
 
+    def get_wavelet_loss(self):
+        return self.cell.get_wavelet_loss()
+
 
 model = EmbeddingRnnWrapper(cell, input_size=args.emsize, out_size=n_characters)
 
@@ -158,7 +161,7 @@ def train(epoch):
         criterion_loss = criterion(final_output, final_target)
 
         if args.cell == 'WaveGRU':
-            loss_wave = cell.get_wavelet_loss()
+            loss_wave = model.get_wavelet_loss()
             loss = criterion_loss + loss_wave
         else:
             loss = criterion_loss
@@ -186,40 +189,35 @@ def train(epoch):
 
 def main():
     global lr
-    try:
-        print("Training for %d epochs..." % args.epochs)
-        all_losses = []
-        best_vloss = 1e7
-        for epoch in range(1, args.epochs + 1):
-            loss = train(epoch)
+    print("Training for %d epochs..." % args.epochs)
+    all_losses = []
+    best_vloss = 1e7
+    for epoch in range(1, args.epochs + 1):
+        loss = train(epoch)
 
-            vloss = evaluate(val_data)
-            print('-' * 89)
-            print('| End of epoch {:3d} | valid loss {:5.3f} | valid bpc {:8.3f}'.format(
-                epoch, vloss, vloss / math.log(2)))
+        vloss = evaluate(val_data)
+        print('-' * 89)
+        print('| End of epoch {:3d} | valid loss {:5.3f} | valid bpc {:8.3f}'.format(
+            epoch, vloss, vloss / math.log(2)))
 
-            test_loss = evaluate(test_data)
-            print('=' * 89)
-            print('| End of epoch {:3d} | test loss {:5.3f} | test bpc {:8.3f}'.format(
-                epoch, test_loss, test_loss / math.log(2)))
-            print('=' * 89)
+        test_loss = evaluate(test_data)
+        print('=' * 89)
+        print('| End of epoch {:3d} | test loss {:5.3f} | test bpc {:8.3f}'.format(
+            epoch, test_loss, test_loss / math.log(2)))
+        print('=' * 89)
 
-            if epoch > 5 and vloss > max(all_losses[-3:]):
-                lr = lr / 10.
-                for param_group in optimizer.param_groups:
-                    param_group['lr'] = lr
-            all_losses.append(vloss)
+        if epoch > 5 and vloss > max(all_losses[-3:]):
+            lr = lr / 10.
+            for param_group in optimizer.param_groups:
+                param_group['lr'] = lr
+        all_losses.append(vloss)
 
-            # if vloss < best_vloss:
-            #     print("Saving...")
-            #     save(model)
-            #     best_vloss = vloss
+        # if vloss < best_vloss:
+        #     print("Saving...")
+        #     save(model)
+        #     best_vloss = vloss
 
-    except KeyboardInterrupt:
-        print('KeyboardInterrupt, exiting.')
-        # print('-' * 89)
-        # print("Saving before quit...")
-        # save(model)
+
 
     # Run on test data.
     test_loss = evaluate(test_data)
