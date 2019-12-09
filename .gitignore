@@ -405,3 +405,6 @@ TSWLatexianTemp*
 
 # tensorboard logs
 *.0
+
+# models
+*.pt
