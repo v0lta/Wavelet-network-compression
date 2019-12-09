@@ -155,13 +155,20 @@ def train(epoch):
         eff_history = args.seq_len - args.validseqlen
         final_output = output[:, eff_history:].contiguous().view(-1, n_characters)
         final_target = target[:, eff_history:].contiguous().view(-1)
-        loss = criterion(final_output, final_target)
+        criterion_loss = criterion(final_output, final_target)
+
+        if args.cell == 'WaveGRU':
+            loss_wave = cell.get_wavelet_loss()
+            loss = criterion_loss + loss_wave
+        else:
+            loss = criterion_loss
+
         loss.backward()
 
         if args.clip > 0:
             torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
-        total_loss += loss.item()
+        total_loss += criterion_loss.item()
 
         if batch_idx % args.log_interval == 0 and batch_idx > 0:
             cur_loss = total_loss / args.log_interval
