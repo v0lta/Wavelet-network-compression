@@ -399,4 +399,9 @@ TSWLatexianTemp*
 # Makeindex log files
 *.lpz
 
+# pycharm files.
+*.iml
+*.xml
 
+# tensorboard logs
+*.0
