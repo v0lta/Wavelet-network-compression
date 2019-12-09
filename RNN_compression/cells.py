@@ -1,5 +1,6 @@
 import torch
-import numpy as np
+import sys
+sys.path.append("../")
 from wave.wavelet_linear import WaveletLayer
 from fastfood.fastfood import FastFoodLayer
 import pywt
