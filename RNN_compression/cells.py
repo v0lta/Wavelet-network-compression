@@ -1,5 +1,5 @@
 import torch
-from wave.wavelet_linear import WaveletLayer
+from wavelet_learning.wavelet_linear import WaveletLayer
 from fastfood.fastfood import FastFoodLayer
 import pywt
 
