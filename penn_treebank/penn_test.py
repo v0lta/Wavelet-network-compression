@@ -22,8 +22,6 @@ parser.add_argument('--clip', type=float, default=0.15,
                     help='gradient clip, -1 means no clip (default: 0.15)')
 parser.add_argument('--epochs', type=int, default=100,
                     help='upper epoch limit (default: 100)')
-parser.add_argument('--levels', type=int, default=3,
-                    help='# of levels (default: 3)')
 parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='report interval (default: 100')
 parser.add_argument('--lr', type=float, default=4,
@@ -205,15 +203,16 @@ def main():
                     param_group['lr'] = lr
             all_losses.append(vloss)
 
-            if vloss < best_vloss:
-                print("Saving...")
-                save(model)
-                best_vloss = vloss
+            # if vloss < best_vloss:
+            #     print("Saving...")
+            #     save(model)
+            #     best_vloss = vloss
 
     except KeyboardInterrupt:
-        print('-' * 89)
-        print("Saving before quit...")
-        save(model)
+        print('KeyboardInterrupt, exiting.')
+        # print('-' * 89)
+        # print("Saving before quit...")
+        # save(model)
 
     # Run on test data.
     test_loss = evaluate(test_data)
