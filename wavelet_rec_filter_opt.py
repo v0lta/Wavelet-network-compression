@@ -6,7 +6,7 @@ import torch
 import matplotlib.pyplot as plt
 # from torch.utils.tensorboard import SummaryWriter
 from RNN_compression.mackey_glass import MackeyGenerator
-from wave.learn_wave import Wave1D
+from wavelet_learning.learn_wave import Wave1D
 import matplotlib2tikz as tikz
 
 

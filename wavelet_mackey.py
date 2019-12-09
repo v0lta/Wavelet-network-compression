@@ -5,8 +5,8 @@ import torch
 import matplotlib.pyplot as plt
 # from torch.utils.tensorboard import SummaryWriter
 from RNN_compression.mackey_glass import MackeyGenerator
-from wave.transform2d import DWTForward, DWTInverse
-from wave.learn_wave import Wave1D
+from wavelet_learning.transform2d import DWTForward, DWTInverse
+from wavelet_learning.learn_wave import Wave1D
 
 print(torch.cuda.get_device_name(), torch.cuda.is_available())
 
