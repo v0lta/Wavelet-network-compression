@@ -5,8 +5,6 @@ based on https://github.com/locuslab/TCN/tree/master/TCN/char_cnn
 import argparse
 import torch.nn as nn
 import torch.optim as optim
-import sys
-sys.path.append("../")
 from penn_treebank.utils import *
 import time
 import math
