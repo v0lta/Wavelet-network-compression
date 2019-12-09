@@ -5,10 +5,10 @@ based on https://github.com/locuslab/TCN/tree/master/TCN/char_cnn
 import argparse
 import torch.nn as nn
 import torch.optim as optim
-from penn_treebank.utils import *
 import time
 import math
 from RNN_compression.cells import WaveletGRU, FastFoodGRU, GRUCell
+from penn_treebank.utils import *
 
 import warnings
 warnings.filterwarnings("ignore")   # Suppress the RunTimeWarning on unicode
