@@ -8,11 +8,10 @@ import torch.optim as optim
 import time
 import math
 from RNN_compression.cells import WaveletGRU, FastFoodGRU, GRUCell
-from penn_treebank.utils import *
+from penn_treebank.char_utils import *
 
 import warnings
 warnings.filterwarnings("ignore")   # Suppress the RunTimeWarning on unicode
-
 
 parser = argparse.ArgumentParser(description='Sequence Modeling - Character Level Language Model')
 parser.add_argument('--batch_size', type=int, default=32, metavar='N',
