@@ -166,7 +166,7 @@ def train(epoch):
 
         if args.cell == 'WaveGRU':
             loss_wave = model.get_wavelet_loss()
-            loss = criterion_loss + loss_wave*5
+            loss = criterion_loss + loss_wave*10
         else:
             loss_wave = 0
             loss = criterion_loss
