@@ -142,8 +142,10 @@ def evaluate(source):
 def train(epoch):
     model.train()
     total_loss = 0
+    total_wvl_loss = 0
     start_time = time.time()
     losses = []
+    wvl_losses = []
     source = train_data
     source_len = source.size(1)
     for batch_idx, i in enumerate(range(0, source_len - 1, args.validseqlen)):
@@ -164,6 +166,7 @@ def train(epoch):
             loss_wave = model.get_wavelet_loss()
             loss = criterion_loss + loss_wave
         else:
+            loss_wave = 0
             loss = criterion_loss
 
         loss.backward()
@@ -172,10 +175,13 @@ def train(epoch):
             torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip)
         optimizer.step()
         total_loss += criterion_loss.item()
+        total_wvl_loss += loss_wave.item()
 
         if batch_idx % args.log_interval == 0 and batch_idx > 0:
             cur_loss = total_loss / args.log_interval
+            cur_wvl_loss = total_wvl_loss / args.log_interval
             losses.append(cur_loss)
+            wvl_losses.append(cur_wvl_loss)
             elapsed = time.time() - start_time
             print('| epoch {:3d} | {:5d}/{:5d} batches | lr {:02.5f} | ms/batch {:5.2f} | '
                   'loss {:5.3f} | bpc {:5.3f}'.format(
@@ -184,7 +190,7 @@ def train(epoch):
             total_loss = 0
             start_time = time.time()
 
-    return sum(losses) * 1.0 / len(losses)
+    return sum(losses) * 1.0 / len(losses), sum(wvl_losses)/len(wvl_losses)
 
 
 def main():
@@ -193,8 +199,9 @@ def main():
     all_losses = []
     best_vloss = 1e7
     for epoch in range(1, args.epochs + 1):
-        loss = train(epoch)
-
+        loss, wvl_loss = train(epoch)
+        print('| End of epoch {:3d} | loss {:5.3f} | bpc {:8.3f} | wvl-loss {:8.3f}'.format(
+              epoch, loss, loss / math.log(2), wvl_loss))
         vloss = evaluate(val_data)
         print('-' * 89)
         print('| End of epoch {:3d} | valid loss {:5.3f} | valid bpc {:8.3f}'.format(
