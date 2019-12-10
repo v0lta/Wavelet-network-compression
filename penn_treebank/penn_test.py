@@ -8,6 +8,7 @@ import torch.optim as optim
 import time
 import math
 from RNN_compression.cells import WaveletGRU, FastFoodGRU, GRUCell
+from util import compute_parameter_total
 from penn_treebank.char_utils import *
 
 import warnings
@@ -92,6 +93,7 @@ class EmbeddingRnnWrapper(torch.nn.Module):
 
 
 model = EmbeddingRnnWrapper(cell, input_size=args.emsize, out_size=n_characters)
+print('parameter total', compute_parameter_total(model))
 
 if args.cuda:
     model.cuda()
@@ -164,7 +166,7 @@ def train(epoch):
 
         if args.cell == 'WaveGRU':
             loss_wave = model.get_wavelet_loss()
-            loss = criterion_loss + loss_wave
+            loss = criterion_loss + loss_wave*5
         else:
             loss_wave = 0
             loss = criterion_loss
@@ -224,14 +226,13 @@ def main():
         #     save(model)
         #     best_vloss = vloss
 
-
-
     # Run on test data.
     test_loss = evaluate(test_data)
     print('=' * 89)
     print('| End of training | test loss {:5.3f} | test bpc {:8.3f}'.format(
         test_loss, test_loss / math.log(2)))
     print('=' * 89)
+    print('parameter total', compute_parameter_total(model))
 
 # train_by_random_chunk()
 if __name__ == "__main__":
