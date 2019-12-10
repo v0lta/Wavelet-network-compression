@@ -43,6 +43,9 @@ parser.add_argument('--cell', type=str, default='WaveGRU', help='The cell type u
 parser.add_argument('--cell_size', type=int, default=512, help='Cell state size.')
 parser.add_argument('--compression_mode', type=str, default='state',
                     help='Where to apply the compression layers.')
+parser.add_argument('--wavelet_weight', type=float, default=1.,
+                    help='Weight factor for the wavelet loss.')
+
 args = parser.parse_args()
 
 # Set the random seed manually for reproducibility.
@@ -166,7 +169,7 @@ def train(epoch):
 
         if args.cell == 'WaveGRU':
             loss_wave = model.get_wavelet_loss()
-            loss = criterion_loss + loss_wave*10
+            loss = criterion_loss + loss_wave * args.wavelet_weight
         else:
             loss_wave = 0
             loss = criterion_loss
@@ -202,7 +205,7 @@ def main():
     best_vloss = 1e7
     for epoch in range(1, args.epochs + 1):
         loss, wvl_loss = train(epoch)
-        print('| End of epoch {:3d} | loss {:5.3f} | bpc {:8.3f} | wvl-loss {:8.3f}'.format(
+        print('| epoch {:3d} | loss {:5.3f} | bpc {:8.3f} | wvl-loss {:8.3f}'.format(
               epoch, loss, loss / math.log(2), wvl_loss))
         vloss = evaluate(val_data)
         print('-' * 89)
