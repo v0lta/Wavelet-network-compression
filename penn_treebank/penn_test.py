@@ -25,8 +25,8 @@ parser.add_argument('--epochs', type=int, default=100,
                     help='upper epoch limit (default: 100)')
 parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='report interval (default: 100')
-parser.add_argument('--lr', type=float, default=4,
-                    help='initial learning rate (default: 4)')
+parser.add_argument('--lr', type=float, default=0.1,
+                    help='initial learning rate (default: 0.1)')
 parser.add_argument('--emsize', type=int, default=100,
                     help='dimension of character embeddings (default: 100)')
 parser.add_argument('--optim', type=str, default='SGD',
@@ -122,6 +122,7 @@ def evaluate(source):
     model.eval()
     total_loss = 0
     count = 0
+    acc_sum = 0
     source_len = source.size(1)
     with torch.no_grad():
         for batch, i in enumerate(range(0, source_len - 1, args.validseqlen)):
@@ -140,8 +141,12 @@ def evaluate(source):
             total_loss += loss.data * final_output.size(0)
             count += final_output.size(0)
 
+            # compute accuracy.
+            acc_sum += torch.sum((torch.max(final_output, -1)[1] == final_target).type(torch.float32))
+
         val_loss = total_loss.item() / count * 1.0
-        return val_loss
+        val_acc = acc_sum.item() / count * 1.0
+        return val_loss, val_acc
 
 
 def train(epoch):
@@ -170,8 +175,9 @@ def train(epoch):
         if args.cell == 'WaveGRU':
             loss_wave = model.get_wavelet_loss()
             loss = criterion_loss + loss_wave * args.wavelet_weight
+            # print(loss_wave.item())
         else:
-            loss_wave = 0
+            loss_wave = torch.tensor(0.)
             loss = criterion_loss
 
         loss.backward()
@@ -207,19 +213,19 @@ def main():
         loss, wvl_loss = train(epoch)
         print('| epoch {:3d} | loss {:5.3f} | bpc {:8.3f} | wvl-loss {:8.3f}'.format(
               epoch, loss, loss / math.log(2), wvl_loss))
-        vloss = evaluate(val_data)
+        vloss, vacc = evaluate(val_data)
         print('-' * 89)
-        print('| End of epoch {:3d} | valid loss {:5.3f} | valid bpc {:8.3f}'.format(
-            epoch, vloss, vloss / math.log(2)))
+        print('| End of epoch {:3d} | valid loss {:5.3f} | valid bpc {:8.3f}| valid acc {:8.3f}'.format(
+            epoch, vloss, vloss / math.log(2), vacc))
 
-        test_loss = evaluate(test_data)
+        test_loss, test_acc = evaluate(test_data)
         print('=' * 89)
-        print('| End of epoch {:3d} | test loss {:5.3f} | test bpc {:8.3f}'.format(
-            epoch, test_loss, test_loss / math.log(2)))
+        print('| End of epoch {:3d} | test loss {:5.3f} | test bpc {:8.3f}  | test acc {:8.3f}'.format(
+            epoch, test_loss, test_loss / math.log(2), test_acc))
         print('=' * 89)
 
         if epoch > 5 and vloss > max(all_losses[-3:]):
-            lr = lr / 10.
+            lr = lr / 2.
             for param_group in optimizer.param_groups:
                 param_group['lr'] = lr
         all_losses.append(vloss)
