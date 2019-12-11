@@ -25,11 +25,11 @@ parser.add_argument('--epochs', type=int, default=100,
                     help='upper epoch limit (default: 100)')
 parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='report interval (default: 100')
-parser.add_argument('--lr', type=float, default=0.1,
+parser.add_argument('--lr', type=float, default=0.001,
                     help='initial learning rate (default: 0.1)')
 parser.add_argument('--emsize', type=int, default=100,
                     help='dimension of character embeddings (default: 100)')
-parser.add_argument('--optim', type=str, default='SGD',
+parser.add_argument('--optim', type=str, default='Adam',
                     help='optimizer to use (default: SGD)')
 parser.add_argument('--validseqlen', type=int, default=320,
                     help='valid sequence length (default: 320)')
@@ -39,7 +39,7 @@ parser.add_argument('--seed', type=int, default=1111,
                     help='random seed (default: 1111)')
 parser.add_argument('--dataset', type=str, default='ptb',
                     help='dataset to use (default: ptb)')
-parser.add_argument('--cell', type=str, default='WaveGRU', help='The cell type used')
+parser.add_argument('--cell', type=str, default='GRU', help='The cell type used')
 parser.add_argument('--cell_size', type=int, default=512, help='Cell state size.')
 parser.add_argument('--compression_mode', type=str, default='state',
                     help='Where to apply the compression layers.')
