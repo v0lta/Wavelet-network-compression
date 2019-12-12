@@ -164,4 +164,5 @@ print('test loss mean', np.mean(test_loss_lst), 'test acc mean', np.mean(test_ac
 store_lst = [train_loss_lst, test_loss_lst, test_acc, pt]
 pd_str = pd_to_string(pd)
 time_str = str(datetime.datetime.today())
+print('time:', time_str)
 pickle.dump(store_lst, open('./runs/' + time_str + pd_str + '.pkl', 'wb'))
