@@ -24,11 +24,11 @@ parser.add_argument('--cuda', action='store_false',
                     help='use CUDA (default: True)')
 parser.add_argument('--clip', type=float, default=0.15,
                     help='gradient clip, -1 means no clip (default: 0.15)')
-parser.add_argument('--epochs', type=int, default=100,
-                    help='upper epoch limit (default: 100)')
+parser.add_argument('--epochs', type=int, default=1,
+                    help='upper epoch limit (default: 60)')
 parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='report interval (default: 100')
-parser.add_argument('--lr', type=float, default=0.001,
+parser.add_argument('--lr', type=float, default=0.005,
                     help='initial learning rate (default: 0.1)')
 parser.add_argument('--emsize', type=int, default=100,
                     help='dimension of character embeddings (default: 100)')
@@ -104,7 +104,8 @@ class EmbeddingRnnWrapper(torch.nn.Module):
 
 
 model = EmbeddingRnnWrapper(cell, input_size=args.emsize, out_size=n_characters)
-print('parameter total', compute_parameter_total(model))
+parameter_total = compute_parameter_total(model)
+print('parameter total', parameter_total)
 
 if args.cuda:
     model.cuda()
@@ -244,12 +245,13 @@ def main():
         #     best_vloss = vloss
 
     # Run on test data.
-    test_loss = evaluate(test_data)
+    test_loss, test_acc = evaluate(test_data)
     print('=' * 89)
     print('| End of training | test loss {:5.3f} | test bpc {:8.3f}'.format(
         test_loss, test_loss / math.log(2)))
     print('=' * 89)
-    print('parameter total', compute_parameter_total(model))
+    print('parameter total', parameter_total)
+
 
 # train_by_random_chunk()
 if __name__ == "__main__":

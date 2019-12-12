@@ -77,7 +77,6 @@ class WaveletLayer(torch.nn.Module):
         return torch.mm(x, self.perm)
 
     def wavelet_analysis(self, x):
-        shape_lst = []
         c_lst = self.wavelet.analysis(x.unsqueeze(0).unsqueeze(0))
         shape_lst = [c_el.shape[-1] for c_el in c_lst]
         c_tensor = torch.cat([c.squeeze(0).squeeze(0) for c in c_lst], -1)

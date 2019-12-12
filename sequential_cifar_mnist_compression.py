@@ -18,10 +18,10 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
 parser = argparse.ArgumentParser(description='Sequence Modeling - Sequential cifar/mnist problems')
 parser.add_argument('--problem', type=str, default='MNIST',
                     help='choose MNIST or CIFAR')
-parser.add_argument('--cell', type=str, default='WaveletGRU',
+parser.add_argument('--cell', type=str, default='GRU',
                     help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
 parser.add_argument('--hidden', type=int, default=512,
-                    help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
+                    help='Cell size. Default 512.')
 parser.add_argument('--compression_mode', type=str, default='state',
                     help='How to compress the cell options:'
                          'gates, state, reset, update, state_reset, state_update, full')
@@ -29,6 +29,8 @@ parser.add_argument('--batch_size', type=int, default=50,
                     help='Choose the number of samples used to during each update step.')
 parser.add_argument('--lr', type=float, default=1e-3,
                     help='The learning rate.')
+parser.add_argument('--clip', type=float, default=-1,
+                    help='gradient clip, -1 means no clip (default: 0.15)')
 parser.add_argument('--epochs', type=int, default=10,
                     help='Passes over the entire data set default: 10')
 args = parser.parse_args()
@@ -57,6 +59,7 @@ elif args.problem == 'CIFAR':
     root = './data_sets/cifar/CIFAR'
     train_loader, test_loader = data_generator(root, args.batch_size)
 else:
+    output_size = None
     raise NotImplementedError
 
 if args.cell == 'GRU':
@@ -73,6 +76,7 @@ pt = compute_parameter_total(cell)
 print('parameter total', pt)
 optimizer = torch.optim.RMSprop(cell.parameters(), args.lr)
 loss_fun = torch.nn.CrossEntropyLoss()
+
 
 def train_test_loop(x, y, iteration_no, e_no, train):
     # reshape into batch, time, channel
@@ -107,6 +111,11 @@ def train_test_loop(x, y, iteration_no, e_no, train):
 
     if train:
         loss_full.backward()
+
+        # clip gradients.
+        if args.clip > 0:
+            torch.nn.utils.clip_grad_norm_(cell.parameters(), args.clip)
+
         # apply gradients
         optimizer.step()
     if iteration_no % 50 == 0:
@@ -147,7 +156,7 @@ test_acc = test_true_total/(test_elements_total*1.0)
 
 # pickle the results
 print(pd)
-print('test loss mean', np.mean(test_loss_lst), 'test acc mean', np.mean(test_acc_lst), 'pt', pt)
+print('test loss mean', np.mean(test_loss_lst), 'test acc', test_acc, 'pt', pt)
 # pd_str = pd_to_string(current_run_pd)
 # store_lst = [train_loss_lst, train_acc_lst, test_loss_lst, test_acc_lst, pt]
 # pickle.dump(store_lst, open('./runs/amp' + pd_str + '.pkl', 'wb'))

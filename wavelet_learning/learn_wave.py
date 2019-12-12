@@ -3,7 +3,6 @@ import pywt
 import numpy as np
 from wavelet_learning.lowlevel import afb1d
 from wavelet_learning.lowlevel import sfb1d
-import ipdb
 import matplotlib.pyplot as plt
 '''A learnable filter wavelet transform in 1D.'''
 
@@ -89,7 +88,7 @@ class Wave1D(torch.nn.Module):
         Therefore for true convolution one element needs to be flipped.
         '''
         # polynomial multiplication is convolution, compute p(z):
-        pad = self.dec_lo.shape[0]-1  # TODO: len(input/2) ?
+        pad = self.dec_lo.shape[0]-1
         p_lo = torch.nn.functional.conv1d(
             self.dec_lo.unsqueeze(0).unsqueeze(0),
             torch.flip(self.rec_lo, [-1]).unsqueeze(0).unsqueeze(0),
@@ -104,10 +103,9 @@ class Wave1D(torch.nn.Module):
         p_test = p_lo + p_hi
         two_at_power_zero = torch.zeros(p_test.shape, device=p_test.device,
                                         dtype=p_test.dtype)
-        # for debugging remove later.
+        # numpy comparison for debugging.
         # np.convolve(self.init_wavelet.filter_bank[0], self.init_wavelet.filter_bank[2])
         # np.convolve(self.init_wavelet.filter_bank[1], self.init_wavelet.filter_bank[3])
-        # ipdb.set_trace()
         two_at_power_zero[..., p_test.shape[-1]//2] = 2
         return torch.sum((p_test - two_at_power_zero)*(p_test - two_at_power_zero)), p_test, two_at_power_zero
 
@@ -191,3 +189,20 @@ class Wave1D(torch.nn.Module):
         plt.legend(['p_test,', 'err'])
         tensorboard_writer.add_figure(name + '/wavelet/filters-prl', fig, step, close=True)
         plt.close()
+
+
+if __name__ == "__main__":
+    print('haar wavelet')
+    w = Wave1D(init_wavelet=pywt.Wavelet('haar'))
+    print('acl', w.alias_cancellation_loss()[0])
+    print('prl', w.perfect_reconstruction_loss()[0])
+
+    print('db6 wavelet')
+    w = Wave1D(init_wavelet=pywt.Wavelet('db6'))
+    print('acl', w.alias_cancellation_loss()[0])
+    print('prl', w.perfect_reconstruction_loss()[0])
+
+    print('sym3 wavelet')
+    w = Wave1D(init_wavelet=pywt.Wavelet('sym3'))
+    print('acl', w.alias_cancellation_loss()[0])
+    print('prl', w.perfect_reconstruction_loss()[0])
