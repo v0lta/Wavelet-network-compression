@@ -7,12 +7,13 @@ import torch.nn as nn
 import torch.optim as optim
 import time
 import math
+import sys
+sys.path.append("../")
 from RNN_compression.cells import WaveletGRU, FastFoodGRU, GRUCell
 from util import compute_parameter_total
 from penn_treebank.char_utils import *
 import collections
-import sys
-sys.path.append("../")
+
 
 CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
