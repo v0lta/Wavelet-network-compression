@@ -11,6 +11,9 @@ from RNN_compression.cells import WaveletGRU, FastFoodGRU, GRUCell
 from util import compute_parameter_total
 from penn_treebank.char_utils import *
 import collections
+import sys
+sys.path.append("../")
+
 CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
 
@@ -24,7 +27,7 @@ parser.add_argument('--cuda', action='store_false',
                     help='use CUDA (default: True)')
 parser.add_argument('--clip', type=float, default=0.15,
                     help='gradient clip, -1 means no clip (default: 0.15)')
-parser.add_argument('--epochs', type=int, default=1,
+parser.add_argument('--epochs', type=int, default=60,
                     help='upper epoch limit (default: 60)')
 parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='report interval (default: 100')
