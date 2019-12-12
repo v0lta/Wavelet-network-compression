@@ -10,6 +10,9 @@ import math
 from RNN_compression.cells import WaveletGRU, FastFoodGRU, GRUCell
 from util import compute_parameter_total
 from penn_treebank.char_utils import *
+import collections
+CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
+                                                   'rec_lo', 'rec_hi', 'name'])
 
 import warnings
 warnings.filterwarnings("ignore")   # Suppress the RunTimeWarning on unicode
@@ -69,6 +72,11 @@ print("Corpus size: ", n_characters)
 
 print(args.cell)
 if args.cell == 'WaveGRU':
+    init_wavelet = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                                 dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
+                                 rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                                 rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
+                                 name='custom')
     cell = WaveletGRU(input_size=args.emsize, out_size=n_characters, hidden_size=args.cell_size,
                       mode=args.compression_mode)
 elif args.cell == 'GRU':
