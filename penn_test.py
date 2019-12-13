@@ -71,18 +71,15 @@ val_data = batchify(char_tensor(corpus, valfile), 1, args)
 test_data = batchify(char_tensor(corpus, testfile), 1, args)
 print("Corpus size: ", n_characters)
 
-
-# num_chans = [args.nhid] * (args.levels - 1) + [args.emsize]
-
 print(args.cell)
-if args.cell == 'WaveGRU':
+if args.cell == 'WaveletGRU':
     init_wavelet = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
                                  dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
                                  rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
                                  rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
                                  name='custom')
     cell = WaveletGRU(input_size=args.emsize, out_size=n_characters, hidden_size=args.cell_size,
-                      mode=args.compression_mode)
+                      mode=args.compression_mode, init_wavelet=init_wavelet)
 elif args.cell == 'GRU':
     cell = GRUCell(input_size=args.emsize, out_size=n_characters, hidden_size=args.cell_size)
 else:

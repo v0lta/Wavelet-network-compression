@@ -39,16 +39,6 @@ args = parser.parse_args()
 print(args)
 pd = vars(args)
 
-if args.cell == 'WaveletGRU':
-    # pd['init_wavelet'] = pywt.Wavelet('db6')
-    init_wavelet = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-                                 dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
-                                 rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-                                 rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
-                                 name='custom')
-else:
-    init_wavelet = None
-
 if args.problem == 'MNIST':
     root = './data_sets/mnist/'
     input_size = 1
@@ -65,8 +55,13 @@ else:
 if args.cell == 'GRU':
     cell = GRUCell(input_size, args.hidden, output_size).cuda()
 elif args.cell == 'WaveletGRU':
+    init_wavelet = CustomWavelet(dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                                 dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
+                                 rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+                                 rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
+                                 name='custom')
     cell = WaveletGRU(input_size, args.hidden, output_size,
-                      mode=args.compression_mode).cuda()
+                      mode=args.compression_mode, init_wavelet=init_wavelet).cuda()
 elif args.cell == 'FastFoodGRU':
     cell = FastFoodGRU(input_size, args.hidden, output_size).cuda()
 else:
