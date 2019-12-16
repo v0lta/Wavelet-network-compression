@@ -15,23 +15,23 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
 
 parser = argparse.ArgumentParser(description='Sequence Modeling - Adding and Memory Problems')
-parser.add_argument('--problem', type=str, default='memory',
+parser.add_argument('--problem', type=str, default='adding',
                     help='choose adding or memory')
-parser.add_argument('--cell', type=str, default='WaveletGRU',
+parser.add_argument('--cell', type=str, default='GRU',
                     help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
 parser.add_argument('--hidden', type=int, default=512,
                     help='Cell size: Default 512.')
-parser.add_argument('--time_steps', type=int, default=10,
-                    help='The number of time steps in the problem.')
+parser.add_argument('--time_steps', type=int, default=150,
+                    help='The number of time steps in the problem, default 150.')
 parser.add_argument('--compression_mode', type=str, default='state',
                     help='How to compress the cell.')
 parser.add_argument('--batch_size', type=int, default=50,
                     help='The size of the training batches.')
 parser.add_argument('--lr', type=float, default=1e-3,
                     help='The size of the training batches.')
-parser.add_argument('--n_train', type=int, default=int(1e3),
+parser.add_argument('--n_train', type=int, default=int(6e5),
                     help='The size of the training batches. Default 6e5')
-parser.add_argument('--n_test', type=int, default=int(1e3),
+parser.add_argument('--n_test', type=int, default=int(1e4),
                     help='The size of the training batches. Default 1e4')
 args = parser.parse_args()
 
@@ -216,7 +216,7 @@ for test_iteration_no in range(test_iterations):
             y_test_batch = y_test_batch.type(torch.int64)
         test_loss, test_true_sum = train_test_loop(x_test_batch, y_test_batch, test_iteration_no)
         test_acc_sum += test_true_sum
-        test_el_total += args.batch_size
+        test_el_total += y_test_batch.shape[0]
         test_loss_lst.append(test_loss)
 assert test_el_total == args.n_test
 print('test_el_total', test_el_total, 'test_acc_sum', test_acc_sum)
