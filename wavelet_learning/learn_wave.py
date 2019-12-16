@@ -57,7 +57,8 @@ class Wave1D(torch.nn.Module):
 
     def alias_cancellation_loss(self) -> [torch.Tensor, torch.Tensor, torch.Tensor]:
         '''
-        Strang 105: F0(z) = H1(-z); F1(z) = -H0(-z)
+        Strang+Nguyen 105: F0(z) = H1(-z); F1(z) = -H0(-z)
+        Alternating sign convention from 0 to N see strang overview on the back of the cover.
         '''
         m1 = torch.tensor([-1], device=self.dec_hi.device, dtype=self.dec_hi.dtype)
         length = self.rec_lo.shape[0]

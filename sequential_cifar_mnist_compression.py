@@ -147,6 +147,7 @@ for test_x, test_y in test_loader:
         test_true_total += test_sum_correct
         test_elements_total += test_y.shape[0]
         test_loss_lst.append(test_loss)
+print('test_true_total', test_true_total, 'test_elements_total', test_elements_total)
 test_acc = test_true_total/(test_elements_total*1.0)
 
 # pickle the results
