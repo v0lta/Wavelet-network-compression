@@ -86,62 +86,6 @@ x_test_lst = torch.split(x_test.cuda(), args.batch_size, dim=0)
 y_test_lst = torch.split(y_test.cuda(), args.batch_size, dim=0)
 
 
-def train_test_loop(train_iteration_no, train):
-    if train:
-        optimizer.zero_grad()
-    x_train_batch = x_train_lst[train_iteration_no]
-    y_train_batch = y_train_lst[train_iteration_no]
-
-    if args.problem == 'memory':
-        # --- one hot encoding -------------
-        x_train_batch = torch.nn.functional.one_hot(x_train_batch.type(torch.int64))
-        y_train_batch = y_train_batch.type(torch.int64)
-
-    time_steps = x_train_batch.shape[1]
-    # run the RNN
-    y_cell_lst = []
-    h = None
-    for t in range(time_steps):
-        # batch_major format [b,t,d]
-        y, h = cell(x_train_batch[:, t, :].type(torch.float32), h)
-        y_cell_lst.append(y)
-
-    if args.problem == 'memory':
-        el = np.prod(y_train_batch[:, -10:].shape).astype(np.float32)
-        assert time_steps == args.time_steps + 20
-        y_tensor = torch.stack(y_cell_lst, dim=-1)
-        loss = loss_fun(y_tensor, y_train_batch)
-        mem_res = torch.max(y_tensor[:, :, -10:], dim=1)[1]
-        acc_sum = torch.sum(mem_res == y_train_batch[:, -10:]).type(torch.float32).detach().cpu().numpy()
-        acc = acc_sum/(el*1.0)
-    else:
-        assert time_steps == args.time_steps
-        # only the last output is interesting
-        y_train_batch = y_train_batch.type(torch.float32)
-        loss = loss_fun(y, y_train_batch)
-        acc_sum = torch.sum(torch.abs(y - y_train_batch) < 0.05).type(torch.float32).detach().cpu().numpy()
-        acc = acc_sum
-
-    cpu_loss = loss.detach().cpu().numpy()
-    # compute gradients
-    if args.cell == 'WaveletGRU':
-        loss_wave = cell.get_wavelet_loss()
-        loss_full = loss + loss_wave
-        loss_wave_cpu = loss_wave.detach().cpu().numpy()
-    else:
-        loss_wave_cpu = 0
-        loss_full = loss
-
-    if train:
-        loss_full.backward()
-        # apply gradients
-        optimizer.step()
-    if train_iteration_no % 50 == 0:
-        print('step', train_iteration_no, 'loss', cpu_loss, 'baseline:', baseline, 'acc', acc, 'wl',
-              loss_wave_cpu, 'train', train)
-    return cpu_loss, acc_sum
-
-
 def train_test_loop(in_x, in_y_gt, iteration_no, train=False):
     if train:
         optimizer.zero_grad()
