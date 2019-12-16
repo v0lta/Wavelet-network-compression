@@ -73,7 +73,19 @@ optimizer = torch.optim.RMSprop(cell.parameters(), args.lr)
 loss_fun = torch.nn.CrossEntropyLoss()
 
 
-def train_test_loop(x, y, iteration_no, e_no, train):
+def train_test(x, y, iteration_no, e_no, train=False):
+    """
+    Run the network.
+        x: image tensors, [batch_size, 1, 28, 28]
+        y: ground truth, [batch_size]
+        iteration_no: iteration count
+        e_no: epoch count
+        train: if true turn on gradient descent.
+
+    Returns:
+        cpu_loss: loss on the current batch
+        sum_correct: The total of correctly identified digits.
+    """
     # reshape into batch, time, channel
     x_shape = x.shape
     x_flat = torch.reshape(x, list(x_shape[:2]) + [-1])
@@ -126,7 +138,7 @@ for e_num in range(args.epochs):
     epoch_true_total = 0
     epoch_element_total = 0
     for train_x, train_y in train_loader:
-        train_loss, sum_correct = train_test_loop(train_x.cuda(), train_y.cuda(), train_it, e_num, train=True)
+        train_loss, sum_correct = train_test(train_x.cuda(), train_y.cuda(), train_it, e_num, train=True)
         epoch_true_total += sum_correct
         epoch_element_total += train_y.shape[0]
         train_it += 1
@@ -142,7 +154,7 @@ test_true_total = 0
 test_elements_total = 0
 for test_x, test_y in test_loader:
     with torch.no_grad():
-        test_loss, test_sum_correct = train_test_loop(test_x.cuda(), test_y.cuda(), test_it, -1, train=False)
+        test_loss, test_sum_correct = train_test(test_x.cuda(), test_y.cuda(), test_it, -1, train=False)
         test_it += 1
         test_true_total += test_sum_correct
         test_elements_total += test_y.shape[0]

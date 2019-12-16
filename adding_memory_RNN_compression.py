@@ -87,6 +87,10 @@ y_test_lst = torch.split(y_test.cuda(), args.batch_size, dim=0)
 
 
 def train_test_loop(in_x, in_y_gt, iteration_no, train=False):
+    """
+    Run the network on the adding or copy memory problems.
+    train: if true turns backpropagation on.
+    """
     if train:
         optimizer.zero_grad()
     time_steps = in_x.shape[1]
