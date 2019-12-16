@@ -21,5 +21,5 @@ for experiment in experiment_lst:
 
 print('fastfood full compression')
 with open("runs/fastfood_full_compression_seq_mnist.txt", "w") as f:
-    subprocess.call(['python', 'sequential_cifar_mnist_compression.py', '--problem', 'adding',
+    subprocess.call(['python', 'sequential_cifar_mnist_compression.py',
                      '--cell', 'FastFoodGRU', '--compression_mode', 'full'], stdout=f)
