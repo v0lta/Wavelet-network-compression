@@ -7,7 +7,7 @@ subprocess.call('pwd')
 print('seq_mnist baseline GRU')
 time_str = str(datetime.datetime.today())
 print('time:', time_str)
-with open("runs/baselineGRU_penn_char_" + time_str + ".txt", "w") as f:
+with open("runs/baselineGRU_seq_mnist_" + time_str + ".txt", "w") as f:
     subprocess.call(['python', 'sequential_cifar_mnist_compression.py'], stdout=f)
 
 experiment_lst = ['state', 'update', 'reset', 'state_reset', 'state_update', 'gates', 'full']
