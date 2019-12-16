@@ -187,7 +187,7 @@ def train_test_loop(in_x, in_y_gt, iteration_no, train=False):
         optimizer.step()
     if iteration_no % 50 == 0:
         print('step', iteration_no, 'loss', cpu_loss, 'baseline:', baseline, 'acc', acc, 'wl',
-              loss_wave_cpu)
+              loss_wave_cpu, 'train', train)
     return cpu_loss, acc_sum
 
 
