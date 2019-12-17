@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 class Wave1D(torch.nn.Module):
     def __init__(self, init_wavelet, scales=1,
-                 mode='zero', fixed=True):
+                 mode='zero', fixed=False):
         super().__init__()
 
         def to_tensor(filt_lst: list):

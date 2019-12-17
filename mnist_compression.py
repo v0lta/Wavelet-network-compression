@@ -18,7 +18,7 @@ from torch.utils.tensorboard.writer import SummaryWriter
 
 
 class Net(nn.Module):
-    def __init__(self, compression, wavelet=None):
+    def __init__(self, compression, wavelet=None, wave_dropout=0.0):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 20, 5, 1)
         self.conv2 = nn.Conv2d(20, 50, 5, 1)
@@ -36,7 +36,7 @@ class Net(nn.Module):
             self.do_dropout = False
         elif compression == 'Wavelet':
             assert wavelet is not None, 'initial wavelet must be set.'
-            self.fc1 = WaveletLayer(init_wavelet=wavelet, scales=6, depth=800)
+            self.fc1 = WaveletLayer(init_wavelet=wavelet, scales=6, depth=800, p_drop=wave_dropout)
             self.fc2 = torch.nn.Linear(800, 10)
             self.do_dropout = False
         else:
@@ -80,7 +80,7 @@ def train(args, model, device, train_loader, optimizer, epoch):
             wvl = acl + prl
             loss = nll_loss + wvl * args.wave_loss_weight
         else:
-            wvl = 0
+            wvl = torch.tensor(0.0)
             loss = nll_loss
         loss.backward()
         optimizer.step()
@@ -137,6 +137,8 @@ def main():
                         help='Choose the compression mode, None, Wavelet, Fastfood')
     parser.add_argument('--wave_loss_weight', type=float, default=1.0,
                         help='Weight term of the wavelet loss')
+    parser.add_argument('--wave_dropout', type=float, default=0.0,
+                        help='Weight term of the wavelet loss')
 
     args = parser.parse_args()
     print(args)
@@ -174,7 +176,7 @@ def main():
     else:
         init_wavelet = None
 
-    model = Net(compression=args.compression, wavelet=init_wavelet).to(device)
+    model = Net(compression=args.compression, wavelet=init_wavelet, wave_dropout=args.wave_dropout).to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
     writer = SummaryWriter()
 
