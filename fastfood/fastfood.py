@@ -8,7 +8,7 @@ from fastfood.fwht import matmul_wht as wht
 from scipy.linalg import hadamard
 
 
-def diag_mul(self, vector, mat):
+def diag_mul(vector, mat):
     return torch.mm(torch.diag(vector), mat)
 
 

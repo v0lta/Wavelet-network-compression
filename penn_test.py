@@ -47,7 +47,7 @@ parser.add_argument('--seed', type=int, default=1111,
 parser.add_argument('--dataset', type=str, default='ptb',
                     help='dataset to use (default: ptb)')
 parser.add_argument('--cell', type=str, default='GRU', help='The cell type used')
-parser.add_argument('--cell_size', type=int, default=512, help='Cell state size.')
+parser.add_argument('--cell_size', type=int, default=512, help='Cell state size. Default 512.')
 parser.add_argument('--compression_mode', type=str, default='state',
                     help='Where to apply the compression layers.')
 parser.add_argument('--wavelet_weight', type=float, default=1.,

@@ -9,15 +9,15 @@ import matplotlib.pyplot as plt
 
 class Wave1D(torch.nn.Module):
     def __init__(self, init_wavelet, scales=1,
-                 mode='zero'):
+                 mode='zero', fixed=True):
         super().__init__()
 
         def to_tensor(filt_lst: list):
                 tensor = torch.tensor(np.array(filt_lst).ravel(),
                                       dtype=torch.float)
-                return torch.nn.Parameter(tensor)
+                return torch.nn.Parameter(tensor, requires_grad=not fixed)
 
-        self.init_wavelet = init_wavelet
+        # self.init_wavelet = init_wavelet
         self.dec_lo = to_tensor(init_wavelet.dec_lo)
         self.dec_hi = to_tensor(init_wavelet.dec_hi)
         self.rec_lo = to_tensor(init_wavelet.rec_lo)
