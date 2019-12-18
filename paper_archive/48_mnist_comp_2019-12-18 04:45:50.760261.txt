@@ -1,0 +1,155 @@
+Namespace(batch_size=64, compression='Wavelet', epochs=20, gamma=0.8, log_interval=250, lr=1.0, no_cuda=False, save_model=False, seed=1, test_batch_size=1000, wave_dropout=0.0, wave_loss_weight=1.0)
+Train Epoch: 1 [0/60000 (0%)], Loss: 2.300768, wvl-Loss: 0.000000
+Train Epoch: 1 [16000/60000 (27%)], Loss: 0.101064, wvl-Loss: 0.001025
+Train Epoch: 1 [32000/60000 (53%)], Loss: 0.082760, wvl-Loss: 0.000424
+Train Epoch: 1 [48000/60000 (80%)], Loss: 0.050173, wvl-Loss: 0.000649
+
+Test set: Average loss: 0.0758, Accuracy: 9763/10000 (98%)
+
+Train Epoch: 2 [0/60000 (0%)], Loss: 0.006307, wvl-Loss: 0.000720
+Train Epoch: 2 [16000/60000 (27%)], Loss: 0.070075, wvl-Loss: 0.001315
+Train Epoch: 2 [32000/60000 (53%)], Loss: 0.012500, wvl-Loss: 0.000280
+Train Epoch: 2 [48000/60000 (80%)], Loss: 0.002012, wvl-Loss: 0.000891
+
+Test set: Average loss: 0.0317, Accuracy: 9907/10000 (99%)
+
+Train Epoch: 3 [0/60000 (0%)], Loss: 0.007007, wvl-Loss: 0.000428
+Train Epoch: 3 [16000/60000 (27%)], Loss: 0.016017, wvl-Loss: 0.000339
+Train Epoch: 3 [32000/60000 (53%)], Loss: 0.016510, wvl-Loss: 0.000317
+Train Epoch: 3 [48000/60000 (80%)], Loss: 0.041058, wvl-Loss: 0.000195
+
+Test set: Average loss: 0.0315, Accuracy: 9898/10000 (99%)
+
+Train Epoch: 4 [0/60000 (0%)], Loss: 0.012161, wvl-Loss: 0.000315
+Train Epoch: 4 [16000/60000 (27%)], Loss: 0.004498, wvl-Loss: 0.000269
+Train Epoch: 4 [32000/60000 (53%)], Loss: 0.000474, wvl-Loss: 0.000306
+Train Epoch: 4 [48000/60000 (80%)], Loss: 0.000427, wvl-Loss: 0.000229
+
+Test set: Average loss: 0.0322, Accuracy: 9909/10000 (99%)
+
+Train Epoch: 5 [0/60000 (0%)], Loss: 0.015453, wvl-Loss: 0.000091
+Train Epoch: 5 [16000/60000 (27%)], Loss: 0.001253, wvl-Loss: 0.000155
+Train Epoch: 5 [32000/60000 (53%)], Loss: 0.004007, wvl-Loss: 0.000110
+Train Epoch: 5 [48000/60000 (80%)], Loss: 0.002353, wvl-Loss: 0.000145
+
+Test set: Average loss: 0.0367, Accuracy: 9899/10000 (99%)
+
+Train Epoch: 6 [0/60000 (0%)], Loss: 0.002192, wvl-Loss: 0.000108
+Train Epoch: 6 [16000/60000 (27%)], Loss: 0.000189, wvl-Loss: 0.000063
+Train Epoch: 6 [32000/60000 (53%)], Loss: 0.002105, wvl-Loss: 0.000065
+Train Epoch: 6 [48000/60000 (80%)], Loss: 0.004129, wvl-Loss: 0.000092
+
+Test set: Average loss: 0.0333, Accuracy: 9909/10000 (99%)
+
+Train Epoch: 7 [0/60000 (0%)], Loss: 0.002154, wvl-Loss: 0.000107
+Train Epoch: 7 [16000/60000 (27%)], Loss: 0.000118, wvl-Loss: 0.000087
+Train Epoch: 7 [32000/60000 (53%)], Loss: 0.013251, wvl-Loss: 0.000073
+Train Epoch: 7 [48000/60000 (80%)], Loss: 0.001658, wvl-Loss: 0.000052
+
+Test set: Average loss: 0.0316, Accuracy: 9926/10000 (99%)
+
+Train Epoch: 8 [0/60000 (0%)], Loss: 0.000767, wvl-Loss: 0.000063
+Train Epoch: 8 [16000/60000 (27%)], Loss: 0.000925, wvl-Loss: 0.000038
+Train Epoch: 8 [32000/60000 (53%)], Loss: 0.000878, wvl-Loss: 0.000065
+Train Epoch: 8 [48000/60000 (80%)], Loss: 0.000709, wvl-Loss: 0.000042
+
+Test set: Average loss: 0.0341, Accuracy: 9915/10000 (99%)
+
+Train Epoch: 9 [0/60000 (0%)], Loss: 0.000014, wvl-Loss: 0.000044
+Train Epoch: 9 [16000/60000 (27%)], Loss: 0.000331, wvl-Loss: 0.000029
+Train Epoch: 9 [32000/60000 (53%)], Loss: 0.000116, wvl-Loss: 0.000027
+Train Epoch: 9 [48000/60000 (80%)], Loss: 0.000004, wvl-Loss: 0.000028
+
+Test set: Average loss: 0.0352, Accuracy: 9922/10000 (99%)
+
+Train Epoch: 10 [0/60000 (0%)], Loss: 0.000028, wvl-Loss: 0.000040
+Train Epoch: 10 [16000/60000 (27%)], Loss: 0.008069, wvl-Loss: 0.000040
+Train Epoch: 10 [32000/60000 (53%)], Loss: 0.000095, wvl-Loss: 0.000022
+Train Epoch: 10 [48000/60000 (80%)], Loss: 0.000241, wvl-Loss: 0.000026
+
+Test set: Average loss: 0.0343, Accuracy: 9917/10000 (99%)
+
+Train Epoch: 11 [0/60000 (0%)], Loss: 0.000015, wvl-Loss: 0.000023
+Train Epoch: 11 [16000/60000 (27%)], Loss: 0.000134, wvl-Loss: 0.000020
+Train Epoch: 11 [32000/60000 (53%)], Loss: 0.076160, wvl-Loss: 0.000019
+Train Epoch: 11 [48000/60000 (80%)], Loss: 0.001188, wvl-Loss: 0.000027
+
+Test set: Average loss: 0.0354, Accuracy: 9919/10000 (99%)
+
+Train Epoch: 12 [0/60000 (0%)], Loss: 0.000246, wvl-Loss: 0.000021
+Train Epoch: 12 [16000/60000 (27%)], Loss: 0.000067, wvl-Loss: 0.000020
+Train Epoch: 12 [32000/60000 (53%)], Loss: 0.000926, wvl-Loss: 0.000019
+Train Epoch: 12 [48000/60000 (80%)], Loss: 0.000005, wvl-Loss: 0.000016
+
+Test set: Average loss: 0.0350, Accuracy: 9920/10000 (99%)
+
+Train Epoch: 13 [0/60000 (0%)], Loss: 0.000601, wvl-Loss: 0.000017
+Train Epoch: 13 [16000/60000 (27%)], Loss: 0.000151, wvl-Loss: 0.000017
+Train Epoch: 13 [32000/60000 (53%)], Loss: 0.000034, wvl-Loss: 0.000017
+Train Epoch: 13 [48000/60000 (80%)], Loss: 0.000319, wvl-Loss: 0.000013
+
+Test set: Average loss: 0.0358, Accuracy: 9916/10000 (99%)
+
+Train Epoch: 14 [0/60000 (0%)], Loss: 0.000007, wvl-Loss: 0.000016
+Train Epoch: 14 [16000/60000 (27%)], Loss: 0.000128, wvl-Loss: 0.000015
+Train Epoch: 14 [32000/60000 (53%)], Loss: 0.001328, wvl-Loss: 0.000012
+Train Epoch: 14 [48000/60000 (80%)], Loss: 0.000283, wvl-Loss: 0.000012
+
+Test set: Average loss: 0.0362, Accuracy: 9919/10000 (99%)
+
+Train Epoch: 15 [0/60000 (0%)], Loss: 0.000586, wvl-Loss: 0.000012
+Train Epoch: 15 [16000/60000 (27%)], Loss: 0.000920, wvl-Loss: 0.000011
+Train Epoch: 15 [32000/60000 (53%)], Loss: 0.000242, wvl-Loss: 0.000012
+Train Epoch: 15 [48000/60000 (80%)], Loss: 0.000095, wvl-Loss: 0.000011
+
+Test set: Average loss: 0.0360, Accuracy: 9917/10000 (99%)
+
+Train Epoch: 16 [0/60000 (0%)], Loss: 0.000225, wvl-Loss: 0.000011
+Train Epoch: 16 [16000/60000 (27%)], Loss: 0.000192, wvl-Loss: 0.000012
+Train Epoch: 16 [32000/60000 (53%)], Loss: 0.000118, wvl-Loss: 0.000012
+Train Epoch: 16 [48000/60000 (80%)], Loss: 0.000161, wvl-Loss: 0.000011
+
+Test set: Average loss: 0.0363, Accuracy: 9916/10000 (99%)
+
+Train Epoch: 17 [0/60000 (0%)], Loss: 0.000238, wvl-Loss: 0.000010
+Train Epoch: 17 [16000/60000 (27%)], Loss: 0.000600, wvl-Loss: 0.000011
+Train Epoch: 17 [32000/60000 (53%)], Loss: 0.000405, wvl-Loss: 0.000011
+Train Epoch: 17 [48000/60000 (80%)], Loss: 0.000035, wvl-Loss: 0.000010
+
+Test set: Average loss: 0.0366, Accuracy: 9916/10000 (99%)
+
+Train Epoch: 18 [0/60000 (0%)], Loss: 0.000028, wvl-Loss: 0.000010
+Train Epoch: 18 [16000/60000 (27%)], Loss: 0.000044, wvl-Loss: 0.000009
+Train Epoch: 18 [32000/60000 (53%)], Loss: 0.000525, wvl-Loss: 0.000009
+Train Epoch: 18 [48000/60000 (80%)], Loss: 0.000171, wvl-Loss: 0.000009
+
+Test set: Average loss: 0.0364, Accuracy: 9916/10000 (99%)
+
+Train Epoch: 19 [0/60000 (0%)], Loss: 0.000049, wvl-Loss: 0.000010
+Train Epoch: 19 [16000/60000 (27%)], Loss: 0.000022, wvl-Loss: 0.000010
+Train Epoch: 19 [32000/60000 (53%)], Loss: 0.000280, wvl-Loss: 0.000010
+Train Epoch: 19 [48000/60000 (80%)], Loss: 0.000140, wvl-Loss: 0.000009
+
+Test set: Average loss: 0.0368, Accuracy: 9916/10000 (99%)
+
+Train Epoch: 20 [0/60000 (0%)], Loss: 0.000303, wvl-Loss: 0.000009
+Train Epoch: 20 [16000/60000 (27%)], Loss: 0.000116, wvl-Loss: 0.000009
+Train Epoch: 20 [32000/60000 (53%)], Loss: 0.000598, wvl-Loss: 0.000009
+Train Epoch: 20 [48000/60000 (80%)], Loss: 0.000048, wvl-Loss: 0.000009
+
+Test set: Average loss: 0.0367, Accuracy: 9916/10000 (99%)
+
+torch.Size([20, 1, 5, 5])
+torch.Size([20])
+torch.Size([50, 20, 5, 5])
+torch.Size([50])
+torch.Size([800])
+torch.Size([826])
+torch.Size([800])
+torch.Size([6])
+torch.Size([6])
+torch.Size([6])
+torch.Size([6])
+torch.Size([10, 800])
+torch.Size([10])
+36030
