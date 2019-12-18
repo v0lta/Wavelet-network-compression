@@ -70,9 +70,9 @@ def train_test_loop(args, in_x, in_y_gt, iteration_no, cell, loss_fun, train=Fal
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Sequence Modeling - Adding and Memory Problems')
-    parser.add_argument('--problem', type=str, default='memory',
+    parser.add_argument('--problem', type=str, default='adding',
                         help='choose adding or memory')
-    parser.add_argument('--cell', type=str, default='GRU',
+    parser.add_argument('--cell', type=str, default='WaveletGRU',
                         help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
     parser.add_argument('--hidden', type=int, default=512,
                         help='Cell size: Default 512.')
