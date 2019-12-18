@@ -2,6 +2,7 @@
 Following https://github.com/v0lta/Complex-gated-recurrent-neural-networks/blob/master/synthetic_experiments.py
 '''
 
+import time
 import datetime
 import argparse
 import torch
@@ -15,20 +16,72 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
 
 
+def train_test_loop(args, in_x, in_y_gt, iteration_no, cell, loss_fun, train=False, optimizer=None,
+                    baseline=None):
+    """
+    Run the network on the adding or copy memory problems.
+    train: if true turns backpropagation on.
+    """
+    if train:
+        optimizer.zero_grad()
+    time_steps = in_x.shape[1]
+    # run the RNN
+    y_cell_lst = []
+    h = None
+    for t in range(time_steps):
+        # batch_major format [b,t,d]
+        y, h = cell(in_x[:, t, :].type(torch.float32), h)
+        y_cell_lst.append(y)
+
+    if args.problem == 'memory':
+        el = np.prod(in_y_gt[:, -10:].shape).astype(np.float32)
+        y_tensor = torch.stack(y_cell_lst, dim=-1)
+        loss = loss_fun(y_tensor, in_y_gt)
+        mem_res = torch.max(y_tensor[:, :, -10:], dim=1)[1]
+        acc_sum = torch.sum(mem_res == in_y_gt[:, -10:]).type(torch.float32).detach().cpu().numpy()
+        acc = acc_sum/(el*1.0)
+    else:
+        # only the last output is interesting
+        el = in_y_gt.shape[0]
+        train_y_gt = in_y_gt.type(torch.float32)
+        loss = loss_fun(y, train_y_gt)
+        acc_sum = torch.sum(torch.abs(y - train_y_gt) < 0.05).type(torch.float32).detach().cpu().numpy()
+        acc = acc_sum/(el*1.0)
+
+    cpu_loss = loss.detach().cpu().numpy()
+    # compute gradients
+    if args.cell == 'WaveletGRU':
+        loss_wave = cell.get_wavelet_loss()
+        loss_full = loss + loss_wave
+        loss_wave_cpu = loss_wave.detach().cpu().numpy()
+    else:
+        loss_wave_cpu = 0
+        loss_full = loss
+
+    if train:
+        loss_full.backward()
+        # apply gradients
+        optimizer.step()
+    if iteration_no % 50 == 0:
+        print('step', iteration_no, 'loss', cpu_loss, 'baseline:', baseline, 'acc', acc, 'wl',
+              loss_wave_cpu, 'train', train)
+    return cpu_loss, acc_sum
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Sequence Modeling - Adding and Memory Problems')
     parser.add_argument('--problem', type=str, default='memory',
                         help='choose adding or memory')
     parser.add_argument('--cell', type=str, default='GRU',
                         help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
-    parser.add_argument('--hidden', type=int, default=64,
+    parser.add_argument('--hidden', type=int, default=512,
                         help='Cell size: Default 512.')
-    parser.add_argument('--time_steps', type=int, default=10,
+    parser.add_argument('--time_steps', type=int, default=150,
                         help='The number of time steps in the problem, default 150.')
     parser.add_argument('--compression_mode', type=str, default='state',
                         help='How to compress the cell.')
     parser.add_argument('--batch_size', type=int, default=50,
-                        help='The size of the training batches.')
+                        help='The size of the training batches. default 50')
     parser.add_argument('--lr', type=float, default=1e-3,
                         help='The size of the training batches.')
     parser.add_argument('--n_train', type=int, default=int(6e5),
@@ -39,6 +92,7 @@ if __name__ == '__main__':
 
     train_iterations = int(args.n_train/args.batch_size)
     test_iterations = int(args.n_test/args.batch_size)
+    time_start = time.time()
 
     print(args)
     pd = vars(args)
@@ -87,60 +141,6 @@ if __name__ == '__main__':
     x_test_lst = torch.split(x_test.cuda(), args.batch_size, dim=0)
     y_test_lst = torch.split(y_test.cuda(), args.batch_size, dim=0)
 
-
-    def train_test_loop(in_x, in_y_gt, iteration_no, train=False):
-        """
-        Run the network on the adding or copy memory problems.
-        train: if true turns backpropagation on.
-        """
-        if train:
-            optimizer.zero_grad()
-        time_steps = in_x.shape[1]
-        # run the RNN
-        y_cell_lst = []
-        h = None
-        for t in range(time_steps):
-            # batch_major format [b,t,d]
-            y, h = cell(in_x[:, t, :].type(torch.float32), h)
-            y_cell_lst.append(y)
-
-        if args.problem == 'memory':
-            el = np.prod(in_y_gt[:, -10:].shape).astype(np.float32)
-            assert time_steps == args.time_steps + 20
-            y_tensor = torch.stack(y_cell_lst, dim=-1)
-            loss = loss_fun(y_tensor, in_y_gt)
-            mem_res = torch.max(y_tensor[:, :, -10:], dim=1)[1]
-            acc_sum = torch.sum(mem_res == in_y_gt[:, -10:]).type(torch.float32).detach().cpu().numpy()
-            acc = acc_sum/(el*1.0)
-        else:
-            assert time_steps == args.time_steps
-            # only the last output is interesting
-            el = in_y_gt.shape[0]
-            train_y_gt = in_y_gt.type(torch.float32)
-            loss = loss_fun(y, train_y_gt)
-            acc_sum = torch.sum(torch.abs(y - train_y_gt) < 0.05).type(torch.float32).detach().cpu().numpy()
-            acc = acc_sum/(el*1.0)
-
-        cpu_loss = loss.detach().cpu().numpy()
-        # compute gradients
-        if args.cell == 'WaveletGRU':
-            loss_wave = cell.get_wavelet_loss()
-            loss_full = loss + loss_wave
-            loss_wave_cpu = loss_wave.detach().cpu().numpy()
-        else:
-            loss_wave_cpu = 0
-            loss_full = loss
-
-        if train:
-            loss_full.backward()
-            # apply gradients
-            optimizer.step()
-        if iteration_no % 50 == 0:
-            print('step', iteration_no, 'loss', cpu_loss, 'baseline:', baseline, 'acc', acc, 'wl',
-                  loss_wave_cpu, 'train', train)
-        return cpu_loss, acc_sum
-
-
     train_loss_lst = []
     for train_iteration_no in range(train_iterations):
         x_train_batch = x_train_lst[train_iteration_no]
@@ -149,7 +149,8 @@ if __name__ == '__main__':
             # --- one hot encoding -------------
             x_train_batch = torch.nn.functional.one_hot(x_train_batch.type(torch.int64))
             y_train_batch = y_train_batch.type(torch.int64)
-        train_loss, _ = train_test_loop(x_train_batch, y_train_batch, train_iteration_no, train=True)
+        train_loss, _ = train_test_loop(args, x_train_batch, y_train_batch, train_iteration_no, cell, loss_fun, train=True,
+                                        optimizer=optimizer, baseline=baseline)
         train_loss_lst.append(train_loss)
 
     print('training done... testing ...')
@@ -164,7 +165,8 @@ if __name__ == '__main__':
                 # --- one hot encoding -------------
                 x_test_batch = torch.nn.functional.one_hot(x_test_batch.type(torch.int64))
                 y_test_batch = y_test_batch.type(torch.int64)
-            test_loss, test_true_sum = train_test_loop(x_test_batch, y_test_batch, test_iteration_no)
+            test_loss, test_true_sum = train_test_loop(args, x_test_batch, y_test_batch, test_iteration_no, cell,
+                                                       loss_fun, baseline=baseline)
             test_acc_sum += test_true_sum
             if args.problem == 'memory':
                 test_el_total += np.prod(y_test_batch[:, -10:].shape).astype(np.float32)
@@ -179,5 +181,5 @@ if __name__ == '__main__':
     store_lst = [train_loss_lst, test_loss_lst, test_acc, pt]
     pd_str = pd_to_string(pd)
     time_str = str(datetime.datetime.today())
-    print('time:', time_str)
+    print('time:', time_str, 'experiment took', time.time() - time_start, '[s]')
     # pickle.dump(store_lst, open('./runs/' + time_str + pd_str + '.pkl', 'wb'))
