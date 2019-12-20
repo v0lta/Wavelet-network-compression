@@ -25,7 +25,7 @@ parser.add_argument('--hidden', type=int, default=512,
 parser.add_argument('--compression_mode', type=str, default='state',
                     help='How to compress the cell options:'
                          'gates, state, reset, update, state_reset, state_update, full')
-parser.add_argument('--batch_size', type=int, default=50,
+parser.add_argument('--batch_size', type=int, default=100,
                     help='Choose the number of samples used to during each update step.')
 parser.add_argument('--lr', type=float, default=1e-3,
                     help='The learning rate.')

@@ -1,10 +1,13 @@
 # Created by moritz (wolter@cs.uni-bonn.de) at 18/12/2019
 
+import pickle
 import time
 import datetime
 import argparse
 import torch
 import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
 from RNN_compression.cells import GRUCell, FastFoodGRU, WaveletGRU
 from RNN_compression.adding_memory import generate_data_adding, generate_data_memory
 from util import pd_to_string, compute_parameter_total
@@ -17,7 +20,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Sequence Modeling - Adding and Memory Problems')
     parser.add_argument('--problem', type=str, default='memory',
                         help='choose adding or memory')
-    parser.add_argument('--cell', type=str, default='GRU',
+    parser.add_argument('--cell', type=str, default='WaveletGRU',
                         help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
     parser.add_argument('--hidden_min', type=int, default=8,
                         help='Cell size: Default 512.')
@@ -31,7 +34,7 @@ if __name__ == '__main__':
                         help='The number of time steps in the problem, default 60.')
     parser.add_argument('--time_step', type=int, default=10,
                         help='Time step resolution on the grid.')
-    parser.add_argument('--compression_mode', type=str, default='state',
+    parser.add_argument('--compression_mode', type=str, default='state_reset',
                         help='How to compress the cell.')
     parser.add_argument('--batch_size', type=int, default=200,
                         help='The size of the training batches.')
@@ -55,6 +58,7 @@ if __name__ == '__main__':
 
     for state_size in hidden_array:
         for time_steps in time_array:
+            time_start = time.time()
             print('time', datetime.datetime.today())
             print('experiment:', 'state', state_size, 'time', time_steps, args.cell, args.problem)
             if args.problem == 'memory':
@@ -141,9 +145,34 @@ if __name__ == '__main__':
             store_lst = [state_size, time_steps, test_loss_lst, test_acc, pt, test_acc_sum, test_el_total, baseline]
             pd_str = pd_to_string(pd)
             time_str = str(datetime.datetime.today())
-            print('time:', time_str)
-            # pickle.dump(store_lst, open('./runs/' + time_str + pd_str + '.pkl', 'wb'))
+            print('time:', time_str, 'experiment took', time.time() - time_start, '[s]')
             result_list.append(store_lst)
 
-print('done')
-# do the plotting.
+    pickle.dump(store_lst, open('./runs/grid_' + pd_str + '.pkl', 'wb'))
+    print('done')
+    # do the plotting.
+    test_acc_lst = []
+    hidden_lst = []
+    pt_lst = []
+    time_lst = []
+    for exp in result_list:
+        test_acc_lst.append(exp[3])
+        time_lst.append(exp[1])
+        hidden_lst.append(exp[0])
+        pt_lst.append(exp[4])
+    pt_mat = np.array(pt_lst).reshape(hidden_array.shape[0], time_array.shape[0])
+    time_mat = np.array(time_lst).reshape(hidden_array.shape[0], time_array.shape[0])
+    hidden_mat = np.array(hidden_lst).reshape(hidden_array.shape[0], time_array.shape[0])
+    test_acc_mat = np.array(test_acc_lst).reshape(hidden_array.shape[0], time_array.shape[0])
+
+    # plt.imshow(test_acc_mat.transpose()); plt.show()
+
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
+    surf = ax.plot_surface(time_mat, pt_mat, test_acc_mat, cmap='viridis')
+    ax.set_title('GRU')
+    ax.set_xlabel('time steps')
+    ax.set_ylabel('parameters')
+    fig.colorbar(surf, shrink=0.5, aspect=5)
+    plt.savefig('gru_surf_wave_pt.pdf')
+    plt.show()
