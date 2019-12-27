@@ -31,8 +31,8 @@ parser.add_argument('--lr', type=float, default=1e-3,
                     help='The learning rate.')
 parser.add_argument('--clip', type=float, default=-1,
                     help='gradient clip, -1 means no clip (default: 0.15)')
-parser.add_argument('--epochs', type=int, default=10,
-                    help='Passes over the entire data set default: 10')
+parser.add_argument('--epochs', type=int, default=30,
+                    help='Passes over the entire data set default: 30')
 args = parser.parse_args()
 
 
@@ -126,19 +126,21 @@ def train_test(x, y, iteration_no, e_no, train=False):
         # apply gradients
         optimizer.step()
     if iteration_no % 50 == 0:
-        print('e', e_no, 'step', iteration_no, 'loss', cpu_loss, 'acc', acc, 'wl',
+        print('e', e_no, 'step', iteration_no,
+              'loss', cpu_loss, 'acc', acc, 'wl',
               loss_wave_cpu, 'train', train)
     return cpu_loss, sum_correct
 
-train_it = 0
 
+train_it = 0
 train_loss_lst = []
 train_acc_lst = []
 for e_num in range(args.epochs):
     epoch_true_total = 0
     epoch_element_total = 0
     for train_x, train_y in train_loader:
-        train_loss, sum_correct = train_test(train_x.cuda(), train_y.cuda(), train_it, e_num, train=True)
+        train_loss, sum_correct = train_test(train_x.cuda(), train_y.cuda(),
+                                             train_it, e_num, train=True)
         epoch_true_total += sum_correct
         epoch_element_total += train_y.shape[0]
         train_it += 1
@@ -154,12 +156,14 @@ test_true_total = 0
 test_elements_total = 0
 for test_x, test_y in test_loader:
     with torch.no_grad():
-        test_loss, test_sum_correct = train_test(test_x.cuda(), test_y.cuda(), test_it, -1, train=False)
+        test_loss, test_sum_correct = train_test(test_x.cuda(), test_y.cuda(),
+                                                 test_it, -1, train=False)
         test_it += 1
         test_true_total += test_sum_correct
         test_elements_total += test_y.shape[0]
         test_loss_lst.append(test_loss)
-print('test_true_total', test_true_total, 'test_elements_total', test_elements_total)
+print('test_true_total', test_true_total,
+      'test_elements_total', test_elements_total)
 test_acc = test_true_total/(test_elements_total*1.0)
 
 # pickle the results
