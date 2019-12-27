@@ -8,10 +8,12 @@ print('seq_mnist baseline GRU')
 time_str = str(datetime.datetime.today())
 print('time:', time_str)
 with open("runs/baselineGRU_seq_mnist_" + time_str + ".txt", "w") as f:
-    subprocess.call(['python', 'sequential_cifar_mnist_compression.py', '--hidden', str(hidden)],
+    subprocess.call(['python', 'sequential_cifar_mnist_compression.py',
+                     '--hidden', str(hidden)],
                     stdout=f)
 
-experiment_lst = ['state', 'update', 'reset', 'state_reset', 'state_update', 'gates', 'full']
+experiment_lst = ['state', 'update', 'reset', 'state_reset',
+                  'state_update', 'gates', 'full']
 print('seq_mnist wavelet compression')
 for experiment in experiment_lst:
     time_str = str(datetime.datetime.today())
@@ -22,7 +24,7 @@ for experiment in experiment_lst:
                          '--hidden', str(hidden)], stdout=f)
 
 print('fastfood full compression')
-with open("runs/fastfood_full_compression_seq_mnist.txt", "w") as f:
+time_str = str(datetime.datetime.today())
+with open("runs/fastfood_full_compression_seq_mnist_" + time_str + ".txt", "w") as f:
     subprocess.call(['python', 'sequential_cifar_mnist_compression.py',
-                     '--cell', 'FastFoodGRU', '--compression_mode', 'full',
-                     '--hidden', str(hidden)], stdout=f)
+                     '--cell', 'FastFoodGRU', '--hidden', str(hidden)], stdout=f)
