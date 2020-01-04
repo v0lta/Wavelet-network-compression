@@ -16,7 +16,8 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
 
 
-def train_test_loop(args, in_x, in_y_gt, iteration_no, cell, loss_fun, train=False, optimizer=None,
+def train_test_loop(args, in_x, in_y_gt, iteration_no, cell, loss_fun,
+                    train=False, optimizer=None,
                     baseline=None):
     """
     Run the network on the adding or copy memory problems.
