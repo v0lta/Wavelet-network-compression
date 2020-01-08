@@ -42,7 +42,7 @@ class WaveletGRU(GRUCell):
     """ A compressed cell using a wavelet basis in the gates."""
 
     def __init__(self, input_size, hidden_size, out_size, init_wavelet=pywt.Wavelet('db6'), mode='full',
-                 p_drop=0):
+                 p_drop=0.0):
         super().__init__(input_size, hidden_size, out_size)
         self.init_wavelet = init_wavelet
         self.mode = mode
@@ -99,6 +99,6 @@ class FastFoodGRU(GRUCell):
     def __init__(self, input_size, hidden_size, out_size, p_drop=0.0):
         super().__init__(input_size, hidden_size, out_size)
         self.drop_prob = p_drop
-        self.Whz = FastFoodLayer(hidden_size)
-        self.Whr = FastFoodLayer(hidden_size)
-        self.Whh = FastFoodLayer(hidden_size)
+        self.Whz = FastFoodLayer(hidden_size, p_drop=self.drop_prob)
+        self.Whr = FastFoodLayer(hidden_size, p_drop=self.drop_prob)
+        self.Whh = FastFoodLayer(hidden_size, p_drop=self.drop_prob)

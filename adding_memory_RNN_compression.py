@@ -89,6 +89,8 @@ if __name__ == '__main__':
                         help='The size of the training batches. Default 6e5')
     parser.add_argument('--n_test', type=int, default=int(1e4),
                         help='The size of the training batches. Default 1e4')
+    parser.add_argument('--dropout_prob', type=float, default=0.0,
+                        help='Compression layer dropout probability')
     args = parser.parse_args()
 
     train_iterations = int(args.n_train/args.batch_size)
@@ -127,9 +129,9 @@ if __name__ == '__main__':
                                      rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
                                      name='custom')
         cell = WaveletGRU(input_size, args.hidden, output_size, mode=args.compression_mode,
-                          init_wavelet=init_wavelet).cuda()
+                          init_wavelet=init_wavelet, p_drop=args.dropout_prob).cuda()
     elif args.cell == 'FastFoodGRU':
-        cell = FastFoodGRU(input_size, args.hidden, output_size).cuda()
+        cell = FastFoodGRU(input_size, args.hidden, output_size, p_drop=args.dropout_prob).cuda()
     else:
         raise NotImplementedError()
 
