@@ -52,6 +52,8 @@ parser.add_argument('--compression_mode', type=str, default='state',
                     help='Where to apply the compression layers.')
 parser.add_argument('--wavelet_weight', type=float, default=1.,
                     help='Weight factor for the wavelet loss.')
+parser.add_argument('--wave_dropout', type=float, default=0.5,
+                    help='Wavelet dropout probability.')
 
 args = parser.parse_args()
 
@@ -79,7 +81,8 @@ if args.cell == 'WaveletGRU':
                                  rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
                                  name='custom')
     cell = WaveletGRU(input_size=args.emsize, out_size=n_characters, hidden_size=args.cell_size,
-                      mode=args.compression_mode, init_wavelet=init_wavelet)
+                      mode=args.compression_mode, init_wavelet=init_wavelet,
+                      p_drop=args.wave_dropout)
 elif args.cell == 'GRU':
     cell = GRUCell(input_size=args.emsize, out_size=n_characters, hidden_size=args.cell_size)
 else:

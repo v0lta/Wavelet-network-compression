@@ -25,6 +25,10 @@ def train_test_loop(args, in_x, in_y_gt, iteration_no, cell, loss_fun,
     """
     if train:
         optimizer.zero_grad()
+        cell.train()
+    else:
+        cell.eval()
+
     time_steps = in_x.shape[1]
     # run the RNN
     y_cell_lst = []
@@ -79,7 +83,7 @@ if __name__ == '__main__':
                         help='Cell size: Default 512.')
     parser.add_argument('--time_steps', type=int, default=150,
                         help='The number of time steps in the problem, default 150.')
-    parser.add_argument('--compression_mode', type=str, default='state',
+    parser.add_argument('--compression_mode', type=str, default='full',
                         help='How to compress the cell.')
     parser.add_argument('--batch_size', type=int, default=50,
                         help='The size of the training batches. default 50')
@@ -89,7 +93,7 @@ if __name__ == '__main__':
                         help='The size of the training batches. Default 6e5')
     parser.add_argument('--n_test', type=int, default=int(1e4),
                         help='The size of the training batches. Default 1e4')
-    parser.add_argument('--dropout_prob', type=float, default=0.0,
+    parser.add_argument('--wave_dropout', type=float, default=0.5,
                         help='Compression layer dropout probability')
     args = parser.parse_args()
 
@@ -129,7 +133,7 @@ if __name__ == '__main__':
                                      rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
                                      name='custom')
         cell = WaveletGRU(input_size, args.hidden, output_size, mode=args.compression_mode,
-                          init_wavelet=init_wavelet, p_drop=args.dropout_prob).cuda()
+                          init_wavelet=init_wavelet, p_drop=args.wave_dropout).cuda()
     elif args.cell == 'FastFoodGRU':
         cell = FastFoodGRU(input_size, args.hidden, output_size, p_drop=args.dropout_prob).cuda()
     else:

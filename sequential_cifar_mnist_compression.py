@@ -33,6 +33,9 @@ parser.add_argument('--clip', type=float, default=-1,
                     help='gradient clip, -1 means no clip (default: 0.15)')
 parser.add_argument('--epochs', type=int, default=30,
                     help='Passes over the entire data set default: 30')
+parser.add_argument('--wave_dropout', type=float, default=0.5,
+                    help='Weight term of the wavelet loss')
+
 args = parser.parse_args()
 
 
@@ -61,9 +64,9 @@ elif args.cell == 'WaveletGRU':
                                  rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
                                  name='custom')
     cell = WaveletGRU(input_size, args.hidden, output_size,
-                      mode=args.compression_mode, init_wavelet=init_wavelet).cuda()
+                      mode=args.compression_mode,  p_drop=args.wave_dropout).cuda()
 elif args.cell == 'FastFoodGRU':
-    cell = FastFoodGRU(input_size, args.hidden, output_size).cuda()
+    cell = FastFoodGRU(input_size, args.hidden, output_size,  p_drop=args.wave_dropout).cuda()
 else:
     raise NotImplementedError()
 
