@@ -178,7 +178,7 @@ if __name__ == '__main__':
     print('test_el_total', test_el_total, 'test_acc_sum', test_acc_sum)
     test_acc = test_acc_sum/(test_el_total*1.0)
 
-    print('test loss mean', np.mean(test_loss_lst), 'test acc mean', test_acc, 'pt', pt)
+    print('test loss mean', np.mean(test_loss_lst), 'test acc', test_acc, 'pt', pt)
     store_lst = [train_loss_lst, test_loss_lst, test_acc, pt]
     pd_str = pd_to_string(pd)
     time_str = str(datetime.datetime.today())

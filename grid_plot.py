@@ -34,7 +34,7 @@ if __name__ == '__main__':
                         help='The number of time steps in the problem, default 60.')
     parser.add_argument('--time_step', type=int, default=10,
                         help='Time step resolution on the grid.')
-    parser.add_argument('--compression_mode', type=str, default='state_reset',
+    parser.add_argument('--compression_mode', type=str, default='state',
                         help='How to compress the cell.')
     parser.add_argument('--batch_size', type=int, default=200,
                         help='The size of the training batches.')
@@ -170,9 +170,10 @@ if __name__ == '__main__':
     fig = plt.figure()
     ax = plt.axes(projection='3d')
     surf = ax.plot_surface(time_mat, pt_mat, test_acc_mat, cmap='viridis')
-    ax.set_title('GRU')
-    ax.set_xlabel('time steps')
+    ax.set_title('WaveletGRU')
+    ax.set_xlabel('time')
     ax.set_ylabel('parameters')
+    ax.set_zlabel('accuracy')
     fig.colorbar(surf, shrink=0.5, aspect=5)
     plt.savefig('gru_surf_wave_pt.pdf')
     plt.show()

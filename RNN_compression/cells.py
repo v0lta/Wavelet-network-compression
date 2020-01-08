@@ -41,37 +41,39 @@ class GRUCell(torch.nn.Module):
 class WaveletGRU(GRUCell):
     """ A compressed cell using a wavelet basis in the gates."""
 
-    def __init__(self, input_size, hidden_size, out_size, init_wavelet=pywt.Wavelet('db6'), mode='full'):
+    def __init__(self, input_size, hidden_size, out_size, init_wavelet=pywt.Wavelet('db6'), mode='full',
+                 p_drop=0):
         super().__init__(input_size, hidden_size, out_size)
         self.init_wavelet = init_wavelet
         self.mode = mode
+        self.drop_prob = p_drop
         scales = 8
         if mode == 'gates':
             print('gates compression')
-            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
+            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
         elif mode == 'reset':
             print('reset compression')
-            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
         elif mode == 'update':
             print('update compression')
-            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
         elif mode == 'state':
             print('state compression')
-            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
         elif mode == 'state_reset':
             print('state+reset gate compression')
-            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
+            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
         elif mode == 'state_update':
             print('state+update gate compression')
-            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
+            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
         else:
             print('full compression')
-            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
-            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales)
+            self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
+            self.Whr = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
+            self.Whh = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)
         print('Creating a Wavelet GRU, do not forget to add the wavelet-loss.')
 
     def get_wavelet_loss(self):
@@ -94,8 +96,9 @@ class WaveletGRU(GRUCell):
 class FastFoodGRU(GRUCell):
     """ A compressed cell using a wavelet basis in the gates."""
 
-    def __init__(self, input_size, hidden_size, out_size):
+    def __init__(self, input_size, hidden_size, out_size, p_drop=0.0):
         super().__init__(input_size, hidden_size, out_size)
+        self.drop_prob = p_drop
         self.Whz = FastFoodLayer(hidden_size)
         self.Whr = FastFoodLayer(hidden_size)
         self.Whh = FastFoodLayer(hidden_size)
