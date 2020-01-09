@@ -1,0 +1,275 @@
+Namespace(batch_size=50, cell='WaveletGRU', compression_mode='state_update', hidden=512, lr=0.001, n_test=10000, n_train=600000, problem='adding', time_steps=150)
+state+update gate compression
+Creating a Wavelet GRU, do not forget to add the wavelet-loss.
+torch.Size([512])
+torch.Size([545])
+torch.Size([512])
+torch.Size([6])
+torch.Size([6])
+torch.Size([6])
+torch.Size([6])
+torch.Size([512, 2])
+torch.Size([512])
+torch.Size([512, 512])
+torch.Size([512, 2])
+torch.Size([512])
+torch.Size([512])
+torch.Size([545])
+torch.Size([512])
+torch.Size([6])
+torch.Size([6])
+torch.Size([6])
+torch.Size([6])
+torch.Size([512, 2])
+torch.Size([512])
+torch.Size([1, 512])
+torch.Size([1])
+parameter total 270451
+step 0 loss 1.8706752 baseline: 0.167 acc 0.0 wl 5.684342e-14 train True
+step 50 loss 0.14184603 baseline: 0.167 acc 0.16 wl 0.0001601383 train True
+step 100 loss 0.14030394 baseline: 0.167 acc 0.14 wl 0.0002451464 train True
+step 150 loss 0.14114657 baseline: 0.167 acc 0.06 wl 0.00034396534 train True
+step 200 loss 0.2003464 baseline: 0.167 acc 0.08 wl 4.5224428e-05 train True
+step 250 loss 0.20235378 baseline: 0.167 acc 0.14 wl 0.00015021612 train True
+step 300 loss 0.20907517 baseline: 0.167 acc 0.06 wl 0.0001262447 train True
+step 350 loss 0.11396772 baseline: 0.167 acc 0.14 wl 7.996227e-05 train True
+step 400 loss 0.24666925 baseline: 0.167 acc 0.12 wl 0.00014358925 train True
+step 450 loss 0.25581306 baseline: 0.167 acc 0.06 wl 0.00035229677 train True
+step 500 loss 0.18274425 baseline: 0.167 acc 0.1 wl 0.00017811122 train True
+step 550 loss 0.16334969 baseline: 0.167 acc 0.1 wl 0.00011158098 train True
+step 600 loss 0.18706006 baseline: 0.167 acc 0.02 wl 0.00026808973 train True
+step 650 loss 0.14187576 baseline: 0.167 acc 0.08 wl 0.00012128803 train True
+step 700 loss 0.17475696 baseline: 0.167 acc 0.14 wl 3.4820554e-05 train True
+step 750 loss 0.14981245 baseline: 0.167 acc 0.08 wl 0.00013820063 train True
+step 800 loss 0.16383033 baseline: 0.167 acc 0.02 wl 4.3182394e-05 train True
+step 850 loss 0.17413887 baseline: 0.167 acc 0.04 wl 0.00029338128 train True
+step 900 loss 0.2457374 baseline: 0.167 acc 0.08 wl 4.4238543e-05 train True
+step 950 loss 0.19157773 baseline: 0.167 acc 0.06 wl 7.2275776e-05 train True
+step 1000 loss 0.19366252 baseline: 0.167 acc 0.1 wl 2.3352537e-05 train True
+step 1050 loss 0.19824043 baseline: 0.167 acc 0.06 wl 0.00019639498 train True
+step 1100 loss 0.1495545 baseline: 0.167 acc 0.08 wl 6.123035e-05 train True
+step 1150 loss 0.16322331 baseline: 0.167 acc 0.16 wl 7.774442e-05 train True
+step 1200 loss 0.16335253 baseline: 0.167 acc 0.16 wl 6.735587e-05 train True
+step 1250 loss 0.21446614 baseline: 0.167 acc 0.1 wl 0.0005543249 train True
+step 1300 loss 0.15363334 baseline: 0.167 acc 0.04 wl 0.00015211207 train True
+step 1350 loss 0.17657094 baseline: 0.167 acc 0.12 wl 0.0002888965 train True
+step 1400 loss 0.21682297 baseline: 0.167 acc 0.08 wl 9.405842e-05 train True
+step 1450 loss 0.17302962 baseline: 0.167 acc 0.06 wl 2.1972694e-05 train True
+step 1500 loss 0.114648536 baseline: 0.167 acc 0.12 wl 0.00038152802 train True
+step 1550 loss 0.2035899 baseline: 0.167 acc 0.08 wl 0.0005119722 train True
+step 1600 loss 0.18531296 baseline: 0.167 acc 0.1 wl 0.00015143282 train True
+step 1650 loss 0.14262241 baseline: 0.167 acc 0.18 wl 1.634827e-05 train True
+step 1700 loss 0.213143 baseline: 0.167 acc 0.1 wl 5.8003112e-05 train True
+step 1750 loss 0.1728166 baseline: 0.167 acc 0.1 wl 0.00027055462 train True
+step 1800 loss 0.18557227 baseline: 0.167 acc 0.1 wl 4.3921078e-05 train True
+step 1850 loss 0.12790945 baseline: 0.167 acc 0.08 wl 0.00012956942 train True
+step 1900 loss 0.1630732 baseline: 0.167 acc 0.14 wl 7.712888e-05 train True
+step 1950 loss 0.15052503 baseline: 0.167 acc 0.1 wl 4.925581e-05 train True
+step 2000 loss 0.16366929 baseline: 0.167 acc 0.08 wl 7.3102914e-05 train True
+step 2050 loss 0.18703687 baseline: 0.167 acc 0.02 wl 0.00020545602 train True
+step 2100 loss 0.16668189 baseline: 0.167 acc 0.08 wl 5.369137e-05 train True
+step 2150 loss 0.21946533 baseline: 0.167 acc 0.06 wl 2.8082759e-05 train True
+step 2200 loss 0.15634769 baseline: 0.167 acc 0.08 wl 3.548406e-05 train True
+step 2250 loss 0.19416133 baseline: 0.167 acc 0.04 wl 0.0006069742 train True
+step 2300 loss 0.17681059 baseline: 0.167 acc 0.06 wl 4.2219108e-05 train True
+step 2350 loss 0.16828592 baseline: 0.167 acc 0.1 wl 0.00011798093 train True
+step 2400 loss 0.19723782 baseline: 0.167 acc 0.14 wl 1.776645e-05 train True
+step 2450 loss 0.16519696 baseline: 0.167 acc 0.08 wl 4.7502424e-05 train True
+step 2500 loss 0.13548025 baseline: 0.167 acc 0.14 wl 0.00022990184 train True
+step 2550 loss 0.17599201 baseline: 0.167 acc 0.08 wl 5.992155e-05 train True
+step 2600 loss 0.24820003 baseline: 0.167 acc 0.06 wl 0.00017208984 train True
+step 2650 loss 0.19853951 baseline: 0.167 acc 0.08 wl 5.5030076e-05 train True
+step 2700 loss 0.14237395 baseline: 0.167 acc 0.1 wl 6.317849e-05 train True
+step 2750 loss 0.2061718 baseline: 0.167 acc 0.04 wl 7.13124e-05 train True
+step 2800 loss 0.1382697 baseline: 0.167 acc 0.1 wl 3.2439682e-05 train True
+step 2850 loss 0.18441358 baseline: 0.167 acc 0.06 wl 0.00012130574 train True
+step 2900 loss 0.19723362 baseline: 0.167 acc 0.1 wl 6.723827e-05 train True
+step 2950 loss 0.16238964 baseline: 0.167 acc 0.16 wl 4.0613628e-05 train True
+step 3000 loss 0.19137993 baseline: 0.167 acc 0.14 wl 1.930826e-05 train True
+step 3050 loss 0.16630478 baseline: 0.167 acc 0.14 wl 1.4552669e-05 train True
+step 3100 loss 0.22661322 baseline: 0.167 acc 0.08 wl 1.3101838e-05 train True
+step 3150 loss 0.18296458 baseline: 0.167 acc 0.12 wl 0.00011017047 train True
+step 3200 loss 0.13984366 baseline: 0.167 acc 0.14 wl 3.9601895e-05 train True
+step 3250 loss 0.14297575 baseline: 0.167 acc 0.1 wl 7.1901304e-05 train True
+step 3300 loss 0.16433118 baseline: 0.167 acc 0.12 wl 2.169633e-05 train True
+step 3350 loss 0.15667896 baseline: 0.167 acc 0.06 wl 9.16197e-05 train True
+step 3400 loss 0.22790001 baseline: 0.167 acc 0.12 wl 2.3429275e-05 train True
+step 3450 loss 0.1922753 baseline: 0.167 acc 0.06 wl 0.00014220097 train True
+step 3500 loss 0.15222389 baseline: 0.167 acc 0.14 wl 8.3669045e-05 train True
+step 3550 loss 0.14698762 baseline: 0.167 acc 0.16 wl 0.00011044553 train True
+step 3600 loss 0.16779585 baseline: 0.167 acc 0.06 wl 9.089487e-05 train True
+step 3650 loss 0.14791411 baseline: 0.167 acc 0.14 wl 8.262097e-05 train True
+step 3700 loss 0.19080101 baseline: 0.167 acc 0.06 wl 2.8966977e-05 train True
+step 3750 loss 0.19143958 baseline: 0.167 acc 0.0 wl 0.00023808001 train True
+step 3800 loss 0.17670895 baseline: 0.167 acc 0.06 wl 0.00011556676 train True
+step 3850 loss 0.17252773 baseline: 0.167 acc 0.1 wl 4.426336e-05 train True
+step 3900 loss 0.21884863 baseline: 0.167 acc 0.04 wl 5.3032436e-05 train True
+step 3950 loss 0.12381599 baseline: 0.167 acc 0.14 wl 0.00024000139 train True
+step 4000 loss 0.17954011 baseline: 0.167 acc 0.06 wl 1.9854333e-05 train True
+step 4050 loss 0.1581202 baseline: 0.167 acc 0.04 wl 0.00024546473 train True
+step 4100 loss 0.18247597 baseline: 0.167 acc 0.08 wl 1.29816635e-05 train True
+step 4150 loss 0.16960949 baseline: 0.167 acc 0.06 wl 2.7098475e-05 train True
+step 4200 loss 0.18029937 baseline: 0.167 acc 0.16 wl 5.0708277e-05 train True
+step 4250 loss 0.13864782 baseline: 0.167 acc 0.12 wl 7.4169555e-05 train True
+step 4300 loss 0.1753371 baseline: 0.167 acc 0.04 wl 0.00022495452 train True
+step 4350 loss 0.126116 baseline: 0.167 acc 0.1 wl 2.50802e-05 train True
+step 4400 loss 0.1966441 baseline: 0.167 acc 0.14 wl 7.4860014e-05 train True
+step 4450 loss 0.17354323 baseline: 0.167 acc 0.1 wl 2.2287688e-05 train True
+step 4500 loss 0.15700829 baseline: 0.167 acc 0.1 wl 3.3046985e-05 train True
+step 4550 loss 0.19351894 baseline: 0.167 acc 0.08 wl 0.00015238719 train True
+step 4600 loss 0.17827857 baseline: 0.167 acc 0.16 wl 9.965658e-05 train True
+step 4650 loss 0.19383778 baseline: 0.167 acc 0.04 wl 2.4098685e-05 train True
+step 4700 loss 0.17340535 baseline: 0.167 acc 0.08 wl 1.3782525e-05 train True
+step 4750 loss 0.14313428 baseline: 0.167 acc 0.06 wl 4.3450615e-05 train True
+step 4800 loss 0.14994286 baseline: 0.167 acc 0.1 wl 0.00030368677 train True
+step 4850 loss 0.222919 baseline: 0.167 acc 0.14 wl 0.00012328484 train True
+step 4900 loss 0.1625975 baseline: 0.167 acc 0.1 wl 5.625312e-05 train True
+step 4950 loss 0.19122392 baseline: 0.167 acc 0.12 wl 3.3025262e-05 train True
+step 5000 loss 0.2509145 baseline: 0.167 acc 0.08 wl 4.3180815e-05 train True
+step 5050 loss 0.14589262 baseline: 0.167 acc 0.16 wl 2.515591e-05 train True
+step 5100 loss 0.20511128 baseline: 0.167 acc 0.12 wl 8.235174e-05 train True
+step 5150 loss 0.17161934 baseline: 0.167 acc 0.08 wl 5.8322414e-05 train True
+step 5200 loss 0.13299412 baseline: 0.167 acc 0.08 wl 6.5708446e-05 train True
+step 5250 loss 0.15871808 baseline: 0.167 acc 0.1 wl 1.2833609e-05 train True
+step 5300 loss 0.12587029 baseline: 0.167 acc 0.12 wl 6.34712e-05 train True
+step 5350 loss 0.2508452 baseline: 0.167 acc 0.08 wl 0.0001372883 train True
+step 5400 loss 0.19731756 baseline: 0.167 acc 0.08 wl 0.00011566285 train True
+step 5450 loss 0.16321807 baseline: 0.167 acc 0.1 wl 0.00013928354 train True
+step 5500 loss 0.19573444 baseline: 0.167 acc 0.14 wl 7.51558e-05 train True
+step 5550 loss 0.13959235 baseline: 0.167 acc 0.16 wl 7.2804665e-05 train True
+step 5600 loss 0.13381524 baseline: 0.167 acc 0.16 wl 0.00014382615 train True
+step 5650 loss 0.19346112 baseline: 0.167 acc 0.06 wl 3.7778816e-05 train True
+step 5700 loss 0.18193696 baseline: 0.167 acc 0.08 wl 6.154156e-05 train True
+step 5750 loss 0.15193217 baseline: 0.167 acc 0.1 wl 6.514632e-05 train True
+step 5800 loss 0.11936218 baseline: 0.167 acc 0.18 wl 0.00019980117 train True
+step 5850 loss 0.17323178 baseline: 0.167 acc 0.1 wl 4.0201223e-05 train True
+step 5900 loss 0.15457703 baseline: 0.167 acc 0.12 wl 8.2247745e-05 train True
+step 5950 loss 0.15151507 baseline: 0.167 acc 0.1 wl 0.00029464375 train True
+step 6000 loss 0.11537736 baseline: 0.167 acc 0.12 wl 5.040681e-05 train True
+step 6050 loss 0.16767903 baseline: 0.167 acc 0.06 wl 6.362289e-05 train True
+step 6100 loss 0.18108878 baseline: 0.167 acc 0.08 wl 0.00015086363 train True
+step 6150 loss 0.13889144 baseline: 0.167 acc 0.14 wl 0.0001112762 train True
+step 6200 loss 0.18963623 baseline: 0.167 acc 0.04 wl 7.721761e-05 train True
+step 6250 loss 0.13719879 baseline: 0.167 acc 0.16 wl 0.00011847988 train True
+step 6300 loss 0.17386435 baseline: 0.167 acc 0.12 wl 0.00050946674 train True
+step 6350 loss 0.15481128 baseline: 0.167 acc 0.12 wl 0.00013117581 train True
+step 6400 loss 0.09781153 baseline: 0.167 acc 0.12 wl 0.00021731923 train True
+step 6450 loss 0.12853123 baseline: 0.167 acc 0.08 wl 0.00013643793 train True
+step 6500 loss 0.14356384 baseline: 0.167 acc 0.12 wl 0.00011052135 train True
+step 6550 loss 0.09672621 baseline: 0.167 acc 0.14 wl 0.0002481523 train True
+step 6600 loss 0.08005695 baseline: 0.167 acc 0.1 wl 0.00023842283 train True
+step 6650 loss 0.11960487 baseline: 0.167 acc 0.1 wl 0.0004962995 train True
+step 6700 loss 0.064106226 baseline: 0.167 acc 0.12 wl 8.78677e-05 train True
+step 6750 loss 0.13655491 baseline: 0.167 acc 0.08 wl 0.00030347833 train True
+step 6800 loss 0.091488294 baseline: 0.167 acc 0.18 wl 0.0009994992 train True
+step 6850 loss 0.06242098 baseline: 0.167 acc 0.14 wl 0.00030255344 train True
+step 6900 loss 0.06810337 baseline: 0.167 acc 0.06 wl 0.00047222798 train True
+step 6950 loss 0.050372206 baseline: 0.167 acc 0.2 wl 0.00013079926 train True
+step 7000 loss 0.09806572 baseline: 0.167 acc 0.12 wl 0.00012562875 train True
+step 7050 loss 0.039236277 baseline: 0.167 acc 0.14 wl 0.0005531944 train True
+step 7100 loss 0.029635219 baseline: 0.167 acc 0.28 wl 0.0005396028 train True
+step 7150 loss 0.038940724 baseline: 0.167 acc 0.16 wl 0.00027717024 train True
+step 7200 loss 0.119069 baseline: 0.167 acc 0.08 wl 0.00035148475 train True
+step 7250 loss 0.033150338 baseline: 0.167 acc 0.24 wl 9.281907e-05 train True
+step 7300 loss 0.04481329 baseline: 0.167 acc 0.12 wl 0.00021838788 train True
+step 7350 loss 0.039966106 baseline: 0.167 acc 0.16 wl 7.4508855e-05 train True
+step 7400 loss 0.04542055 baseline: 0.167 acc 0.12 wl 8.841619e-05 train True
+step 7450 loss 0.023334472 baseline: 0.167 acc 0.2 wl 0.00011451107 train True
+step 7500 loss 0.03941074 baseline: 0.167 acc 0.14 wl 0.00012173032 train True
+step 7550 loss 0.035985634 baseline: 0.167 acc 0.14 wl 0.00034482524 train True
+step 7600 loss 0.023521705 baseline: 0.167 acc 0.38 wl 9.332148e-05 train True
+step 7650 loss 0.02592227 baseline: 0.167 acc 0.12 wl 9.395913e-05 train True
+step 7700 loss 0.025754271 baseline: 0.167 acc 0.18 wl 0.00021639981 train True
+step 7750 loss 0.019004382 baseline: 0.167 acc 0.26 wl 0.000109754415 train True
+step 7800 loss 0.03625692 baseline: 0.167 acc 0.22 wl 0.0002442553 train True
+step 7850 loss 0.031213932 baseline: 0.167 acc 0.16 wl 0.0001506741 train True
+step 7900 loss 0.014713633 baseline: 0.167 acc 0.3 wl 8.0383186e-05 train True
+step 7950 loss 0.034192037 baseline: 0.167 acc 0.32 wl 0.00049591984 train True
+step 8000 loss 0.01963868 baseline: 0.167 acc 0.28 wl 0.00014545416 train True
+step 8050 loss 0.040798545 baseline: 0.167 acc 0.12 wl 0.00032319585 train True
+step 8100 loss 0.035932597 baseline: 0.167 acc 0.18 wl 0.00026227866 train True
+step 8150 loss 0.015862625 baseline: 0.167 acc 0.3 wl 0.000102450045 train True
+step 8200 loss 0.026228763 baseline: 0.167 acc 0.24 wl 5.9384423e-05 train True
+step 8250 loss 0.07145914 baseline: 0.167 acc 0.12 wl 0.002511059 train True
+step 8300 loss 0.019925838 baseline: 0.167 acc 0.24 wl 0.00017680535 train True
+step 8350 loss 0.05619584 baseline: 0.167 acc 0.12 wl 8.801181e-05 train True
+step 8400 loss 0.010984056 baseline: 0.167 acc 0.34 wl 8.805431e-05 train True
+step 8450 loss 0.019381832 baseline: 0.167 acc 0.26 wl 0.000101348836 train True
+step 8500 loss 0.02425117 baseline: 0.167 acc 0.24 wl 0.00011100877 train True
+step 8550 loss 0.017865365 baseline: 0.167 acc 0.28 wl 6.762675e-05 train True
+step 8600 loss 0.0151820555 baseline: 0.167 acc 0.22 wl 8.524854e-05 train True
+step 8650 loss 0.018758575 baseline: 0.167 acc 0.32 wl 0.00014999854 train True
+step 8700 loss 0.05542469 baseline: 0.167 acc 0.06 wl 0.0012993484 train True
+step 8750 loss 0.030284662 baseline: 0.167 acc 0.14 wl 5.525318e-05 train True
+step 8800 loss 0.00706567 baseline: 0.167 acc 0.46 wl 7.0207985e-05 train True
+step 8850 loss 0.022590969 baseline: 0.167 acc 0.18 wl 8.966224e-05 train True
+step 8900 loss 0.008473993 baseline: 0.167 acc 0.5 wl 6.793328e-05 train True
+step 8950 loss 0.0372116 baseline: 0.167 acc 0.0 wl 0.00050464144 train True
+step 9000 loss 0.015831528 baseline: 0.167 acc 0.18 wl 0.00013066523 train True
+step 9050 loss 0.009332671 baseline: 0.167 acc 0.42 wl 0.0003186587 train True
+step 9100 loss 0.008328226 baseline: 0.167 acc 0.42 wl 8.6536435e-05 train True
+step 9150 loss 0.0129395295 baseline: 0.167 acc 0.34 wl 7.4183255e-05 train True
+step 9200 loss 0.014064358 baseline: 0.167 acc 0.26 wl 0.00018313495 train True
+step 9250 loss 0.01448957 baseline: 0.167 acc 0.26 wl 6.583949e-05 train True
+step 9300 loss 0.007240902 baseline: 0.167 acc 0.44 wl 0.0001410471 train True
+step 9350 loss 0.007815245 baseline: 0.167 acc 0.44 wl 8.7407796e-05 train True
+step 9400 loss 0.010243917 baseline: 0.167 acc 0.26 wl 7.507147e-05 train True
+step 9450 loss 0.011960563 baseline: 0.167 acc 0.44 wl 3.7499907e-05 train True
+step 9500 loss 0.012636775 baseline: 0.167 acc 0.3 wl 4.707739e-05 train True
+step 9550 loss 0.0047442494 baseline: 0.167 acc 0.5 wl 0.00015386086 train True
+step 9600 loss 0.0058451225 baseline: 0.167 acc 0.5 wl 0.000110526205 train True
+step 9650 loss 0.00601948 baseline: 0.167 acc 0.4 wl 0.00019263368 train True
+step 9700 loss 0.0061858 baseline: 0.167 acc 0.5 wl 7.71079e-05 train True
+step 9750 loss 0.010295533 baseline: 0.167 acc 0.28 wl 0.0001686984 train True
+step 9800 loss 0.022881294 baseline: 0.167 acc 0.06 wl 0.0002161726 train True
+step 9850 loss 0.0057404656 baseline: 0.167 acc 0.42 wl 0.00023522002 train True
+step 9900 loss 0.007596823 baseline: 0.167 acc 0.44 wl 0.00015490447 train True
+step 9950 loss 0.005032939 baseline: 0.167 acc 0.54 wl 6.47078e-05 train True
+step 10000 loss 0.0065699713 baseline: 0.167 acc 0.54 wl 6.447284e-05 train True
+step 10050 loss 0.015453534 baseline: 0.167 acc 0.18 wl 5.5190634e-05 train True
+step 10100 loss 0.0042760195 baseline: 0.167 acc 0.58 wl 0.00013840644 train True
+step 10150 loss 0.0048804553 baseline: 0.167 acc 0.62 wl 2.8485312e-05 train True
+step 10200 loss 0.0042092563 baseline: 0.167 acc 0.6 wl 0.00012041592 train True
+step 10250 loss 0.019673988 baseline: 0.167 acc 0.18 wl 0.0003264406 train True
+step 10300 loss 0.005472189 baseline: 0.167 acc 0.44 wl 5.0119303e-05 train True
+step 10350 loss 0.006298382 baseline: 0.167 acc 0.46 wl 5.6722463e-05 train True
+step 10400 loss 0.0046296157 baseline: 0.167 acc 0.56 wl 8.281438e-05 train True
+step 10450 loss 0.010016657 baseline: 0.167 acc 0.3 wl 6.1076295e-05 train True
+step 10500 loss 0.0057437276 baseline: 0.167 acc 0.58 wl 3.5284265e-05 train True
+step 10550 loss 0.015433719 baseline: 0.167 acc 0.2 wl 9.745082e-05 train True
+step 10600 loss 0.0042596264 baseline: 0.167 acc 0.6 wl 6.525623e-05 train True
+step 10650 loss 0.004455936 baseline: 0.167 acc 0.58 wl 0.00015704484 train True
+step 10700 loss 0.006141317 baseline: 0.167 acc 0.56 wl 0.00010610385 train True
+step 10750 loss 0.006641893 baseline: 0.167 acc 0.5 wl 5.224331e-05 train True
+step 10800 loss 0.0028172063 baseline: 0.167 acc 0.6 wl 5.4171218e-05 train True
+step 10850 loss 0.0059041935 baseline: 0.167 acc 0.36 wl 0.00014505858 train True
+step 10900 loss 0.019254645 baseline: 0.167 acc 0.08 wl 0.00016980249 train True
+step 10950 loss 0.0038101696 baseline: 0.167 acc 0.64 wl 5.952736e-05 train True
+step 11000 loss 0.0026873117 baseline: 0.167 acc 0.64 wl 0.00018367571 train True
+step 11050 loss 0.0050525856 baseline: 0.167 acc 0.4 wl 3.169146e-05 train True
+step 11100 loss 0.0046841856 baseline: 0.167 acc 0.56 wl 7.023072e-05 train True
+step 11150 loss 0.008347278 baseline: 0.167 acc 0.42 wl 0.00012612119 train True
+step 11200 loss 0.006932112 baseline: 0.167 acc 0.4 wl 6.0326885e-05 train True
+step 11250 loss 0.0030101633 baseline: 0.167 acc 0.64 wl 0.0001662595 train True
+step 11300 loss 0.0039478913 baseline: 0.167 acc 0.62 wl 0.00010298104 train True
+step 11350 loss 0.004577467 baseline: 0.167 acc 0.48 wl 2.9530227e-05 train True
+step 11400 loss 0.0054184077 baseline: 0.167 acc 0.52 wl 3.8811737e-05 train True
+step 11450 loss 0.004297301 baseline: 0.167 acc 0.52 wl 0.00030251313 train True
+step 11500 loss 0.00996781 baseline: 0.167 acc 0.32 wl 7.7414836e-05 train True
+step 11550 loss 0.003887369 baseline: 0.167 acc 0.54 wl 0.00015067334 train True
+step 11600 loss 0.0019313298 baseline: 0.167 acc 0.76 wl 7.422719e-05 train True
+step 11650 loss 0.026220636 baseline: 0.167 acc 0.32 wl 0.00085025985 train True
+step 11700 loss 0.0027017796 baseline: 0.167 acc 0.8 wl 0.00016782235 train True
+step 11750 loss 0.00699786 baseline: 0.167 acc 0.26 wl 3.292564e-05 train True
+step 11800 loss 0.0023482908 baseline: 0.167 acc 0.68 wl 2.9194649e-05 train True
+step 11850 loss 0.0020901377 baseline: 0.167 acc 0.76 wl 8.73764e-05 train True
+step 11900 loss 0.0019995226 baseline: 0.167 acc 0.76 wl 5.9497914e-05 train True
+step 11950 loss 0.005644821 baseline: 0.167 acc 0.34 wl 8.53874e-05 train True
+training done... testing ...
+step 0 loss 0.004679955 baseline: 0.167 acc 0.58 wl 0.00021559655 train False
+step 50 loss 0.0042927796 baseline: 0.167 acc 0.52 wl 0.00021559655 train False
+step 100 loss 0.0055127265 baseline: 0.167 acc 0.42 wl 0.00021559655 train False
+step 150 loss 0.004274469 baseline: 0.167 acc 0.6 wl 0.00021559655 train False
+test_el_total 10000 test_acc_sum 5573.0
+test loss mean 0.004846832 test acc mean 0.5573 pt 270451
+time: 2020-01-08 09:06:43.031172 experiment took 49088.04575538635 [s]

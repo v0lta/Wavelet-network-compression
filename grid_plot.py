@@ -90,7 +90,7 @@ if __name__ == '__main__':
                                              rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
                                              name='custom')
                 cell = WaveletGRU(input_size, state_size, output_size, mode=args.compression_mode,
-                                  init_wavelet=init_wavelet).cuda()
+                                  init_wavelet=init_wavelet, p_drop=0.0).cuda()
             elif args.cell == 'FastFoodGRU':
                 cell = FastFoodGRU(input_size, state_size, output_size).cuda()
             else:

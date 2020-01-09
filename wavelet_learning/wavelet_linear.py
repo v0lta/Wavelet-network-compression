@@ -44,6 +44,7 @@ class WaveletLayer(torch.nn.Module):
     """
     def __init__(self, depth, init_wavelet, scales, p_drop=0.5):
         super().__init__()
+        print('wavelet dropout:', p_drop)
         self.scales = scales
         self.wavelet = Wave1D(init_wavelet=init_wavelet, scales=scales)
         self.coefficient_len_lst = [depth]

@@ -21,6 +21,7 @@ class FastFoodLayer(torch.nn.Module):
     """
     def __init__(self, depth, p_drop=0.5):
         super().__init__()
+        print('fastfood dropout:', p_drop)
         ones = np.ones(depth, np.float32)
         self.diag_vec_s = Parameter(torch.from_numpy(ones))
         self.diag_vec_g = Parameter(torch.from_numpy(ones))
