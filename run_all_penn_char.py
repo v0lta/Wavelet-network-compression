@@ -12,18 +12,19 @@ with open("runs/baselineGRU_penn_char_" + time_str + ".txt", "w") as f:
     subprocess.call(['python', 'penn_test.py'], stdout=f)
 
 
-experiment_lst = ['state', 'update', 'reset', 'state_reset', 'state_update', 'gates', 'full']
+experiment_lst = ['state_reset', 'state_update', 'gates', 'full',
+                  'update', 'state', 'reset']
 print('wavelet compression')
 for experiment in experiment_lst:
     time_str = str(datetime.datetime.today())
     print(experiment, ' at time:', time_str)
-    with open("runs/" + experiment + "_compression_penn_char_" + time_str + ".txt", "w") as f:
+    with open("runs/v3_" + experiment + "_compression_penn_char_" + time_str + ".txt", "w") as f:
         subprocess.call(['python', 'penn_test.py',
                          '--cell', 'WaveletGRU', '--compression_mode', experiment], stdout=f)
 
 print('fastfood full compression')
 time_str = str(datetime.datetime.today())
 print('time:', time_str)
-with open("runs/fastfood_full_compression_penn_char_" + time_str + ".txt", "w") as f:
+with open("runs/v3_fastfood_full_compression_penn_char_" + time_str + ".txt", "w") as f:
     subprocess.call(['python', 'penn_test.py', '--problem', 'adding',
                      '--cell', 'FastFoodGRU', '--compression_mode', 'full'], stdout=f)

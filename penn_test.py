@@ -52,7 +52,7 @@ parser.add_argument('--compression_mode', type=str, default='state',
                     help='Where to apply the compression layers.')
 parser.add_argument('--wavelet_weight', type=float, default=1.,
                     help='Weight factor for the wavelet loss.')
-parser.add_argument('--wave_dropout', type=float, default=0.5,
+parser.add_argument('--wave_dropout', type=float, default=0.0,
                     help='Wavelet dropout probability.')
 
 args = parser.parse_args()

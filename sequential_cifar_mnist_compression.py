@@ -33,7 +33,7 @@ parser.add_argument('--clip', type=float, default=-1,
                     help='gradient clip, -1 means no clip (default: 0.15)')
 parser.add_argument('--epochs', type=int, default=30,
                     help='Passes over the entire data set default: 30')
-parser.add_argument('--wave_dropout', type=float, default=0.5,
+parser.add_argument('--wave_dropout', type=float, default=0.0,
                     help='Weight term of the wavelet loss')
 
 args = parser.parse_args()

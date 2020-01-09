@@ -93,7 +93,7 @@ if __name__ == '__main__':
                         help='The size of the training batches. Default 6e5')
     parser.add_argument('--n_test', type=int, default=int(1e4),
                         help='The size of the training batches. Default 1e4')
-    parser.add_argument('--wave_dropout', type=float, default=0.5,
+    parser.add_argument('--wave_dropout', type=float, default=0.0,
                         help='Compression layer dropout probability')
     args = parser.parse_args()
 
