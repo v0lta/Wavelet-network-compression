@@ -4,7 +4,7 @@ import datetime
 import subprocess
 subprocess.call('pwd')
 hidden = 64
-epochs = 100
+epochs = 50
 print(hidden, epochs)
 # print('seq_mnist baseline GRU')
 # time_str = str(datetime.datetime.today())

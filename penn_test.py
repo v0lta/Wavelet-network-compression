@@ -37,7 +37,7 @@ parser.add_argument('--lr', type=float, default=0.005,
 parser.add_argument('--emsize', type=int, default=100,
                     help='dimension of character embeddings (default: 100)')
 parser.add_argument('--optim', type=str, default='Adam',
-                    help='optimizer to use (default: SGD)')
+                    help='optimizer to use (default: Adam)')
 parser.add_argument('--validseqlen', type=int, default=320,
                     help='valid sequence length (default: 320)')
 parser.add_argument('--seq_len', type=int, default=400,
