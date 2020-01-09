@@ -135,7 +135,7 @@ if __name__ == '__main__':
         cell = WaveletGRU(input_size, args.hidden, output_size, mode=args.compression_mode,
                           init_wavelet=init_wavelet, p_drop=args.wave_dropout).cuda()
     elif args.cell == 'FastFoodGRU':
-        cell = FastFoodGRU(input_size, args.hidden, output_size, p_drop=args.dropout_prob).cuda()
+        cell = FastFoodGRU(input_size, args.hidden, output_size, p_drop=args.wave_dropout).cuda()
     else:
         raise NotImplementedError()
 
