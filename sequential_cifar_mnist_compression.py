@@ -96,6 +96,9 @@ def train_test(x, y, iteration_no, e_no, train=False):
 
     if train:
         optimizer.zero_grad()
+        cell.train()
+    else:
+        cell.eval()
 
     time_steps = x_flat.shape[1]
     # run the RNN
