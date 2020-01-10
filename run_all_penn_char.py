@@ -11,8 +11,8 @@ subprocess.call('pwd')
 # with open("runs/baselineGRU_penn_char_" + time_str + ".txt", "w") as f:
 #     subprocess.call(['python', 'penn_test.py'], stdout=f)
 
-experiment_lst = ['state_reset', 'state_update', 'gates', 'full',
-                  'update', 'state', 'reset']
+experiment_lst = ['state', 'reset', 'state_reset', 'state_update', 'full',
+                  'gates', 'update']
 print('wavelet compression')
 for experiment in experiment_lst:
     time_str = str(datetime.datetime.today())
