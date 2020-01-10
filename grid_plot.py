@@ -34,7 +34,7 @@ if __name__ == '__main__':
                         help='The number of time steps in the problem, default 60.')
     parser.add_argument('--time_step', type=int, default=10,
                         help='Time step resolution on the grid.')
-    parser.add_argument('--compression_mode', type=str, default='state',
+    parser.add_argument('--compression_mode', type=str, default='reset',
                         help='How to compress the cell.')
     parser.add_argument('--batch_size', type=int, default=200,
                         help='The size of the training batches.')

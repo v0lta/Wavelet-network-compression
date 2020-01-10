@@ -28,7 +28,7 @@ parser.add_argument('--cuda', action='store_false',
                     help='use CUDA (default: True)')
 parser.add_argument('--clip', type=float, default=0.15,
                     help='gradient clip, -1 means no clip (default: 0.15)')
-parser.add_argument('--epochs', type=int, default=60,
+parser.add_argument('--epochs', type=int, default=20,
                     help='upper epoch limit (default: 60)')
 parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='report interval (default: 100')
@@ -46,9 +46,9 @@ parser.add_argument('--seed', type=int, default=1111,
                     help='random seed (default: 1111)')
 parser.add_argument('--dataset', type=str, default='ptb',
                     help='dataset to use (default: ptb)')
-parser.add_argument('--cell', type=str, default='GRU', help='The cell type used')
+parser.add_argument('--cell', type=str, default='WaveletGRU', help='The cell type used')
 parser.add_argument('--cell_size', type=int, default=512, help='Cell state size. Default 512.')
-parser.add_argument('--compression_mode', type=str, default='state',
+parser.add_argument('--compression_mode', type=str, default='full',
                     help='Where to apply the compression layers.')
 parser.add_argument('--wavelet_weight', type=float, default=1.,
                     help='Weight factor for the wavelet loss.')
@@ -185,7 +185,7 @@ def train(epoch):
         final_target = target[:, eff_history:].contiguous().view(-1)
         criterion_loss = criterion(final_output, final_target)
 
-        if args.cell == 'WaveGRU':
+        if args.cell == 'WaveletGRU':
             loss_wave = model.get_wavelet_loss()
             loss = criterion_loss + loss_wave * args.wavelet_weight
             # print(loss_wave.item())
@@ -224,7 +224,7 @@ def main():
     best_vloss = 1e7
     for epoch in range(1, args.epochs + 1):
         loss, wvl_loss = train(epoch)
-        print('| epoch {:3d} | loss {:5.3f} | bpc {:8.3f} | wvl-loss {:8.3f}'.format(
+        print('| epoch {:3d} | loss {:5.3f} | bpc {:8.3f} | wvl-loss {:8.6f}'.format(
               epoch, loss, loss / math.log(2), wvl_loss))
         vloss, vacc = evaluate(val_data)
         print('-' * 89)
