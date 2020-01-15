@@ -2,6 +2,7 @@
 
 import datetime
 import subprocess
+
 subprocess.call('pwd')
 hidden = 64
 epochs = 50

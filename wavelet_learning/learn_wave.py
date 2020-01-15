@@ -110,21 +110,6 @@ class Wave1D(torch.nn.Module):
         two_at_power_zero[..., p_test.shape[-1]//2] = 2
         return torch.sum((p_test - two_at_power_zero)*(p_test - two_at_power_zero)), p_test, two_at_power_zero
 
-    def orthogonal_filter_cond(self):
-        '''
-        Check the biorthogonality conditions as described in Strang and Nguyen; Wavelets
-        and filter banks; Page 111.
-        '''
-        # if even:
-        if self.dec_lo.shape[0] % 2 == 0:
-            pass
-
-        # if odd
-        if self.dec_lo.shape[0] % 2 != 0:
-            # filters must symmetric and antisymmetric
-            for no, dec_filt in enumerate(self.dec_lo):
-                pass
-
     def compute_coeff_no(self, init_length):
         """
         Compute the number of resulting wavelet coefficients.

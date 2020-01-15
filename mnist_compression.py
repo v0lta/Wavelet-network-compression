@@ -3,12 +3,14 @@
 
 import argparse
 import datetime
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import collections
 import pywt
+import matplotlib.pyplot as plt
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
 from util import compute_parameter_total
@@ -103,13 +105,18 @@ def test(args, model, device, test_loader, test_writer, epoch):
             correct += pred.eq(target.view_as(pred)).sum().item()
 
     test_loss /= len(test_loader.dataset)
+    acl, prl = model.wavelet_loss()
+    wvl_loss = acl + prl
 
     print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
+
     test_writer.add_scalar('test_correct', correct, epoch)
     test_writer.add_scalar('test_loss', test_loss, epoch)
     test_writer.add_scalar('test_acc', 100. * correct / len(test_loader.dataset), epoch)
+    test_writer.add_scalar('wvl_loss', wvl_loss, epoch)
+    return wvl_loss,  100. * correct / len(test_loader.dataset)
 
 
 def main():
@@ -133,11 +140,11 @@ def main():
                         help='how many batches to wait before logging training status')
     parser.add_argument('--save-model', action='store_true', default=False,
                         help='For Saving the current Model')
-    parser.add_argument('--compression', type=str, default='None',
+    parser.add_argument('--compression', type=str, default='Wavelet',
                         help='Choose the compression mode, None, Wavelet, Fastfood')
     parser.add_argument('--wave_loss_weight', type=float, default=1.0,
                         help='Weight term of the wavelet loss')
-    parser.add_argument('--wave_dropout', type=float, default=0.0,
+    parser.add_argument('--wave_dropout', type=float, default=0.5,
                         help='Weight term of the wavelet loss')
 
     args = parser.parse_args()
@@ -166,12 +173,20 @@ def main():
     if args.compression == 'Wavelet':
         CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
+        #init_wavelet = CustomWavelet(
+        #    dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+        #    dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
+        #    rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+        #    rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
+        #    name='customHaar')
+
+        # random init
         init_wavelet = CustomWavelet(
-            dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-            dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
-            rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-            rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
-            name='customHaar')
+                    dec_lo=np.random.uniform(-1, 1, size=(6)),
+                    dec_hi=np.random.uniform(-1, 1, size=(6)),
+                    rec_lo=np.random.uniform(-1, 1, size=(6)),
+                    rec_hi=np.random.uniform(-1, 1, size=(6)),
+                    name='customHaar')
         # init_wavelet = pywt.Wavelet('db6')
     else:
         init_wavelet = None
@@ -181,15 +196,35 @@ def main():
     writer = SummaryWriter()
 
     scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
+    test_wvl_lst = []
+    test_acc_lst = []
+    test_wvl_loss, test_acc = test(args, model, device, test_loader, writer, 0)
+    test_wvl_lst.append(test_wvl_loss.item())
+    test_acc_lst.append(test_acc)
     for epoch in range(1, args.epochs + 1):
         train(args, model, device, train_loader, optimizer, epoch)
-        test(args, model, device, test_loader, writer, epoch)
+        test_wvl_loss, test_acc = test(args, model, device, test_loader, writer, epoch)
+        test_wvl_lst.append(test_wvl_loss.item())
+        test_acc_lst.append(test_acc)
         scheduler.step()
 
     if args.save_model:
         torch.save(model.state_dict(), "mnist_cnn.pt")
 
     print(compute_parameter_total(model))
+
+    # plt.semilogy(test_wvl_lst)
+    # plt.semilogy(test_acc_lst)
+    # plt.legend(['wavlet loss', 'accuracy'])
+    # plt.show()
+
+    plt.plot(model.fc1.wavelet.dec_lo.detach().cpu().numpy(), '-*')
+    plt.plot(model.fc1.wavelet.dec_hi.detach().cpu().numpy(), '-*')
+    plt.plot(model.fc1.wavelet.rec_lo.detach().cpu().numpy(), '-*')
+    plt.plot(model.fc1.wavelet.rec_hi.detach().cpu().numpy(), '-*')
+    plt.legend(['H_0', 'H_1', 'F_0', 'F_1'])
+    plt.show()
+    print('done')
 
 
 if __name__ == '__main__':
