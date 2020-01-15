@@ -18,23 +18,23 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
 parser = argparse.ArgumentParser(description='Sequence Modeling - Sequential cifar/mnist problems')
 parser.add_argument('--problem', type=str, default='MNIST',
                     help='choose MNIST or CIFAR')
-parser.add_argument('--cell', type=str, default='GRU',
+parser.add_argument('--cell', type=str, default='WaveletGRU',
                     help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
-parser.add_argument('--hidden', type=int, default=512,
+parser.add_argument('--hidden', type=int, default=64,
                     help='Cell size. Default 512.')
-parser.add_argument('--compression_mode', type=str, default='state',
+parser.add_argument('--compression_mode', type=str, default='full',
                     help='How to compress the cell options:'
                          'gates, state, reset, update, state_reset, state_update, full')
-parser.add_argument('--batch_size', type=int, default=100,
+parser.add_argument('--batch_size', type=int, default=256,
                     help='Choose the number of samples used to during each update step.')
-parser.add_argument('--lr', type=float, default=1e-3,
+parser.add_argument('--lr', type=float, default=1.0,
                     help='The learning rate.')
 parser.add_argument('--clip', type=float, default=-1,
                     help='gradient clip, -1 means no clip (default: 0.15)')
-parser.add_argument('--epochs', type=int, default=30,
+parser.add_argument('--epochs', type=int, default=20,
                     help='Passes over the entire data set default: 30')
 parser.add_argument('--wave_dropout', type=float, default=0.0,
-                    help='Weight term of the wavelet loss')
+                    help='Dropout within the wavelet layer.')
 
 args = parser.parse_args()
 
@@ -72,7 +72,8 @@ else:
 
 pt = compute_parameter_total(cell)
 print('parameter total', pt)
-optimizer = torch.optim.RMSprop(cell.parameters(), args.lr)
+# optimizer = torch.optim.RMSprop(cell.parameters(), args.lr)
+optimizer = torch.optim.Adadelta(cell.parameters(), args.lr)
 loss_fun = torch.nn.CrossEntropyLoss()
 
 
