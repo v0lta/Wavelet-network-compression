@@ -18,7 +18,7 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
 parser = argparse.ArgumentParser(description='Sequence Modeling - Sequential cifar/mnist problems')
 parser.add_argument('--problem', type=str, default='MNIST',
                     help='choose MNIST or CIFAR')
-parser.add_argument('--cell', type=str, default='WaveletGRU',
+parser.add_argument('--cell', type=str, default='GRU',
                     help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
 parser.add_argument('--hidden', type=int, default=58,
                     help='Cell size. Default 512.')
@@ -31,7 +31,7 @@ parser.add_argument('--lr', type=float, default=1e-3,
                     help='The learning rate.')
 parser.add_argument('--clip', type=float, default=1,
                     help='gradient clip, -1 means no clip (default: 0.15)')
-parser.add_argument('--epochs', type=int, default=50,
+parser.add_argument('--epochs', type=int, default=60,
                     help='Passes over the entire data set default: 30')
 parser.add_argument('--wave_dropout', type=float, default=0.0,
                     help='Dropout within the wavelet layer.')
@@ -140,6 +140,27 @@ def train_test(x, y, iteration_no, e_no, train=False):
     return cpu_loss, sum_correct
 
 
+def test():
+    test_loss_lst = []
+    test_acc_lst = []
+    test_it = 0
+    test_true_total = 0
+    test_elements_total = 0
+    for test_x, test_y in test_loader:
+        with torch.no_grad():
+            test_loss, test_sum_correct = train_test(test_x.cuda(), test_y.cuda(),
+                                                     test_it, -1, train=False)
+            test_it += 1
+            test_true_total += test_sum_correct
+            test_elements_total += test_y.shape[0]
+            test_loss_lst.append(test_loss)
+    print('test_true_total', test_true_total,
+          'test_elements_total', test_elements_total)
+    test_acc = test_true_total/(test_elements_total*1.0)
+    print('test loss mean', np.mean(test_loss_lst), 'test acc', test_acc, 'pt', pt)
+    return test_acc, test_loss_lst
+
+
 train_it = 0
 train_loss_lst = []
 train_acc_lst = []
@@ -154,29 +175,16 @@ for e_num in range(args.epochs):
         train_it += 1
         train_loss_lst.append(train_loss)
         train_acc_lst.append(epoch_true_total/epoch_element_total)
-
+    if e_num % 10 == 0:
+        print('epoch', e_num, 'testing...')
+        _, _ = test()
 
 print('training done... testing ...')
-test_loss_lst = []
-test_acc_lst = []
-test_it = 0
-test_true_total = 0
-test_elements_total = 0
-for test_x, test_y in test_loader:
-    with torch.no_grad():
-        test_loss, test_sum_correct = train_test(test_x.cuda(), test_y.cuda(),
-                                                 test_it, -1, train=False)
-        test_it += 1
-        test_true_total += test_sum_correct
-        test_elements_total += test_y.shape[0]
-        test_loss_lst.append(test_loss)
-print('test_true_total', test_true_total,
-      'test_elements_total', test_elements_total)
-test_acc = test_true_total/(test_elements_total*1.0)
+test_acc_final, test_loss_lst_final = test()
 
 # pickle the results
 print(pd)
-print('test loss mean', np.mean(test_loss_lst), 'test acc', test_acc, 'pt', pt)
+# print('test loss mean', np.mean(test_loss_lst), 'test acc', test_acc, 'pt', pt)
 # pd_str = pd_to_string(current_run_pd)
 # store_lst = [train_loss_lst, train_acc_lst, test_loss_lst, test_acc_lst, pt]
 # pickle.dump(store_lst, open('./runs/amp' + pd_str + '.pkl', 'wb'))
