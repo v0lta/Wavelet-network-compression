@@ -1,0 +1,50 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=newest}
+\usepackage{luatex85}
+\begin{document}
+% This file was created by tikzplotlib v0.9.0.
+\begin{tikzpicture}
+
+\definecolor{color0}{rgb}{0.12156862745098,0.466666666666667,0.705882352941177}
+
+\begin{axis}[
+log basis y={10},
+tick align=outside,
+tick pos=left,
+x grid style={white!69.0196078431373!black},
+xmin=-0.7, xmax=14.7,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ymin=3.85715027988217e-15, ymax=0.0111185109986739,
+ymode=log,
+ytick style={color=black},
+ytick={1e-17,1e-15,1e-13,1e-11,1e-09,1e-07,1e-05,0.001,0.1,10},
+yticklabels={\(\displaystyle {10^{-17}}\),\(\displaystyle {10^{-15}}\),\(\displaystyle {10^{-13}}\),\(\displaystyle {10^{-11}}\),\(\displaystyle {10^{-9}}\),\(\displaystyle {10^{-7}}\),\(\displaystyle {10^{-5}}\),\(\displaystyle {10^{-3}}\),\(\displaystyle {10^{-1}}\),\(\displaystyle {10^{1}}\)}
+]
+\addplot [semithick, color0]
+table {%
+0 1.4210854715202e-14
+1 0.00301781762391329
+2 0.00264815427362919
+3 0.0016594051849097
+4 0.000562460510991514
+5 0.000335427233949304
+6 0.0004564261471387
+7 0.000298629107419401
+8 0.000279289844911546
+9 0.000172741478309035
+10 0.000212775776162744
+11 0.000135634181788191
+12 0.000163890887051821
+13 0.000134164496557787
+14 0.000124604644952342
+};
+\end{axis}
+
+\end{tikzpicture}
+
+\end{document}
