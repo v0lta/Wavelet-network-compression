@@ -5,6 +5,7 @@ runs_archive/
 mnist_runs/
 # data set folders
 data_sets/
+plots/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

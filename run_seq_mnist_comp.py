@@ -9,4 +9,4 @@ for experiment in experiment_lst:
     with open("runs/v4_" + experiment + "_compression_seq_mnist_" + time_str + ".txt", "w") as f:
         subprocess.call(['python', 'sequential_cifar_mnist_compression.py',
                          '--cell', 'WaveletGRU', '--compression_mode', experiment,
-                         '--hidden', str(58), '--epochs', str(50)], stdout=f)
+                         '--hidden', str(58), '--epochs', str(60)], stdout=f)
