@@ -145,7 +145,7 @@ def main():
     parser.add_argument('--wave_loss_weight', type=float, default=1.0,
                         help='Weight term of the wavelet loss')
     parser.add_argument('--wave_dropout', type=float, default=0.5,
-                        help='Weight term of the wavelet loss')
+                        help='Wavelet layer dropout probability.')
 
     args = parser.parse_args()
     print(args)
@@ -173,12 +173,12 @@ def main():
     if args.compression == 'Wavelet':
         CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
-        #init_wavelet = CustomWavelet(
-        #    dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-        #    dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
-        #    rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
-        #    rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
-        #    name='customHaar')
+        # init_wavelet = CustomWavelet(
+        #     dec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+        #     dec_hi=[0, 0, -0.7071067811865476, 0.7071067811865476, 0, 0],
+        #     rec_lo=[0, 0, 0.7071067811865476, 0.7071067811865476, 0, 0],
+        #     rec_hi=[0, 0, 0.7071067811865476, -0.7071067811865476, 0, 0],
+        #     name='customHaar')
 
         # random init
         init_wavelet = CustomWavelet(
