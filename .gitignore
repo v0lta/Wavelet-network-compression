@@ -7,6 +7,13 @@ mnist_runs/
 data_sets/
 plots/
 
+# tex files
+*.tex
+*.pdf
+
+# pickeled files
+*.pkl
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
