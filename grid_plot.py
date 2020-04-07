@@ -20,15 +20,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Sequence Modeling - Adding and Memory Problems')
     parser.add_argument('--problem', type=str, default='memory',
                         help='choose adding or memory')
-    parser.add_argument('--cell', type=str, default='WaveletGRU',
+    parser.add_argument('--cell', type=str, default='GRU',
                         help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
-    parser.add_argument('--hidden_min', type=int, default=8,
+    parser.add_argument('--hidden_min', type=int, default=12,
                         help='Cell size: Default 512.')
-    parser.add_argument('--hidden_max', type=int, default=136,
+    parser.add_argument('--hidden_max', type=int, default=120,
                         help='Cell size: Default 512.')
     parser.add_argument('--hidden_step', type=int, default=16,
                         help='State resolution on the grid.')
-    parser.add_argument('--time_min', type=int, default=10,
+    parser.add_argument('--time_min', type=int, default=60,
                         help='The number of time steps in the problem, default 10.')
     parser.add_argument('--time_max', type=int, default=60,
                         help='The number of time steps in the problem, default 60.')
@@ -148,7 +148,7 @@ if __name__ == '__main__':
             print('time:', time_str, 'experiment took', time.time() - time_start, '[s]')
             result_list.append(store_lst)
 
-    pickle.dump(store_lst, open('./runs/grid_' + pd_str + '.pkl', 'wb'))
+    pickle.dump(result_list, open('./runs/grid2_' + pd_str + '.pkl', 'wb'))
     print('done')
     # do the plotting.
     test_acc_lst = []
@@ -169,11 +169,12 @@ if __name__ == '__main__':
 
     fig = plt.figure()
     ax = plt.axes(projection='3d')
-    surf = ax.plot_surface(time_mat, pt_mat, test_acc_mat, cmap='viridis')
-    ax.set_title('WaveletGRU')
+    surf = ax.plot_surface(time_mat[:, 3:], pt_mat[:, 3:], test_acc_mat[:, 3:], cmap='viridis')
+    ax.set_title('GRU')
     ax.set_xlabel('time')
     ax.set_ylabel('parameters')
     ax.set_zlabel('accuracy')
+    ax.set_zlim(0, 0.7)
     fig.colorbar(surf, shrink=0.5, aspect=5)
-    plt.savefig('gru_surf_wave_pt.pdf')
+    plt.savefig(pd_str + '.pdf')
     plt.show()

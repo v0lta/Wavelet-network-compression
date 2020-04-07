@@ -18,7 +18,7 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
 parser = argparse.ArgumentParser(description='Sequence Modeling - Sequential cifar/mnist problems')
 parser.add_argument('--problem', type=str, default='MNIST',
                     help='choose MNIST or CIFAR')
-parser.add_argument('--cell', type=str, default='GRU',
+parser.add_argument('--cell', type=str, default='WaveletGRU',
                     help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
 parser.add_argument('--hidden', type=int, default=58,
                     help='Cell size. Default 512.')
@@ -31,7 +31,7 @@ parser.add_argument('--lr', type=float, default=1e-3,
                     help='The learning rate.')
 parser.add_argument('--clip', type=float, default=1,
                     help='gradient clip, -1 means no clip (default: 0.15)')
-parser.add_argument('--epochs', type=int, default=60,
+parser.add_argument('--epochs', type=int, default=150,
                     help='Passes over the entire data set default: 30')
 parser.add_argument('--wave_dropout', type=float, default=0.0,
                     help='Dropout within the wavelet layer.')

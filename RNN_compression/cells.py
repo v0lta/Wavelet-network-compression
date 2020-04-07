@@ -47,7 +47,8 @@ class WaveletGRU(GRUCell):
         self.init_wavelet = init_wavelet
         self.mode = mode
         self.drop_prob = p_drop
-        scales = 8
+        scales = 4
+
         if mode == 'gates':
             print('gates compression')
             self.Whz = WaveletLayer(hidden_size, init_wavelet=init_wavelet, scales=scales, p_drop=self.drop_prob)

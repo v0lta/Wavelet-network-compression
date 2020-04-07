@@ -1,7 +1,0 @@
-.DS_Store/
-lambada/
-wikitext-103/
-*.pt
-*.log
-*.pyc
-__pycache__/

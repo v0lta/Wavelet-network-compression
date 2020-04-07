@@ -83,7 +83,7 @@ if __name__ == '__main__':
                         help='Cell size: Default 512.')
     parser.add_argument('--time_steps', type=int, default=150,
                         help='The number of time steps in the problem, default 150.')
-    parser.add_argument('--compression_mode', type=str, default='full',
+    parser.add_argument('--compression_mode', type=str, default='state',
                         help='How to compress the cell.')
     parser.add_argument('--batch_size', type=int, default=50,
                         help='The size of the training batches. default 50')
