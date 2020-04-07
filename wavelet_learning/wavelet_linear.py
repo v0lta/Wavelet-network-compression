@@ -111,5 +111,5 @@ class WaveletLayer(torch.nn.Module):
 
     def get_wavelet_loss(self) -> torch.Tensor:
         prl, _, _ = self.wavelet.perfect_reconstruction_loss()
-        acl, _, _ = self.wavelet.perfect_reconstruction_loss()
+        acl, _, _ = self.wavelet.alias_cancellation_loss()
         return prl + acl
