@@ -22,14 +22,14 @@ print('adding memory wavelet compression')
 for experiment in experiment_lst:
     time_str = str(datetime.datetime.today())
     print('adding ', experiment, ' at time:', time_str)
-    with open("runs/v3_adding_" + experiment + time_str + ".txt", "w") as f:
+    with open("runs/v4/adding_" + experiment + time_str + ".txt", "w") as f:
         subprocess.call(['python', 'adding_memory_RNN_compression.py',
                          '--cell', 'WaveletGRU',
                          '--compression_mode', experiment,
                          '--problem', 'adding'], stdout=f)
     time_str = str(datetime.datetime.today())
     print('memory ', experiment, ' at time:', time_str)
-    with open("runs/v3_memory_" + experiment + time_str + ".txt", "w") as f:
+    with open("runs/v4/memory_" + experiment + time_str + ".txt", "w") as f:
         subprocess.call(['python', 'adding_memory_RNN_compression.py',
                          '--cell', 'WaveletGRU',
                          '--compression_mode', experiment,
@@ -38,11 +38,11 @@ for experiment in experiment_lst:
 print('fastfood full compression')
 time_str = str(datetime.datetime.today())
 print('adding problem full compression', time_str)
-with open("runs/v3_fastfood_adding_problem_full_compression_" + time_str + ".txt", "w") as f:
+with open("runs/v4/fastfood_adding_problem_full_compression_" + time_str + ".txt", "w") as f:
     subprocess.call(['python', 'adding_memory_RNN_compression.py', '--problem', 'adding',
                      '--cell', 'FastFoodGRU', '--compression_mode', 'full'], stdout=f)
 time_str = str(datetime.datetime.today())
 print('memory problem full compression', time_str)
-with open("runs/v3_fastfood_memory_problem_full_compression_" + time_str + ".txt", "w") as f:
+with open("runs/v4/fastfood_memory_problem_full_compression_" + time_str + ".txt", "w") as f:
     subprocess.call(['python', 'adding_memory_RNN_compression.py', '--problem', 'memory',
                      '--cell', 'FastFoodGRU', '--compression_mode', 'full'], stdout=f)
