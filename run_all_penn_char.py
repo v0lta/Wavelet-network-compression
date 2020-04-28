@@ -17,7 +17,7 @@ print('wavelet compression')
 for experiment in experiment_lst:
     time_str = str(datetime.datetime.today())
     print(experiment, ' at time:', time_str)
-    with open("runs/v3_" + experiment + "_compression_penn_char_" + time_str + ".txt", "w") as f:
+    with open("runs/v4/" + experiment + "_compression_penn_char_" + time_str + ".txt", "w") as f:
         subprocess.call(['python', 'penn_test.py',
                          '--cell', 'WaveletGRU', '--compression_mode', experiment], stdout=f)
 
