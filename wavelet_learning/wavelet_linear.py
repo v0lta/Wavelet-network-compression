@@ -39,7 +39,8 @@ class WaveletLinear(torch.nn.Module):
 
 class WaveletLayer(torch.nn.Module):
     """
-    Create a learn-able Wavelet layer to be published in upcoming paper.
+    Create a learn-able Wavelet layer as described here:
+    https://arxiv.org/pdf/2004.09569.pdf
     The weights are parametrized by S*W*G*P*W*B
     With S,G,B diagonal matrices, P a random permutation and W a learnable-wavelet transform.
     """
