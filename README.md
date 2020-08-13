@@ -21,7 +21,7 @@ To repeat the experiments from the paper run any of the run_all files in python.
 ###### Citation:
 A perprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find this work useful please consider citing the paper:
 ```
-@inproceedings{wolter2020deep,
+@inproceedings{wolter2020neural,
   author={Wolter, Moritz and Lin, Shaohui and Yao, Angela},
   title={Neural Network compression via learnable wavelet transforms},
   booktitle={29th International Conference on Artificial Neural Networks},
