@@ -23,7 +23,7 @@ A perprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find th
 ```
 @inproceedings{wolter2020deep,
   author={Wolter, Moritz and Lin, Shaohui and Yao, Angela},
-  title={Deep Neural Network compression via learnable wavelet transforms},
+  title={Neural Network compression via learnable wavelet transforms},
   booktitle={29th International Conference on Artificial Neural Networks},
   year = {2020}
 }
