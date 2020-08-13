@@ -30,7 +30,11 @@ A perprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find th
 ```
 
 ###### Learned Wavelet:
-![Alt Text](https://www.wolter.tech/wordpress/wp-content/uploads/2020/08/learned_wavelet_mnist.gif)
+<object data="https://www.wolter.tech/wordpress/wp-content/uploads/2020/08/learned_wavelet_mnist.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="https://www.wolter.tech/wordpress/wp-content/uploads/2020/08/learned_wavelet_mnist.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="https://www.wolter.tech/wordpress/wp-content/uploads/2020/08/learned_wavelet_mnist.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
 
 ###### Funding:
 This work has been funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) YA 447/2-1 (FOR2535 Anticipating Human Behavior)
