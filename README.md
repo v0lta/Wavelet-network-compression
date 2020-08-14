@@ -19,7 +19,7 @@ https://arxiv.org/abs/1412.7149 can be found in the
 To repeat the experiments from the paper run any of the run_all files in python.
 
 ###### Citation:
-A perprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find this work useful please consider citing the paper:
+A preprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find this work useful please consider citing the paper:
 ```
 @inproceedings{wolter2020neural,
   author={Wolter, Moritz and Lin, Shaohui and Yao, Angela},
