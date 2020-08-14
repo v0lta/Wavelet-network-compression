@@ -29,6 +29,11 @@ A preprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find th
 }
 ```
 
+###### Future Work:
+While I am confident the current implementation is correct, it is probably not as efficient as possible. I am hoping that 
+this project will inspire work on highly optimized GPU-FWT implementations.
+
+
 ###### Funding:
 This work has been funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) YA 447/2-1 (FOR2535 Anticipating Human Behavior)
 as well as by the National Research Foundation of Singapore under its NRF Fellowship Programme [NRF-NRFFAI1-2019-0001].
