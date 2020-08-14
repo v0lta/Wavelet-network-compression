@@ -11,7 +11,7 @@ When using this code please never forget to add the wavelet loss term
 to the cost. See the class Net from the `mnist_compression.py` file
 for an example on how to do that.
 
-A re-implementation of the Fast-food layer as described in
+A re-implementation of the Hadamard-Transform based layer as described in
 https://arxiv.org/abs/1412.7149 can be found in the 
 `fastfood/fastfood.py` module.
 
