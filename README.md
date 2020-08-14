@@ -30,7 +30,7 @@ A preprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find th
 ```
 
 ###### Future Work:
-While I am confident the current implementation is correct, it is probably not as efficient as possible. I am hoping that 
+The current implementation is probably not as efficient as possible. I am hoping that 
 this project will inspire work on highly optimized GPU-FWT implementations.
 
 
