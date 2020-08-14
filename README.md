@@ -2,7 +2,7 @@
 This repository implements a learnable fast wavelet transform for use in machine learning models
 using pytorch.
 It also contains the source code used to create the experimental results which are reportet
-in the paper Deep neural network compression via learnable wavelet transforms which is 
+in the paper Neural network compression via learnable wavelet transforms which is 
 available here https://arxiv.org/pdf/2004.09569.pdf.
 The most interesting modules are `wavelet_learning/wavelet_linear.py`
 and `wavelet_learning/learn_wave.py` , it's where the wavelet
