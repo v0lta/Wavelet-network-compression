@@ -6,7 +6,7 @@ import pywt
 
 # Define Baseline and compressed GRU-Cells.
 class GRUCell(torch.nn.Module):
-    """ A LSTM-Cell reference implementation as outlined in https://arxiv.org/abs/1503.04069 """
+    """ A GRU-Cell reference implementation as outlined in https://arxiv.org/abs/1503.04069 """
 
     def __init__(self, input_size, hidden_size, out_size):
         super().__init__()
