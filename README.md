@@ -1,6 +1,6 @@
 # wavelet-network-compression 
 This repository implements a learnable fast wavelet transform for use in machine learning models
-using pytorch.
+with pytorch.
 It also contains the source code used to create the experimental results which are reportet
 in the paper Neural network compression via learnable wavelet transforms which is 
 available here https://arxiv.org/pdf/2004.09569.pdf.
