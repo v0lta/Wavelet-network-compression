@@ -17,6 +17,8 @@ https://arxiv.org/abs/1412.7149 can be found in the
 
 ###### Experiments:
 To repeat the experiments from the paper run any of the run_all files in python.
+Overall the performace is equivalent to to other state of the art approaches,
+like the Hadamard transfrom, with extra flexibility.
 
 ###### Citation:
 A preprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find this work useful please consider citing the paper:
