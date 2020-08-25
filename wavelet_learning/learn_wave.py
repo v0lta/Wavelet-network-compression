@@ -124,6 +124,13 @@ class Wave1D(torch.nn.Module):
         return lengths[1:]
 
     def analysis(self, x, mode='zero'):
+        """ Computes the forward fwt
+        Args:
+            x (torch.tensor): 4-d input tensor
+            mode (str, optional): Padding type. Defaults to 'zero'.
+        Returns:
+            list: The wavelet coefficients.
+        """        
         yh = []
         lo = x
         # flip filters

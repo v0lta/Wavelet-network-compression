@@ -49,6 +49,12 @@ class WaveletLayer(torch.nn.Module):
         return torch.mm(x, self.perm)
 
     def wavelet_analysis(self, x):
+        """Compute a 1d-analysis transform.
+        Args:
+            x (torch.tensor): 2d input tensor
+        Returns:
+            [torch.tensor]: 2d output tensor.
+        """        
         c_lst = self.wavelet.analysis(x.unsqueeze(0).unsqueeze(0))
         shape_lst = [c_el.shape[-1] for c_el in c_lst]
         c_tensor = torch.cat([c.squeeze(0).squeeze(0) for c in c_lst], -1)
@@ -56,6 +62,12 @@ class WaveletLayer(torch.nn.Module):
         return c_tensor
 
     def wavelet_reconstruction(self, x):
+        """Reconstruction from a tensor input.
+        Args:
+            x (torch.tensor): Analysis coefficient tensor.
+        Returns:
+            torch.tensor: Input reconstruction.
+        """        
         coeff_lst = []
         start = 0
         for s in range(self.scales + 1):
@@ -67,6 +79,12 @@ class WaveletLayer(torch.nn.Module):
         return y.squeeze(0).squeeze(0)
 
     def forward(self, x):
+        """ Evaluate the wavelet layer.
+        Args:
+            x (torch.tensor): The layer input.
+        Returns:
+            torch.tensor: Layer output.
+        """
         # test = self.wavelet_analysis(x)
         step1 = self.mul_b(x)
         step2 = self.wavelet_analysis(step1)
@@ -81,6 +99,12 @@ class WaveletLayer(torch.nn.Module):
         return 'depth={}'.format(self.depth)
 
     def get_wavelet_loss(self) -> torch.Tensor:
+        """ Returns the wavelet loss for the wavelet in the layer.
+            This value must be added to the cost for the wavelet learning to
+            work.
+        Returns:
+            torch.tensor: The wavelet loss scalar.
+        """
         prl, _, _ = self.wavelet.perfect_reconstruction_loss()
         acl, _, _ = self.wavelet.alias_cancellation_loss()
         return prl + acl
