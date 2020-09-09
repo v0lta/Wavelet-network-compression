@@ -1,3 +1,4 @@
+# Created by moritz (wolter@cs.uni-bonn.de)
 import torch
 import numpy as np
 from scipy.linalg import hadamard
