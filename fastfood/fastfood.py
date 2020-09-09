@@ -1,3 +1,4 @@
+# Created by moritz (wolter@cs.uni-bonn.de)
 """
 A fastfood layer implementation.
 """
