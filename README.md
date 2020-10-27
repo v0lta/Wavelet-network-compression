@@ -1,9 +1,12 @@
 # Wavelet Network Compression 
 This repository implements a learnable fast wavelet transform for use in machine learning models
 with PyTorch.
-It also contains the source code used to create the experimental results, as reported in the paper Neural network compression via learnable wavelet transforms. A preprint is
+
+It also contains the source code used to create the experimental results,
+as reported in the paper Neural network compression via learnable wavelet transforms. A preprint is
 available here https://arxiv.org/pdf/2004.09569.pdf the Springer-version 
 at https://link.springer.com/chapter/10.1007/978-3-030-61616-8_4 .
+
 The most relevant modules are `wavelet_learning/wavelet_linear.py`
 and `wavelet_learning/learn_wave.py`, it's where the wavelet
 optimization happens. 
@@ -21,7 +24,7 @@ Overall the performance is equivalent to state-of-the-art approaches,
 like the Hadamard transform based layer, with extra flexibility.
 
 ###### Citation:
-A preprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find this work useful please consider citing the paper:
+If you find this work useful please consider citing the paper:
 ```
 @inproceedings{wolter2020neural,
   author={Wolter, Moritz and Lin, Shaohui and Yao, Angela},
