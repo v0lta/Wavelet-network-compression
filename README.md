@@ -1,25 +1,24 @@
 # Wavelet Network Compression 
 This repository implements a learnable fast wavelet transform for use in machine learning models
-with pytorch.
-It also contains the source code used to create the experimental results which are reported
-in the paper Neural network compression via learnable wavelet transforms. A preprint is
-available here https://arxiv.org/pdf/2004.09569.pdf the springer version 
+with PyTorch.
+It also contains the source code used to create the experimental results, as reported in the paper Neural network compression via learnable wavelet transforms. A preprint is
+available here https://arxiv.org/pdf/2004.09569.pdf the Springer-version 
 at https://link.springer.com/chapter/10.1007/978-3-030-61616-8_4 .
-The most interesting modules are `wavelet_learning/wavelet_linear.py`
-and `wavelet_learning/learn_wave.py` , it's where the wavelet
+The most relevant modules are `wavelet_learning/wavelet_linear.py`
+and `wavelet_learning/learn_wave.py`, it's where the wavelet
 optimization happens. 
-When using this code please never forget to add the wavelet loss term
+When using this code, please never forget to add the wavelet loss term
 to the cost. See the class Net from the `mnist_compression.py` file
-for an example on how to do that.
+for an example of how to do that.
 
 A re-implementation of the Hadamard-Transform based layer as described in
 https://arxiv.org/abs/1412.7149 can be found in the 
 `fastfood/fastfood.py` module.
 
 ###### Experiments:
-To repeat the experiments from the paper run any of the run_all files in python.
-Overall the performace is equivalent to to other state of the art approaches,
-like the Hadamard transfrom based layer, with extra flexibility.
+To repeat the experiments from the paper, run any of the run_all files in python.
+Overall the performance is equivalent to state-of-the-art approaches,
+like the Hadamard transform based layer, with extra flexibility.
 
 ###### Citation:
 A preprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find this work useful please consider citing the paper:
@@ -33,8 +32,7 @@ A preprint is available at: https://arxiv.org/pdf/2004.09569.pdf. If you find th
 ```
 
 ###### Future Work:
-The current implementation is probably not as efficient as possible. I am hoping that 
-this project will inspire work on highly optimized GPU-FWT implementations.
+The current implementation is probably not as efficient as possible. I am hoping that this project will inspire work on highly optimized GPU-FWT implementations.
 
 
 ###### Funding:
