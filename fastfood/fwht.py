@@ -16,10 +16,10 @@ def matmul_wht(x, h_mat=None, inverse=False):
         h_mat = torch.from_numpy(hadamard(n).astype(np.float32))
         if x.device.type == 'cuda':
             h_mat = h_mat.cuda()
-    y = torch.nn.functional.linear(x.unsqueeze(0), h_mat, bias=None)
+    y = torch.nn.functional.linear(x, h_mat, bias=None)
     if not inverse:
         y = y/n
-    return y[0]
+    return y
 
 
 def fwht(x, inverse=False):

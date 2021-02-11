@@ -23,23 +23,23 @@ class Net(nn.Module):
     def __init__(self, compression, wavelet=None, wave_dropout=0.0):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 20, 5, 1)
-        self.conv2 = nn.Conv2d(20, 50, 5, 1)
+        self.conv2 = nn.Conv2d(20, 64, 5, 1)
         self.dropout1 = nn.Dropout2d(0.25)
         self.dropout2 = nn.Dropout2d(0.5)
         self.wavelet = wavelet
         self.do_dropout = True
         if compression == 'None':
-            self.fc1 = torch.nn.Linear(4*4*50, 500)
+            self.fc1 = torch.nn.Linear(4*4*64, 500)
             self.fc2 = torch.nn.Linear(500, 10)
-        elif compression == 'FastFood':
+        elif compression == 'Fastfood':
             assert wavelet is None
-            self.fc1 = FastFoodLayer(800)
-            self.fc2 = torch.nn.Linear(800, 10)
+            self.fc1 = FastFoodLayer(1024)
+            self.fc2 = torch.nn.Linear(1024, 10)
             self.do_dropout = False
         elif compression == 'Wavelet':
             assert wavelet is not None, 'initial wavelet must be set.'
-            self.fc1 = WaveletLayer(init_wavelet=wavelet, scales=6, depth=800, p_drop=wave_dropout)
-            self.fc2 = torch.nn.Linear(800, 10)
+            self.fc1 = WaveletLayer(init_wavelet=wavelet, scales=6, depth=1024, p_drop=wave_dropout)
+            self.fc2 = torch.nn.Linear(1024, 10)
             self.do_dropout = False
         else:
             raise ValueError("Compression type Unknown.")
@@ -218,12 +218,13 @@ def main():
     # plt.legend(['wavlet loss', 'accuracy'])
     # plt.show()
 
-    plt.plot(model.fc1.wavelet.dec_lo.detach().cpu().numpy(), '-*')
-    plt.plot(model.fc1.wavelet.dec_hi.detach().cpu().numpy(), '-*')
-    plt.plot(model.fc1.wavelet.rec_lo.detach().cpu().numpy(), '-*')
-    plt.plot(model.fc1.wavelet.rec_hi.detach().cpu().numpy(), '-*')
-    plt.legend(['H_0', 'H_1', 'F_0', 'F_1'])
-    plt.show()
+    if args.compression == 'Wavelet':
+        plt.plot(model.fc1.wavelet.dec_lo.detach().cpu().numpy(), '-*')
+        plt.plot(model.fc1.wavelet.dec_hi.detach().cpu().numpy(), '-*')
+        plt.plot(model.fc1.wavelet.rec_lo.detach().cpu().numpy(), '-*')
+        plt.plot(model.fc1.wavelet.rec_hi.detach().cpu().numpy(), '-*')
+        plt.legend(['H_0', 'H_1', 'F_0', 'F_1'])
+        plt.show()
     print('done')
 
 
