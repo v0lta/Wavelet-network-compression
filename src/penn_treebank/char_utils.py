@@ -3,8 +3,8 @@ import torch
 from torch.autograd import Variable
 from collections import Counter
 import observations
-import os
-import pickle
+# import os
+# import pickle
 
 
 cuda = torch.cuda.is_available()

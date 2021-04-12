@@ -5,7 +5,6 @@ Based on https://github.com/locuslab/TCN/blob/master/TCN/tcn.py
 
 from torch import nn
 import sys
-sys.path.append("../../")
 import torch.nn as nn
 from torch.nn.utils import weight_norm
 

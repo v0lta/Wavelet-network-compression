@@ -7,7 +7,7 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 from torch.autograd import Function
-from wavelet_learning.utils import reflect
+from src.wavelet_learning.utils import reflect
 import pywt
 # import ipdb
 

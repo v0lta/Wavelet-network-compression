@@ -2,8 +2,8 @@
 import torch
 import pywt
 import numpy as np
-from wavelet_learning.lowlevel import afb1d
-from wavelet_learning.lowlevel import sfb1d
+from src.wavelet_learning.lowlevel import afb1d
+from src.wavelet_learning.lowlevel import sfb1d
 import matplotlib.pyplot as plt
 '''A learnable filter wavelet transform in 1D.'''
 

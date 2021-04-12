@@ -13,9 +13,9 @@ import pywt
 import matplotlib.pyplot as plt
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
-from util import compute_parameter_total
-from wavelet_learning.wavelet_linear import WaveletLayer
-from fastfood.fastfood import FastFoodLayer
+from src.util import compute_parameter_total
+from src.wavelet_learning.wavelet_linear import WaveletLayer
+from src.fastfood.fastfood import FastFoodLayer
 from torch.utils.tensorboard.writer import SummaryWriter
 
 

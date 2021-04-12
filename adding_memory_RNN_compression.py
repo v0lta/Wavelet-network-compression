@@ -7,9 +7,9 @@ import datetime
 import argparse
 import torch
 import numpy as np
-from RNN_compression.cells import GRUCell, FastFoodGRU, WaveletGRU
-from RNN_compression.adding_memory import generate_data_adding, generate_data_memory
-from util import pd_to_string, compute_parameter_total
+from src.RNN_compression.cells import GRUCell, FastFoodGRU, WaveletGRU
+from src.RNN_compression.adding_memory import generate_data_adding, generate_data_memory
+from src.util import pd_to_string, compute_parameter_total
 import pickle
 import collections
 CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',

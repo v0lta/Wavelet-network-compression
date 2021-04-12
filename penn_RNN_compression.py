@@ -7,18 +7,17 @@ import torch.nn as nn
 import torch.optim as optim
 import time
 import math
-import sys
-from RNN_compression.cells import WaveletGRU, FastFoodGRU, GRUCell
-from util import compute_parameter_total
-from penn_treebank.char_utils import *
+from src.RNN_compression.cells import WaveletGRU, GRUCell
+from src.util import compute_parameter_total
+from src.penn_treebank.char_utils import *
 import collections
+import warnings
+warnings.filterwarnings("ignore")   # Suppress the RunTimeWarning on unicode
 
 
 CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
                                                    'rec_lo', 'rec_hi', 'name'])
 
-import warnings
-warnings.filterwarnings("ignore")   # Suppress the RunTimeWarning on unicode
 
 parser = argparse.ArgumentParser(description='Sequence Modeling - Character Level Language Model')
 parser.add_argument('--batch_size', type=int, default=32, metavar='N',

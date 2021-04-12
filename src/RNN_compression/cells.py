@@ -1,6 +1,6 @@
 import torch
-from wavelet_learning.wavelet_linear import WaveletLayer
-from fastfood.fastfood import FastFoodLayer
+from src.wavelet_learning.wavelet_linear import WaveletLayer
+from src.fastfood.fastfood import FastFoodLayer
 import pywt
 
 

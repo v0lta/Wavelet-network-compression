@@ -2,7 +2,7 @@
 import torch
 import numpy as np
 from torch.nn.parameter import Parameter
-from wavelet_learning.learn_wave import Wave1D
+from src.wavelet_learning.learn_wave import Wave1D
 import pywt
 
 

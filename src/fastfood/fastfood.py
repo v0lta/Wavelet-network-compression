@@ -5,7 +5,7 @@ A fastfood layer implementation.
 import torch
 import numpy as np
 from torch.nn.parameter import Parameter
-from fastfood.fwht import matmul_wht as wht
+from src.fastfood.fwht import matmul_wht as wht
 from scipy.linalg import hadamard
 
 
