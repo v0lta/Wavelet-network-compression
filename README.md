@@ -7,21 +7,20 @@ as reported in the paper Neural network compression via learnable wavelet transf
 available here https://arxiv.org/pdf/2004.09569.pdf the Springer-version 
 at https://link.springer.com/chapter/10.1007/978-3-030-61616-8_4 .
 
-The most relevant modules are `wavelet_learning/wavelet_linear.py`
-and `wavelet_learning/learn_wave.py`, it's where the wavelet
+The most relevant modules are `src/wavelet_learning/wavelet_linear.py`
+and `src/wavelet_learning/learn_wave.py` it's where the wavelet
 optimization happens. 
 When using this code, please never forget to add the wavelet loss term
 to the cost. See the class Net from the `mnist_compression.py` file
 for an example of how to do that.
 
-A re-implementation of the Hadamard-Transform based layer as described in
-https://arxiv.org/abs/1412.7149 can be found in the 
-`fastfood/fastfood.py` module.
+The `src/fastfood/fastfood.py` module re-implements the Hadamard-Transform 
+based layer as described in https://arxiv.org/abs/1412.7149 .
 
 ###### Experiments:
 To repeat the experiments from the paper, run any of the run_all files 
 from the scripts folder in python.
-Running ```$ python scripts/run_all_mnist.py ``` for example repeats the mnist
+Running ```$ python scripts/run_all_mnist.py ``` for example, repeats the MNIST
 CNN experiments from the paper.
 Overall the performance is equivalent to state-of-the-art approaches,
 like the Hadamard transform based layer, with extra flexibility.
