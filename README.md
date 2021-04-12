@@ -21,6 +21,8 @@ https://arxiv.org/abs/1412.7149 can be found in the
 ###### Experiments:
 To repeat the experiments from the paper, run any of the run_all files 
 from the scripts folder in python.
+Running ```$ python scripts/run_all_mnist.py ``` for example repeats the mnist
+CNN experiments from the paper.
 Overall the performance is equivalent to state-of-the-art approaches,
 like the Hadamard transform based layer, with extra flexibility.
 
