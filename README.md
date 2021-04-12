@@ -19,7 +19,8 @@ https://arxiv.org/abs/1412.7149 can be found in the
 `fastfood/fastfood.py` module.
 
 ###### Experiments:
-To repeat the experiments from the paper, run any of the run_all files in python.
+To repeat the experiments from the paper, run any of the run_all files 
+from the scripts folder in python.
 Overall the performance is equivalent to state-of-the-art approaches,
 like the Hadamard transform based layer, with extra flexibility.
 
