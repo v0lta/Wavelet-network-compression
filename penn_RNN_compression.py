@@ -8,7 +8,6 @@ import torch.optim as optim
 import time
 import math
 import sys
-sys.path.append("../")
 from RNN_compression.cells import WaveletGRU, FastFoodGRU, GRUCell
 from util import compute_parameter_total
 from penn_treebank.char_utils import *
@@ -46,7 +45,8 @@ parser.add_argument('--seed', type=int, default=1111,
                     help='random seed (default: 1111)')
 parser.add_argument('--dataset', type=str, default='ptb',
                     help='dataset to use (default: ptb)')
-parser.add_argument('--cell', type=str, default='WaveletGRU', help='The cell type used')
+parser.add_argument('--cell', type=str, default='WaveletGRU', help='The cell type to use,\
+                    choose WaveletGRU or GRU.')
 parser.add_argument('--cell_size', type=int, default=512, help='Cell state size. Default 512.')
 parser.add_argument('--compression_mode', type=str, default='full',
                     help='Where to apply the compression layers.')
@@ -87,8 +87,6 @@ elif args.cell == 'GRU':
     cell = GRUCell(input_size=args.emsize, out_size=n_characters, hidden_size=args.cell_size)
 else:
     raise NotImplementedError()
-
-# model = TCN(args.emsize, n_characters, num_chans, kernel_size=k_size, dropout=dropout, emb_dropout=emb_dropout)
 
 
 class EmbeddingRnnWrapper(torch.nn.Module):

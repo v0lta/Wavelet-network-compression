@@ -18,9 +18,9 @@ CustomWavelet = collections.namedtuple('Wavelet', ['dec_lo', 'dec_hi',
 parser = argparse.ArgumentParser(description='Sequence Modeling - Sequential cifar/mnist problems')
 parser.add_argument('--problem', type=str, default='MNIST',
                     help='choose MNIST or CIFAR')
-parser.add_argument('--cell', type=str, default='WaveletGRU',
+parser.add_argument('--cell', type=str, default='FastFoodGRU',
                     help='Cell type: Choose GRU or WaveletGRU or FastFoodGRU.')
-parser.add_argument('--hidden', type=int, default=58,
+parser.add_argument('--hidden', type=int, default=64,
                     help='Cell size. Default 512.')
 parser.add_argument('--compression_mode', type=str, default='state_reset',
                     help='How to compress the cell options:'

@@ -121,7 +121,7 @@ def test(args, model, device, test_loader, test_writer, epoch):
 
 def main():
     # Training settings
-    parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
+    parser = argparse.ArgumentParser(description='PyTorch Network compression on MNIST')
     parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                         help='input batch size for training (default: 64)')
     parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
@@ -192,6 +192,7 @@ def main():
         init_wavelet = None
 
     model = Net(compression=args.compression, wavelet=init_wavelet, wave_dropout=args.wave_dropout).to(device)
+    print('Parameter total:', compute_parameter_total(model))
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
     writer = SummaryWriter()
 
@@ -211,12 +212,7 @@ def main():
     if args.save_model:
         torch.save(model.state_dict(), "mnist_cnn.pt")
 
-    print(compute_parameter_total(model))
-
-    # plt.semilogy(test_wvl_lst)
-    # plt.semilogy(test_acc_lst)
-    # plt.legend(['wavlet loss', 'accuracy'])
-    # plt.show()
+    print('Parameter total:', compute_parameter_total(model))
 
     if args.compression == 'Wavelet':
         plt.plot(model.fc1.wavelet.dec_lo.detach().cpu().numpy(), '-*')
