@@ -36,9 +36,8 @@ If you find this work useful please consider citing the paper:
 }
 ```
 
-###### Future Work:
-The current implementation is probably not as efficient as possible. I am hoping that this project will inspire work on highly optimized GPU-FWT implementations.
-
+###### Toolbox:
+The current version of the PyTorch-Wavelet-Toolbox is available at https://github.com/v0lta/PyTorch-Wavelet-Toolbox .
 
 ###### Funding:
 This work has been funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) YA 447/2-1 (FOR2535 Anticipating Human Behavior)
